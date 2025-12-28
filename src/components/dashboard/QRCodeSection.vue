@@ -221,17 +221,19 @@ const loadCompanyData = async () => {
         }
       }
       
-      companyData.value = {
-        id: data.id,
-        name: data.company || 'FidApp',
-        logo_url: data.logo_url,
-        qr_code_id: data.qr_code_id
-      }
+      if (data) {
+        companyData.value = {
+          id: data.id,
+          name: data.company || 'FidApp',
+          logo_url: data.logo_url,
+          qr_code_id: data.qr_code_id
+        }
 
-      // Utiliser le qr_code_id pour l'URL (plus court et permanent)
-      const baseUrl = window.location.origin
-      qrCodeId.value = data.qr_code_id
-      qrUrl.value = `${baseUrl}/c/${data.qr_code_id}`
+        // Utiliser le qr_code_id pour l'URL (plus court et permanent)
+        const baseUrl = window.location.origin
+        qrCodeId.value = data.qr_code_id
+        qrUrl.value = `${baseUrl}/c/${data.qr_code_id}`
+      }
       
       // Générer le QR code
       generateQRCode()

@@ -15,7 +15,7 @@
               <div v-if="logoPreview || companyData.logo_url" 
                    class="w-24 h-24 rounded-2xl overflow-hidden border-2 border-gray-200">
                 <img 
-                  :src="logoPreview || companyData.logo_url" 
+                  :src="(logoPreview || companyData.logo_url) ?? ''" 
                   alt="Logo entreprise"
                   class="w-full h-full object-cover"
                 />
@@ -43,7 +43,7 @@
             <!-- Bouton pour changer le logo -->
             <button 
               type="button" 
-              @click="$refs.fileInput.click()"
+              @click="($refs.fileInput as HTMLInputElement)?.click()"
               class="mt-3 text-sm text-violet-600 hover:text-violet-700 font-medium flex items-center space-x-1"
             >
               <Upload :size="16" />

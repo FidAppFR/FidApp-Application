@@ -127,7 +127,7 @@
               {{ reward.is_active ? 'Désactiver' : 'Activer' }}
             </button>
             <button 
-              @click="deleteReward(reward.id)"
+              @click="reward.id && deleteReward(reward.id)"
               class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg text-sm font-medium transition-colors"
             >
               <Trash2 :size="16" />

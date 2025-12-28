@@ -29,7 +29,7 @@
                   <div v-if="logoPreview || cardData.logoUrl" 
                        class="w-12 h-12 bg-white rounded-lg overflow-hidden shadow-lg">
                     <img 
-                      :src="logoPreview || cardData.logoUrl" 
+                      :src="(logoPreview || cardData.logoUrl) ?? ''" 
                       alt="Logo"
                       class="w-full h-full object-cover"
                     />
@@ -157,7 +157,7 @@
                      class="relative group w-20 h-20">
                   <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-gray-200">
                     <img 
-                      :src="logoPreview || cardData.logoUrl" 
+                      :src="(logoPreview || cardData.logoUrl) ?? ''" 
                       alt="Logo"
                       class="w-full h-full object-cover"
                     />
@@ -188,7 +188,7 @@
                 <!-- Bouton upload -->
                 <button 
                   type="button"
-                  @click="$refs.fileInput.click()"
+                  @click="($refs.fileInput as HTMLInputElement)?.click()"
                   :disabled="uploadingLogo"
                   class="px-4 py-2 bg-violet-100 text-violet-600 rounded-lg font-medium hover:bg-violet-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >

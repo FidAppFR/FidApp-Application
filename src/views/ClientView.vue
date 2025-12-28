@@ -542,7 +542,7 @@ const loadData = async () => {
   try {
     // Récupérer l'ID de l'entreprise depuis l'URL
     const companyParam = router.currentRoute.value.query.company as string
-    let companyId = companyParam
+    let localCompanyId = companyParam
     
     // Vérifier si c'est un propriétaire d'entreprise
     const { data: { user } } = await supabase.auth.getUser()
@@ -555,8 +555,8 @@ const loadData = async () => {
       
       if (userData) {
         isOwner.value = true
-        companyId = userData.id
-        companyId.value = userData.id  // Assigner aux deux
+        localCompanyId = userData.id
+        companyId.value = userData.id
       }
     }
     
@@ -569,7 +569,7 @@ const loadData = async () => {
       customerPoints.value = session.points || 0
       customerName.value = session.name || ''
       customerId.value = session.id
-      companyId.value = companyId  // Variable locale companyId
+      companyId.value = localCompanyId
       
       // Rafraîchir les points depuis la base
       const { data: freshCustomer } = await supabase
@@ -585,16 +585,16 @@ const loadData = async () => {
       }
     } else if (!isOwner.value) {
       // Rediriger vers l'authentification client
-      router.push(`/client-auth?company=${companyId}`)
+      router.push(`/client-auth?company=${localCompanyId}`)
       return
     }
     
     // Charger les données de l'entreprise
-    if (companyId) {
+    if (localCompanyId) {
       const { data: companyInfo } = await supabase
         .from('users')
         .select('company, logo_url, card_settings, qr_code_id')
-        .eq('id', companyId)
+        .eq('id', localCompanyId)
         .single()
       
       if (companyInfo) {
@@ -610,7 +610,7 @@ const loadData = async () => {
       const { data: rewardsData } = await supabase
         .from('rewards')
         .select('*')
-        .eq('company_id', companyId)
+        .eq('company_id', localCompanyId)
         .eq('is_active', true)
       
       if (rewardsData) {

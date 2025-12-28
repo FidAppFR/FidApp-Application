@@ -1254,7 +1254,10 @@ const saveDirectEdit = async (field: string) => {
       // Mettre à jour aussi dans la liste principale
       const customerIndex = customers.value.findIndex(c => c.id === customerDetails.value.id)
       if (customerIndex !== -1) {
-        customers.value[customerIndex][field as keyof Customer] = editValue.value as any
+        const customer = customers.value[customerIndex]
+        if (customer && field in customer) {
+          (customer as any)[field] = editValue.value
+        }
       }
       cancelEditing()
       

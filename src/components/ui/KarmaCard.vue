@@ -75,7 +75,7 @@ const cardClasses = computed(() => {
 const iconContainerClasses = computed(() => {
   const isStatCard = props.variant.startsWith('stat-')
   if (isStatCard) {
-    const iconBg = {
+    const iconBg: Record<string, string> = {
       'stat-rose': 'bg-gradient-to-r from-pink-500 to-rose-500',
       'stat-purple': 'bg-gradient-to-r from-violet-500 to-purple-500',
       'stat-success': 'bg-gradient-to-r from-green-500 to-emerald-500'
@@ -93,7 +93,7 @@ const titleClasses = computed(() => {
 const valueClasses = computed(() => {
   const isStatCard = props.variant.startsWith('stat-')
   if (isStatCard) {
-    const valueColor = {
+    const valueColor: Record<string, string> = {
       'stat-rose': 'text-pink-600',
       'stat-purple': 'text-purple-600',
       'stat-success': 'text-green-600'
