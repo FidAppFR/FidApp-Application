@@ -244,6 +244,9 @@
             <p class="text-gray-600 mt-2">Bienvenue sur votre espace de gestion FidApp</p>
           </div>
 
+          <!-- Scan Stats Cards -->
+          <ScanStatsCard />
+
           <!-- Stats cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
@@ -304,12 +307,9 @@
 
           <!-- Graphiques -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-              <h3 class="text-lg font-bold text-gray-900 mb-4">Évolution des fidèles</h3>
-              <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-500">
-                Graphique d'évolution
-              </div>
-            </div>
+            <!-- Graphique des scans -->
+            <ScanChart />
+            <!-- Remplacer l'ancien graphique placeholder -->
 
             <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
               <h3 class="text-lg font-bold text-gray-900 mb-4">Récompenses populaires</h3>
@@ -331,6 +331,9 @@
               </div>
             </div>
           </div>
+          
+          <!-- Historique des scans récents -->
+          <ScanHistory :limit="10" />
         </div>
 
         <!-- Section Récompenses -->
@@ -394,6 +397,9 @@ import RewardsSection from '@/components/dashboard/RewardsSection.vue'
 import CompanyProfileSection from '@/components/dashboard/CompanyProfileSection.vue'
 import LoyaltyCardSection from '@/components/dashboard/LoyaltyCardSection.vue'
 import CustomersSection from '@/components/dashboard/CustomersSection.vue'
+import ScanStatsCard from '@/components/ScanStatsCard.vue'
+import ScanChart from '@/components/ScanChart.vue'
+import ScanHistory from '@/components/ScanHistory.vue'
 import PlanSection from '@/components/dashboard/PlanSection.vue'
 import SettingsSection from '@/components/dashboard/SettingsSection.vue'
 import SupportSection from '@/components/dashboard/SupportSection.vue'

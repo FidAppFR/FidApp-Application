@@ -36,14 +36,18 @@
         </div>
 
         <!-- Statistiques -->
-        <div class="mt-6 grid grid-cols-2 gap-4">
+        <div class="mt-6 grid grid-cols-3 gap-4">
           <div class="bg-gray-50 rounded-lg p-3">
-            <p class="text-xs text-gray-500 mb-1">Clients inscrits</p>
-            <p class="text-xl font-bold text-violet-600">{{ stats.totalCustomers }}</p>
+            <p class="text-xs text-gray-500 mb-1">Total scans</p>
+            <p class="text-xl font-bold text-orange-600">{{ scanStats.totalScans }}</p>
           </div>
           <div class="bg-gray-50 rounded-lg p-3">
-            <p class="text-xs text-gray-500 mb-1">Scans ce mois</p>
-            <p class="text-xl font-bold text-pink-600">{{ stats.monthlyScans }}</p>
+            <p class="text-xs text-gray-500 mb-1">Clients uniques</p>
+            <p class="text-xl font-bold text-violet-600">{{ scanStats.totalUniqueClients }}</p>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-3">
+            <p class="text-xs text-gray-500 mb-1">Scans aujourd'hui</p>
+            <p class="text-xl font-bold text-pink-600">{{ scanStats.scansToday }}</p>
           </div>
         </div>
       </div>
@@ -166,6 +170,7 @@ import QRCode from 'qrcode'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { supabase } from '@/services/supabase'
+import { getScanStats } from '@/api/scanEndpoint'
 
 interface CompanyData {
   id: string
@@ -187,9 +192,13 @@ const generatingPDF = ref(false)
 const showSuccess = ref(false)
 const successMessage = ref('')
 
-const stats = ref({
-  totalCustomers: 0,
-  monthlyScans: 0
+const scanStats = ref({
+  totalScans: 0,
+  totalUniqueClients: 0,
+  scansToday: 0,
+  scansThisWeek: 0,
+  scansThisMonth: 0,
+  averageScansPerDay: 0
 })
 
 // Charger les données de l'entreprise
@@ -380,8 +389,21 @@ const showSuccessMessage = (message: string) => {
   }, 3000)
 }
 
+// Charger les statistiques de scans
+const loadScanStats = async () => {
+  try {
+    const stats = await getScanStats()
+    if (stats) {
+      scanStats.value = stats
+    }
+  } catch (error) {
+    console.error('Erreur chargement stats scans:', error)
+  }
+}
+
 onMounted(() => {
   loadCompanyData()
+  loadScanStats()
 })
 </script>
 

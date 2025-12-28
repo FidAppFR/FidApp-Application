@@ -440,6 +440,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
+import { recordScan } from '@/api/scanEndpoint'
 import AppleWalletButton from '@/components/ui/AppleWalletButton.vue'
 
 const router = useRouter()
