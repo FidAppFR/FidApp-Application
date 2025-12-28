@@ -1,13 +1,8 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
+import App from './App.vue'
 import './styles/main.css'
-
-// Version simplifiée pour résoudre le problème de page blanche
-// On utilisera toujours la version simple pour l'instant
-const App = {
-  template: `<div id="app"><router-view /></div>`
-}
 
 // Import des vues avec lazy loading pour optimiser
 const HomeView = () => import('./views/HomeView.vue')
