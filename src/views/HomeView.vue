@@ -268,7 +268,7 @@ import { ref } from 'vue'
 import { 
   ArrowRight, TrendingUp, Users, Target, Gift, Star, BarChart3, 
   Zap, MessageCircle, Smartphone, Store, Coffee, Flame, 
-  Phone, Check
+  Phone, Check, Rocket
 } from 'lucide-vue-next'
 
 import KarmaNavbar from '@/components/layout/KarmaNavbar.vue'

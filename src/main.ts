@@ -49,7 +49,8 @@ const routes = [
   {
     path: '/c/:qrCodeId',
     name: 'QRRedirect',
-    beforeEnter: async (to, from, next) => {
+    component: () => import('@/views/HomeView.vue'), // Composant temporaire requis
+    beforeEnter: async (to: any, from: any, next: any) => {
       // Récupérer l'ID de l'entreprise depuis le qr_code_id
       const qrCodeId = to.params.qrCodeId
       

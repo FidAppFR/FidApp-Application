@@ -442,7 +442,16 @@ const notifications = ref<Notification[]>([
 
 const notificationCount = computed(() => notifications.value.length)
 
-const userData = ref({
+const userData = ref<{
+  email: string
+  company: string
+  account_type: string
+  selected_plan: string
+  first_name: string
+  last_name: string
+  id?: string
+  auth_id?: string
+}>({
   email: '',
   company: '',
   account_type: 'free',

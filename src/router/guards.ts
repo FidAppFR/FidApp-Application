@@ -1,4 +1,4 @@
-import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
+import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 import { supabase } from '@/services/supabase'
 import { loadUserPermissions, canAccessRoute, currentUserPermissions } from '@/services/permissions'
 

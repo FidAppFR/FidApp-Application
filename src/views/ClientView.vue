@@ -459,6 +459,7 @@ interface CompanyData {
   name: string
   logo_url: string | null
   card_settings?: any
+  qr_code_id?: string
 }
 
 interface PointsHistory {
@@ -475,7 +476,8 @@ const rewards = ref<Reward[]>([])
 const companyData = ref<CompanyData>({
   name: '',
   logo_url: null,
-  card_settings: null
+  card_settings: null,
+  qr_code_id: ''
 })
 const pointsHistory = ref<PointsHistory[]>([])
 const loading = ref(true)
@@ -554,7 +556,7 @@ const loadData = async () => {
       if (userData) {
         isOwner.value = true
         companyId = userData.id
-        companyId.value = userData.id
+        companyId.value = userData.id  // Assigner aux deux
       }
     }
     
@@ -567,7 +569,7 @@ const loadData = async () => {
       customerPoints.value = session.points || 0
       customerName.value = session.name || ''
       customerId.value = session.id
-      companyId.value = companyId
+      companyId.value = companyId  // Variable locale companyId
       
       // Rafraîchir les points depuis la base
       const { data: freshCustomer } = await supabase
