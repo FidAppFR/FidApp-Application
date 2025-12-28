@@ -1,0 +1,40 @@
+// Service simplifié pour Apple Wallet
+// La génération réelle des passes doit se faire côté serveur (API)
+
+export interface LoyaltyCardData {
+  companyName: string;
+  companyLogo?: string;
+  customerName: string;
+  customerId: string;
+  points: number;
+  qrCodeValue: string;
+  cardNumber: string;
+  backgroundColor?: string;
+  foregroundColor?: string;
+  labelColor?: string;
+}
+
+export class AppleWalletService {
+  // Cette méthode appellera une API backend pour générer le pass
+  async generateLoyaltyPass(data: LoyaltyCardData): Promise<string> {
+    // Pour le moment, retourner une URL de placeholder
+    // Dans le futur, cela appellera votre API backend
+    console.log('Génération de pass Apple Wallet désactivée temporairement');
+    return '#';
+  }
+
+  getCustomerLevel(points: number): string {
+    if (points >= 1000) return 'GOLD';
+    if (points >= 500) return 'SILVER';
+    return 'BRONZE';
+  }
+
+export function isWalletAvailable(): boolean {
+  const userAgent = navigator.userAgent || navigator.vendor;
+  return /iPhone|iPad|iPod/i.test(userAgent) || /Mac/i.test(userAgent);
+}
+
+export function formatCardNumber(customerId: string): string {
+  const clean = customerId.replace(/-/g, '').toUpperCase();
+  return clean.match(/.{1,4}/g)?.join(' ') || clean;
+}

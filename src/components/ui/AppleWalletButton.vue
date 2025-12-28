@@ -121,50 +121,12 @@ async function checkIfAlreadyAdded() {
 }
 
 async function handleAddToWallet() {
-  isLoading.value = true;
-  errorMessage.value = '';
-  
-  try {
-    const response = await generateWalletPass({
-      customerId: props.customerId,
-      companyId: props.companyId
-    });
-    
-    const link = document.createElement('a');
-    link.href = response.passUrl;
-    link.download = `fidapp-card-${props.customerId}.pkpass`;
-    link.click();
-    
-    setTimeout(() => {
-      URL.revokeObjectURL(response.passUrl);
-    }, 60000);
-    
-    const addedPasses = localStorage.getItem('walletPasses') || '{}';
-    const passes = JSON.parse(addedPasses);
-    passes[`${props.companyId}-${props.customerId}`] = {
-      serialNumber: response.serialNumber,
-      addedAt: new Date().toISOString()
-    };
-    localStorage.setItem('walletPasses', JSON.stringify(passes));
-    
-    isAdded.value = true;
-    emit('added', response.serialNumber);
-    
-    setTimeout(() => {
-      isAdded.value = false;
-    }, 5000);
-    
-  } catch (error) {
-    console.error('Erreur lors de l\'ajout à Apple Wallet:', error);
-    errorMessage.value = error instanceof Error ? error.message : 'Une erreur est survenue';
-    emit('error', error as Error);
-    
-    setTimeout(() => {
-      errorMessage.value = '';
-    }, 5000);
-  } finally {
-    isLoading.value = false;
-  }
+  // Fonctionnalité temporairement désactivée
+  console.log('Apple Wallet temporairement désactivé');
+  errorMessage.value = 'Cette fonctionnalité sera bientôt disponible';
+  setTimeout(() => {
+    errorMessage.value = '';
+  }, 3000);
 }
 
 async function generateQRCode() {
