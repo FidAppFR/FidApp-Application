@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Migration Rewards</title>
+</head>
+<body>
+    <h1>Migration de la table Rewards</h1>
+    <p>Ouvrez la console pour voir les résultats</p>
+    
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+        const supabaseUrl = 'https://sdbtjaxyhkicnucktkuj.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYnRqYXh5aGtpY251Y2t0a3VqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwOTkwNDUsImV4cCI6MjA3OTY3NTA0NX0.JwwJN6_VnmhP8KMfh3V0S_bJItkoLJpQQrjLfIcL3wk'
+
+        const supabase = createClient(supabaseUrl, supabaseKey)
+
+        console.log('Connexion à Supabase établie')
+        console.log('Pour créer la table rewards, copiez et exécutez le SQL suivant dans le SQL Editor de Supabase:')
+        
+        const sql = `
+-- Création de la table des récompenses
+CREATE TABLE IF NOT EXISTS rewards (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    company_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    points_required INTEGER NOT NULL DEFAULT 0,
+    category VARCHAR(50) NOT NULL DEFAULT 'general',
+    discount_percentage INTEGER,
+    discount_amount DECIMAL(10,2),
+    is_active BOOLEAN DEFAULT true,
+    valid_from TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    valid_until TIMESTAMP WITH TIME ZONE,
+    max_uses_per_customer INTEGER,
+    total_uses INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Index pour améliorer les performances
+CREATE INDEX IF NOT EXISTS idx_rewards_company_id ON rewards(company_id);
+CREATE INDEX IF NOT EXISTS idx_rewards_is_active ON rewards(is_active);
+CREATE INDEX IF NOT EXISTS idx_rewards_category ON rewards(category);
+
+-- RLS (Row Level Security)
+ALTER TABLE rewards ENABLE ROW LEVEL SECURITY;
+
+-- Politique pour que chaque entreprise ne voie que ses récompenses
+CREATE POLICY "Companies can view their own rewards" ON rewards
+    FOR SELECT USING (auth.uid()::text = (SELECT auth_id FROM users WHERE id = company_id));
+
+CREATE POLICY "Companies can insert their own rewards" ON rewards
+    FOR INSERT WITH CHECK (auth.uid()::text = (SELECT auth_id FROM users WHERE id = company_id));
+
+CREATE POLICY "Companies can update their own rewards" ON rewards
+    FOR UPDATE USING (auth.uid()::text = (SELECT auth_id FROM users WHERE id = company_id));
+
+CREATE POLICY "Companies can delete their own rewards" ON rewards
+    FOR DELETE USING (auth.uid()::text = (SELECT auth_id FROM users WHERE id = company_id));
+        `
+        
+        console.log(sql)
+    </script>
+</body>
+</html>

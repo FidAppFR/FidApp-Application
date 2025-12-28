@@ -1,0 +1,147 @@
+/* Import Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-white text-karma-black;
+  }
+}
+
+@layer components {
+  /* Texte avec dégradé */
+  .text-karma-gradient {
+    background: linear-gradient(to right, #A855F7, #EC4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Bouton Principal CTA */
+  .btn-karma-primary {
+    @apply bg-karma-gradient text-white font-black py-5 px-12 rounded-full shadow-karma-purple transition-transform duration-200;
+  }
+  
+  .btn-karma-primary:hover {
+    @apply scale-105;
+  }
+  
+  /* Bouton Secondaire */
+  .btn-karma-secondary {
+    @apply bg-white text-karma-black font-black py-5 px-12 border-4 border-karma-black rounded-full transition-transform duration-200;
+  }
+  
+  .btn-karma-secondary:hover {
+    @apply scale-105;
+  }
+  
+  /* Card Stat Colorée */
+  .card-karma-stat {
+    @apply rounded-2xl p-8 text-white shadow-karma-medium transition-transform duration-300;
+  }
+  
+  .card-karma-stat:hover {
+    @apply scale-105;
+  }
+  
+  /* Card Activité */
+  .card-karma-activity {
+    @apply rounded-xl p-5 border-2 transition-transform duration-300;
+  }
+  
+  .card-karma-activity:hover {
+    @apply scale-105;
+  }
+  
+  /* Badge Label */
+  .badge-karma-label {
+    @apply bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300 rounded-full py-2 px-5 font-bold text-purple-800;
+  }
+  
+  /* Badge Succès Flottant */
+  .badge-karma-success {
+    @apply bg-karma-card-success rounded-2xl p-6 text-white shadow-karma-success;
+  }
+  
+  /* Container d'icône */
+  .icon-karma-container {
+    @apply w-16 h-16 rounded-2xl flex items-center justify-center shadow-karma-soft transition-transform duration-300;
+  }
+  
+  .icon-karma-container:hover {
+    @apply rotate-6;
+  }
+}
+
+@layer utilities {
+  /* Patterns de fond */
+  .pattern-dots {
+    background-image: radial-gradient(circle at 2px 2px, rgb(236, 72, 153) 2px, transparent 0);
+    background-size: 60px 60px;
+    opacity: 0.3;
+  }
+  
+  .pattern-lines {
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgb(168, 85, 247) 10px, rgb(168, 85, 247) 11px);
+    opacity: 0.2;
+  }
+  
+  .pattern-grid {
+    background-image: 
+      linear-gradient(to right, rgb(168, 85, 247) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(168, 85, 247) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.15;
+  }
+  
+  /* Orbes Lumineux */
+  .orb-karma-rose {
+    width: 500px; 
+    height: 500px;
+    background: linear-gradient(to bottom right, #FB7185, #EC4899);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+  }
+  
+  .orb-karma-purple {
+    width: 600px; 
+    height: 600px;
+    background: linear-gradient(to bottom right, #A855F7, #8B5CF6);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.25;
+  }
+  
+  .orb-karma-pink {
+    width: 450px; 
+    height: 450px;
+    background: linear-gradient(to bottom right, #EC4899, #F472B6);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+  }
+  
+  /* Animation pour la barre de chargement de déconnexion */
+  @keyframes loading {
+    0% {
+      width: 0%;
+      margin-left: 0%;
+    }
+    50% {
+      width: 50%;
+      margin-left: 25%;
+    }
+    100% {
+      width: 0%;
+      margin-left: 100%;
+    }
+  }
+}
