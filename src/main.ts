@@ -4,6 +4,8 @@ import { createPinia } from 'pinia'
 import './styles/main.css'
 
 import App from './App.vue'
+// import App from './App-simple.vue'
+// import App from './App-debug.vue'
 import HomeView from './views/HomeView.vue'
 import LoginView from './views/LoginView.vue'
 import PricingView from './views/PricingView.vue'

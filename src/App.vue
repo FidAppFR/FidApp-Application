@@ -14,7 +14,7 @@
         leave-to-class="opacity-0"
       >
         <div
-          v-if="logoutOverlay.isVisible.value"
+          v-if="isLogoutVisible"
           class="fixed inset-0 bg-white z-[99999]"
           style="position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100vw !important; height: 100vh !important;"
         >
@@ -59,7 +59,7 @@
         leave-to-class="opacity-0"
       >
         <div
-          v-if="pageLoader.isVisible.value"
+          v-if="isPageLoaderVisible"
           class="fixed inset-0 bg-white z-[999999]"
           style="position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100vw !important; height: 100vh !important;"
         >
@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ScrollToTop from '@/components/ui/ScrollToTop.vue'
 import { Loader2 } from 'lucide-vue-next'
@@ -86,6 +86,10 @@ import { logoutOverlay } from '@/services/logoutOverlay'
 import { pageLoader } from '@/services/pageLoader'
 
 const route = useRoute()
+
+// Utiliser des computed pour la réactivité
+const isLogoutVisible = computed(() => logoutOverlay.isVisible.value)
+const isPageLoaderVisible = computed(() => pageLoader.isVisible.value)
 
 // Déclencher le loader lors des changements de route
 watch(() => route.path, (newPath, oldPath) => {
