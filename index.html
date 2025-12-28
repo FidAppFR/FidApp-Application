@@ -7,8 +7,12 @@
     <title>FidApp - Fidélisez vos Clients</title>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-    <!-- <script type="module" src="/src/main-minimal.ts"></script> -->
+    <div id="app">
+      <!-- Fallback content -->
+      <div style="padding: 40px; text-align: center; font-family: sans-serif;">
+        <h3>Chargement de FidApp...</h3>
+      </div>
+    </div>
+    <script type="module" src="/src/main-debug.ts"></script>
   </body>
 </html>
