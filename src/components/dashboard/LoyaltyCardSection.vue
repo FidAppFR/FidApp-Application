@@ -358,6 +358,8 @@ const cardData = ref({
   logoUrl: null as string | null
 })
 
+console.log('Initial cardData.themeType:', cardData.value.themeType)
+
 const fileInput = ref<HTMLInputElement>()
 const backgroundInput = ref<HTMLInputElement>()
 const logoPreview = ref<string | null>(null)
@@ -383,11 +385,19 @@ const loadCardData = async () => {
 
     const { data, error } = await supabase
       .from('users')
-      .select('company, logo_url, card_settings, card_theme, card_background_url, card_gradient')
+      .select('*') // Sélectionner toutes les colonnes pour débugger
       .eq('auth_id', user.id)
       .single()
 
+    if (error) {
+      console.error('Error loading user data:', error)
+    }
+
     if (!error && data) {
+      console.log('Data loaded from database:', data)
+      console.log('card_theme from DB:', data.card_theme)
+      console.log('card_background_url from DB:', data.card_background_url)
+      
       cardData.value.companyName = data.company || 'FidApp'
       cardData.value.logoUrl = data.logo_url || null
       cardData.value.themeType = data.card_theme || 'gradient'
@@ -396,10 +406,12 @@ const loadCardData = async () => {
       logoPreview.value = data.logo_url || null
       backgroundPreview.value = data.card_background_url || null
       
+      console.log('cardData.value.themeType after load:', cardData.value.themeType)
+      
       // Charger les paramètres de carte si disponibles
       if (data.card_settings) {
-        // S'assurer que les valeurs booléennes sont bien récupérées
-        cardData.value.gradient = data.card_settings.gradient || cardData.value.gradient
+        // Ne PAS écraser gradient qui vient de card_gradient
+        // cardData.value.gradient est déjà défini depuis card_gradient
         cardData.value.welcomeMessage = data.card_settings.welcomeMessage || cardData.value.welcomeMessage
         cardData.value.showPoints = data.card_settings.showPoints !== undefined ? data.card_settings.showPoints : true
         cardData.value.showQR = data.card_settings.showQR !== undefined ? data.card_settings.showQR : true

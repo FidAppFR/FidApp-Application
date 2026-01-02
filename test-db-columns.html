@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test DB Columns</title>
+</head>
+<body>
+    <h1>Test Database Columns</h1>
+    <button onclick="testDB()">Test Database</button>
+    <div id="result"></div>
+    
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        
+        const supabaseUrl = 'https://sdbtjaxyhkicnucktkuj.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYnRqYXh5aGtpY251Y2t0a3VqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDA5OTA0NSwiZXhwIjoyMDc5Njc1MDQ1fQ.yPUPegFnSJEzBKdlKWhF4mfOYZpvImQ1Nm0A5DVz9yM'
+        
+        const supabase = createClient(supabaseUrl, supabaseKey)
+        
+        window.testDB = async function() {
+            const resultDiv = document.getElementById('result')
+            
+            try {
+                // Test selecting all columns
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .limit(1)
+                
+                if (error) {
+                    resultDiv.innerHTML = '<h2 style="color: red;">Error:</h2><pre>' + JSON.stringify(error, null, 2) + '</pre>'
+                } else {
+                    const columns = data[0] ? Object.keys(data[0]) : []
+                    resultDiv.innerHTML = `
+                        <h2 style="color: green;">Success!</h2>
+                        <h3>Available columns:</h3>
+                        <ul>
+                            ${columns.map(col => `<li>${col}</li>`).join('')}
+                        </ul>
+                        <h3>Looking for card columns:</h3>
+                        <ul>
+                            <li>card_background_url: ${columns.includes('card_background_url') ? '✅' : '❌'}</li>
+                            <li>card_theme: ${columns.includes('card_theme') ? '✅' : '❌'}</li>
+                            <li>card_gradient: ${columns.includes('card_gradient') ? '✅' : '❌'}</li>
+                        </ul>
+                        <h3>First row data:</h3>
+                        <pre>${JSON.stringify(data[0], null, 2)}</pre>
+                    `
+                }
+            } catch (err) {
+                resultDiv.innerHTML = '<h2 style="color: red;">Exception:</h2><pre>' + err.toString() + '</pre>'
+            }
+        }
+    </script>
+</body>
+</html>
