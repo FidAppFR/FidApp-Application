@@ -20,7 +20,7 @@ BEGIN
         UPDATE bonus_settings 
         SET birthday_auto_apply_new = CASE 
             WHEN birthday_auto_apply = true THEN 'same_day'
-            ELSE 'manual'
+            ELSE 'same_month'
         END;
         
         -- Supprimer l'ancienne colonne
@@ -34,7 +34,7 @@ BEGIN
         -- Ajouter la contrainte CHECK
         ALTER TABLE bonus_settings 
         ADD CONSTRAINT birthday_auto_apply_check 
-        CHECK (birthday_auto_apply IN ('same_day', 'same_month', 'week_before', 'manual'));
+        CHECK (birthday_auto_apply IN ('same_day', 'same_month', 'week_before'));
         
         -- Définir la valeur par défaut
         ALTER TABLE bonus_settings 

@@ -84,7 +84,6 @@
               <option value="same_day">Le jour de l'anniversaire</option>
               <option value="same_month">Le mois de l'anniversaire</option>
               <option value="week_before">J-7 de l'anniversaire</option>
-              <option value="manual">Manuel uniquement</option>
             </select>
           </div>
         </div>
