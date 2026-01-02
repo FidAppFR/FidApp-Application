@@ -101,19 +101,75 @@
             <span class="text-sm">Nos Produits</span>
           </button>
 
-          <!-- Menu Récompenses -->
-          <button
-            @click="activeSection = 'rewards'"
-            :class="[
-              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
-              activeSection === 'rewards' 
-                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
-            ]"
-          >
-            <Gift :size="16" />
-            <span class="text-sm">Récompenses</span>
-          </button>
+          <!-- Menu Récompenses avec dropdown -->
+          <div class="relative">
+            <button
+              @click="toggleRewardsDropdown"
+              :class="[
+                'w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                ['rewards', 'welcome-points', 'offers', 'bonus'].includes(activeSection)
+                  ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
+                  : 'hover:bg-gray-100 text-gray-700'
+              ]"
+            >
+              <div class="flex items-center space-x-2">
+                <Gift :size="16" />
+                <span class="text-sm">Récompenses</span>
+              </div>
+              <ChevronDown 
+                :size="14" 
+                :class="[
+                  'transition-transform duration-200',
+                  showRewardsDropdown ? 'rotate-180' : ''
+                ]"
+              />
+            </button>
+            
+            <!-- Dropdown menu -->
+            <div 
+              v-if="showRewardsDropdown"
+              class="mt-1 space-y-1 pl-6"
+            >
+              <button
+                @click="setActiveSection('welcome-points')"
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                  activeSection === 'welcome-points' 
+                    ? 'bg-violet-100 text-violet-700 font-medium' 
+                    : 'hover:bg-gray-100 text-gray-600'
+                ]"
+              >
+                <UserPlus :size="14" />
+                <span class="text-xs">Points de bienvenue</span>
+              </button>
+              
+              <button
+                @click="setActiveSection('offers')"
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                  activeSection === 'offers' 
+                    ? 'bg-violet-100 text-violet-700 font-medium' 
+                    : 'hover:bg-gray-100 text-gray-600'
+                ]"
+              >
+                <Tag :size="14" />
+                <span class="text-xs">Offres</span>
+              </button>
+              
+              <button
+                @click="setActiveSection('bonus')"
+                :class="[
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                  activeSection === 'bonus' 
+                    ? 'bg-violet-100 text-violet-700 font-medium' 
+                    : 'hover:bg-gray-100 text-gray-600'
+                ]"
+              >
+                <Sparkles :size="14" />
+                <span class="text-xs">Bonus</span>
+              </button>
+            </div>
+          </div>
 
           <!-- Menu Profil Société -->
           <button
@@ -360,6 +416,21 @@
           <RewardsSection />
         </div>
 
+        <!-- Section Points de bienvenue -->
+        <div v-if="activeSection === 'welcome-points'" class="space-y-6">
+          <WelcomePointsSection />
+        </div>
+
+        <!-- Section Offres -->
+        <div v-if="activeSection === 'offers'" class="space-y-6">
+          <OffersSection />
+        </div>
+
+        <!-- Section Bonus -->
+        <div v-if="activeSection === 'bonus'" class="space-y-6">
+          <BonusSection />
+        </div>
+
         <!-- Section Profil Société -->
         <div v-if="activeSection === 'company'" class="space-y-6">
           <CompanyProfileSection />
@@ -408,7 +479,8 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { 
   LayoutDashboard, Gift, Building2, CreditCard, Users, Crown,
-  Settings, HelpCircle, LogOut, Star, TrendingUp, Coffee, Percent, Bell, QrCode, Package, ShoppingBag
+  Settings, HelpCircle, LogOut, Star, TrendingUp, Coffee, Percent, Bell, QrCode, Package, ShoppingBag,
+  ChevronDown, UserPlus, Tag, Sparkles
 } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { logoutOverlay } from '@/services/logoutOverlay'
@@ -424,12 +496,16 @@ import PlanSection from '@/components/dashboard/PlanSection.vue'
 import SettingsSection from '@/components/dashboard/SettingsSection.vue'
 import SupportSection from '@/components/dashboard/SupportSection.vue'
 import QRCodeSection from '@/components/dashboard/QRCodeSection.vue'
+import WelcomePointsSection from '@/components/dashboard/WelcomePointsSection.vue'
+import OffersSection from '@/components/dashboard/OffersSection.vue'
+import BonusSection from '@/components/dashboard/BonusSection.vue'
 
 const router = useRouter()
 const route = useRoute()
 const activeSection = ref('dashboard')
 const selectedPlan = ref('')
 const showNotifications = ref(false)
+const showRewardsDropdown = ref(false)
 
 // Interface pour les notifications
 interface Notification {
@@ -510,6 +586,18 @@ const userInitials = computed(() => {
 
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value
+}
+
+const toggleRewardsDropdown = () => {
+  showRewardsDropdown.value = !showRewardsDropdown.value
+}
+
+const setActiveSection = (section: string) => {
+  activeSection.value = section
+  // Keep dropdown open when selecting a rewards subcategory
+  if (!['welcome-points', 'offers', 'bonus'].includes(section)) {
+    showRewardsDropdown.value = false
+  }
 }
 
 const markAsRead = (index: number) => {
