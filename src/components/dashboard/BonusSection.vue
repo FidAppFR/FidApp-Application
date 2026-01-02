@@ -36,7 +36,7 @@
             </div>
             <div>
               <h2 class="text-xl font-bold text-gray-900">Bonus Anniversaire</h2>
-              <p class="text-sm text-gray-600">Offrez des points le jour de l'anniversaire de vos clients</p>
+              <p class="text-sm text-gray-600">Offrez des points pour l'anniversaire de vos clients</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
