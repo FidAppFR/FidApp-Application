@@ -107,7 +107,7 @@
             <!-- Thème de la carte -->
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">
-                🎨 Fond de la carte
+                Fond de la carte
               </label>
               
               <!-- Sélecteur de type de thème -->
@@ -122,7 +122,7 @@
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   ]"
                 >
-                  🌈 Dégradés
+                  Dégradés
                 </button>
                 <button
                   @click="cardData.themeType = 'custom'"
@@ -134,7 +134,7 @@
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   ]"
                 >
-                  🖼️ Image personnalisée
+                  Image personnalisée
                 </button>
               </div>
 
@@ -190,7 +190,7 @@
                   <div class="flex items-start space-x-2">
                     <AlertCircle :size="16" class="text-amber-600 mt-0.5 flex-shrink-0" />
                     <div class="text-sm text-amber-800">
-                      <p class="font-semibold">📏 Dimensions recommandées :</p>
+                      <p class="font-semibold">Dimensions recommandées :</p>
                       <p>800 x 450 pixels (format 16:9)</p>
                       <p class="text-xs mt-1">Formats acceptés : JPG, PNG, WebP (max 10MB)</p>
                     </div>
@@ -241,7 +241,7 @@
                   :disabled="uploadingBackground"
                   class="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50"
                 >
-                  {{ uploadingBackground ? 'Chargement...' : '🔄 Changer l\'image de fond' }}
+                  {{ uploadingBackground ? 'Chargement...' : 'Changer l\'image de fond' }}
                 </button>
               </div>
             </div>
