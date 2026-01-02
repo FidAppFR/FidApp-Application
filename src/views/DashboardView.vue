@@ -71,104 +71,104 @@
     <!-- Layout avec sidebar -->
     <div class="flex pt-16">
       <!-- Sidebar -->
-      <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-gray-200 overflow-y-auto">
-        <nav class="p-4 space-y-1">
+      <aside class="fixed left-0 top-16 bottom-0 w-52 bg-white border-r border-gray-200 overflow-y-auto">
+        <nav class="p-3 space-y-1">
           <!-- Menu Dashboard -->
           <button
             @click="activeSection = 'dashboard'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'dashboard' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <LayoutDashboard :size="20" />
-            <span class="font-medium">Tableau de bord</span>
+            <LayoutDashboard :size="16" />
+            <span class="text-sm">Tableau de bord</span>
           </button>
 
           <!-- Menu Récompenses -->
           <button
             @click="activeSection = 'rewards'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'rewards' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <Gift :size="20" />
-            <span class="font-medium">Récompenses</span>
+            <Gift :size="16" />
+            <span class="text-sm">Récompenses</span>
           </button>
 
           <!-- Menu Profil Société -->
           <button
             @click="activeSection = 'company'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'company' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <Building2 :size="20" />
-            <span class="font-medium">Profil de société</span>
+            <Building2 :size="16" />
+            <span class="text-sm">Profil société</span>
           </button>
 
           <!-- Menu Votre Carte -->
           <button
             @click="activeSection = 'card'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'card' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <CreditCard :size="20" />
-            <span class="font-medium">Votre Carte</span>
+            <CreditCard :size="16" />
+            <span class="text-sm">Votre Carte</span>
           </button>
 
           <!-- Menu Vos Fidèles -->
           <button
             @click="activeSection = 'customers'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'customers' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <Users :size="20" />
-            <span class="font-medium">Vos Fidèles</span>
+            <Users :size="16" />
+            <span class="text-sm">Vos Fidèles</span>
           </button>
 
           <!-- Menu QR Code -->
           <button
             @click="activeSection = 'qrcode'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'qrcode' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <QrCode :size="20" />
-            <span class="font-medium">QR Code</span>
+            <QrCode :size="16" />
+            <span class="text-sm">QR Code</span>
           </button>
 
           <!-- Menu Votre Plan -->
           <button
             @click="activeSection = 'plan'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'plan' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <Crown :size="20" />
-            <span class="font-medium">Votre Plan</span>
+            <Crown :size="16" />
+            <span class="text-sm">Votre Plan</span>
           </button>
 
           <!-- Séparateur -->
@@ -180,28 +180,28 @@
           <button
             @click="activeSection = 'settings'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'settings' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <Settings :size="20" />
-            <span class="font-medium">Paramètres</span>
+            <Settings :size="16" />
+            <span class="text-sm">Paramètres</span>
           </button>
 
           <!-- Menu Support -->
           <button
             @click="activeSection = 'support'"
             :class="[
-              'w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200',
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'support' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
                 : 'hover:bg-gray-100 text-gray-700'
             ]"
           >
-            <HelpCircle :size="20" />
-            <span class="font-medium">Support</span>
+            <HelpCircle :size="16" />
+            <span class="text-sm">Support</span>
           </button>
 
           <!-- Menu Déconnexion -->
@@ -209,26 +209,26 @@
             @click="handleLogout"
             class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-red-50 text-red-600"
           >
-            <LogOut :size="20" />
-            <span class="font-medium">Déconnexion</span>
+            <LogOut :size="16" />
+            <span class="text-sm">Déconnexion</span>
           </button>
         </nav>
 
         <!-- Info compte en bas -->
-        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-violet-600 to-pink-600 flex items-center justify-center text-white font-bold">
+        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-200 bg-gray-50">
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-violet-600 to-pink-600 flex items-center justify-center text-white text-xs font-bold">
               {{ userInitials }}
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900 truncate">
+              <p class="text-xs font-semibold text-gray-900 truncate">
                 {{ userData.company }}
               </p>
               <p class="text-xs text-gray-500 truncate">
                 {{ userData.email }}
               </p>
               <p class="text-xs font-medium text-violet-600">
-                Plan {{ userData.selected_plan || userData.account_type || 'free' }}
+                {{ userData.selected_plan || userData.account_type || 'free' }}
               </p>
             </div>
           </div>
@@ -236,7 +236,7 @@
       </aside>
 
       <!-- Contenu principal -->
-      <main class="flex-1 ml-64 p-6">
+      <main class="flex-1 ml-52 p-6">
         <!-- Section Dashboard -->
         <div v-if="activeSection === 'dashboard'" class="space-y-6">
           <div>
