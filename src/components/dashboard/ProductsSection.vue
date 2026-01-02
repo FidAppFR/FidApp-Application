@@ -100,9 +100,20 @@
           class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
         >
           <div class="flex items-start justify-between mb-3">
-            <div class="flex-1">
-              <h3 class="font-semibold text-gray-900">{{ product.name }}</h3>
-              <p class="text-sm text-gray-600 mt-1">{{ product.description }}</p>
+            <div class="flex items-start gap-3 flex-1">
+              <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <img 
+                  v-if="product.image_url" 
+                  :src="product.image_url" 
+                  alt="Product" 
+                  class="w-full h-full object-cover"
+                />
+                <Package v-else :size="20" class="text-gray-400" />
+              </div>
+              <div class="flex-1">
+                <h3 class="font-semibold text-gray-900">{{ product.name }}</h3>
+                <p class="text-sm text-gray-600 mt-1">{{ product.description }}</p>
+              </div>
             </div>
             <div class="flex items-center gap-1">
               <button
@@ -164,10 +175,13 @@
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nom du produit</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Nom du produit <span class="text-red-500">*</span>
+            </label>
             <input
               v-model="productForm.name"
               type="text"
+              required
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
               placeholder="Ex: Café gratuit"
             />
@@ -183,6 +197,53 @@
             ></textarea>
           </div>
 
+          <!-- Image du produit -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Image du produit (optionnel)</label>
+            <div class="flex items-center gap-4">
+              <!-- Preview de l'image -->
+              <div class="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50">
+                <img 
+                  v-if="imagePreview || productForm.image_url" 
+                  :src="imagePreview || productForm.image_url" 
+                  alt="Aperçu" 
+                  class="w-full h-full object-cover"
+                />
+                <Image v-else :size="28" class="text-gray-400" />
+              </div>
+              
+              <!-- Boutons d'upload et suppression -->
+              <div class="flex-1">
+                <input
+                  ref="imageInput"
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/svg+xml"
+                  @change="handleImageSelect"
+                  class="hidden"
+                />
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    @click="$refs.imageInput.click()"
+                    class="px-3 py-1.5 bg-violet-100 text-violet-600 rounded hover:bg-violet-200 transition-colors text-sm"
+                  >
+                    <Upload :size="14" class="inline mr-1" />
+                    Choisir
+                  </button>
+                  <button
+                    v-if="imagePreview || productForm.image_url"
+                    type="button"
+                    @click="removeImage"
+                    class="px-3 py-1.5 bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors text-sm"
+                  >
+                    <X :size="14" class="inline" />
+                  </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">JPG, PNG, WebP ou SVG. Max 5MB.</p>
+              </div>
+            </div>
+          </div>
+
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Points requis</label>
@@ -196,11 +257,15 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Prix (€)</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                Prix (€) <span class="text-red-500">*</span>
+              </label>
               <input
                 v-model.number="productForm.price"
                 type="number"
                 step="0.01"
+                min="0"
+                required
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
                 placeholder="5.50"
               />
@@ -268,7 +333,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { 
   Package, Plus, Edit2, Trash2, Star, CheckCircle, 
-  ShoppingCart, ToggleRight, ToggleLeft 
+  ShoppingCart, ToggleRight, ToggleLeft, Image, Upload, X 
 } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 
@@ -283,6 +348,7 @@ interface Product {
   unlimited_stock: boolean
   is_active: boolean
   display_order: number
+  image_url?: string
 }
 
 const products = ref<Product[]>([])
@@ -298,11 +364,16 @@ const productForm = ref({
   name: '',
   description: '',
   points: 100,
-  price: null as number | null,
+  price: 0,
   category: 'other',
   stock: null as number | null,
-  unlimited_stock: true
+  unlimited_stock: true,
+  image_url: ''
 })
+
+const imageFile = ref<File | null>(null)
+const imagePreview = ref<string>('')
+const uploadingImage = ref(false)
 
 const filteredProducts = computed(() => {
   let filtered = products.value
@@ -391,11 +462,94 @@ async function loadProducts() {
   }
 }
 
+const handleImageSelect = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  
+  if (!file) return
+  
+  // Vérifier la taille du fichier (5MB max)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('L\'image ne doit pas dépasser 5MB')
+    return
+  }
+  
+  imageFile.value = file
+  
+  // Créer un aperçu de l'image
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    imagePreview.value = e.target?.result as string
+  }
+  reader.readAsDataURL(file)
+}
+
+const removeImage = () => {
+  imageFile.value = null
+  imagePreview.value = ''
+  productForm.value.image_url = ''
+}
+
+const uploadImage = async (): Promise<string | null> => {
+  if (!imageFile.value) return null
+  
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return null
+    
+    const fileName = `${user.id}/${Date.now()}_${imageFile.value.name}`
+    
+    const { data, error } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, imageFile.value, {
+        cacheControl: '3600',
+        upsert: false
+      })
+    
+    if (error) {
+      console.error('Erreur upload image:', error)
+      return null
+    }
+    
+    // Obtenir l'URL publique
+    const { data: { publicUrl } } = supabase.storage
+      .from('product-images')
+      .getPublicUrl(fileName)
+    
+    return publicUrl
+  } catch (error) {
+    console.error('Erreur upload:', error)
+    return null
+  }
+}
+
 async function saveProduct() {
+  // Validation des champs obligatoires
+  if (!productForm.value.name || !productForm.value.name.trim()) {
+    alert('Le nom du produit est obligatoire')
+    return
+  }
+  
+  if (productForm.value.price === null || productForm.value.price === undefined || productForm.value.price < 0) {
+    alert('Le prix du produit est obligatoire et doit être positif')
+    return
+  }
+  
   saving.value = true
   try {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
+
+    // Upload l'image si nécessaire
+    let imageUrl = productForm.value.image_url
+    if (imageFile.value) {
+      uploadingImage.value = true
+      const uploadedUrl = await uploadImage()
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl
+      }
+      uploadingImage.value = false
+    }
 
     const productData = {
       company_id: user.id,
@@ -406,7 +560,8 @@ async function saveProduct() {
       category: productForm.value.category,
       stock: productForm.value.unlimited_stock ? null : productForm.value.stock,
       unlimited_stock: productForm.value.unlimited_stock,
-      is_active: true
+      is_active: true,
+      image_url: imageUrl
     }
 
     if (editingProduct.value) {
@@ -442,11 +597,14 @@ function editProduct(product: Product) {
     name: product.name,
     description: product.description,
     points: product.points,
-    price: product.price || null,
+    price: product.price || 0,
     category: product.category,
     stock: product.stock || null,
-    unlimited_stock: product.unlimited_stock
+    unlimited_stock: product.unlimited_stock,
+    image_url: product.image_url || ''
   }
+  imagePreview.value = product.image_url || ''
+  imageFile.value = null
 }
 
 async function toggleProductStatus(product: Product) {
@@ -484,14 +642,17 @@ async function deleteProduct(product: Product) {
 function closeProductModal() {
   showAddProduct.value = false
   editingProduct.value = null
+  imageFile.value = null
+  imagePreview.value = ''
   productForm.value = {
     name: '',
     description: '',
     points: 100,
-    price: null,
+    price: 0,
     category: 'other',
     stock: null,
-    unlimited_stock: true
+    unlimited_stock: true,
+    image_url: ''
   }
 }
 
