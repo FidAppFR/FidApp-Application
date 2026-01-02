@@ -16,7 +16,16 @@
           >
             <!-- Recto de la carte -->
             <div class="relative h-56 rounded-2xl shadow-2xl overflow-hidden">
-              <div class="absolute inset-0 bg-gradient-to-br" :class="cardData.gradient"></div>
+              <!-- Affichage du fond selon le type de thème -->
+              <div v-if="cardData.themeType === 'custom' && (backgroundPreview || cardData.backgroundUrl)" 
+                   class="absolute inset-0">
+                <img 
+                  :src="backgroundPreview || cardData.backgroundUrl" 
+                  alt="" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div v-else class="absolute inset-0 bg-gradient-to-br" :class="cardData.gradient"></div>
               <div class="absolute inset-0 bg-black/10"></div>
               <div class="relative h-full p-6 flex flex-col justify-between text-white">
                 <!-- Logo et nom -->
@@ -98,32 +107,34 @@
             <!-- Thème de la carte -->
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">
-                Thème de la carte
+                🎨 Fond de la carte
               </label>
               
               <!-- Sélecteur de type de thème -->
               <div class="flex gap-2 mb-3">
                 <button
                   @click="cardData.themeType = 'gradient'"
+                  type="button"
                   :class="[
-                    'flex-1 px-3 py-2 rounded-lg font-medium transition-colors',
+                    'flex-1 px-3 py-2 rounded-lg font-medium transition-colors border-2',
                     cardData.themeType === 'gradient' 
-                      ? 'bg-violet-600 text-white' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-violet-600 text-white border-violet-600' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   ]"
                 >
-                  Dégradés
+                  🌈 Dégradés
                 </button>
                 <button
                   @click="cardData.themeType = 'custom'"
+                  type="button"
                   :class="[
-                    'flex-1 px-3 py-2 rounded-lg font-medium transition-colors',
+                    'flex-1 px-3 py-2 rounded-lg font-medium transition-colors border-2',
                     cardData.themeType === 'custom' 
-                      ? 'bg-violet-600 text-white' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-violet-600 text-white border-violet-600' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   ]"
                 >
-                  Image personnalisée
+                  🖼️ Image personnalisée
                 </button>
               </div>
 
@@ -174,12 +185,12 @@
               </div>
               
               <!-- Upload d'image personnalisée -->
-              <div v-if="cardData.themeType === 'custom'" class="space-y-3">
-                <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <div v-if="cardData.themeType === 'custom'" class="space-y-3 p-4 bg-violet-50 rounded-lg border border-violet-200">
+                <div class="bg-white border border-amber-200 rounded-lg p-3">
                   <div class="flex items-start space-x-2">
                     <AlertCircle :size="16" class="text-amber-600 mt-0.5 flex-shrink-0" />
                     <div class="text-sm text-amber-800">
-                      <p class="font-semibold">Dimensions recommandées :</p>
+                      <p class="font-semibold">📏 Dimensions recommandées :</p>
                       <p>800 x 450 pixels (format 16:9)</p>
                       <p class="text-xs mt-1">Formats acceptés : JPG, PNG, WebP (max 10MB)</p>
                     </div>
@@ -206,10 +217,11 @@
                 <div 
                   v-else 
                   @click="($refs.backgroundInput as HTMLInputElement)?.click()"
-                  class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-violet-400 transition-colors cursor-pointer"
+                  class="border-3 border-dashed border-violet-300 rounded-lg p-8 text-center hover:border-violet-500 hover:bg-violet-50 transition-all cursor-pointer bg-white"
                 >
-                  <Upload :size="32" class="mx-auto text-gray-400 mb-2" />
-                  <p class="text-sm text-gray-600">Cliquez pour télécharger une image</p>
+                  <Upload :size="40" class="mx-auto text-violet-400 mb-3" />
+                  <p class="text-base font-semibold text-gray-800">Cliquez pour choisir une image de fond</p>
+                  <p class="text-sm text-gray-500 mt-1">ou glissez-déposez votre image ici</p>
                 </div>
                 
                 <!-- Input file caché pour le fond -->
@@ -221,14 +233,15 @@
                   class="hidden"
                 />
                 
-                <!-- Bouton upload -->
+                <!-- Bouton upload (caché si une zone d'upload est visible) -->
                 <button 
+                  v-if="backgroundPreview || cardData.backgroundUrl"
                   type="button"
                   @click="($refs.backgroundInput as HTMLInputElement)?.click()"
                   :disabled="uploadingBackground"
-                  class="w-full px-4 py-2 bg-violet-100 text-violet-600 rounded-lg font-medium hover:bg-violet-200 transition-colors disabled:opacity-50"
+                  class="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50"
                 >
-                  {{ uploadingBackground ? 'Chargement...' : (backgroundPreview ? 'Changer l\'image' : 'Choisir une image') }}
+                  {{ uploadingBackground ? 'Chargement...' : '🔄 Changer l\'image de fond' }}
                 </button>
               </div>
             </div>
@@ -358,7 +371,6 @@ const cardData = ref({
   logoUrl: null as string | null
 })
 
-console.log('Initial cardData.themeType:', cardData.value.themeType)
 
 const fileInput = ref<HTMLInputElement>()
 const backgroundInput = ref<HTMLInputElement>()
@@ -372,9 +384,10 @@ const backgroundFile = ref<File | null>(null)
 const saving = ref(false)
 const loading = ref(true)
 
-const cardStyles = computed(() => ({
-  // Styles dynamiques si nécessaire
-}))
+const cardStyles = computed(() => {
+  // Aucun style supplémentaire nécessaire pour l'instant
+  return {}
+})
 
 // Charger les données existantes
 const loadCardData = async () => {
@@ -390,14 +403,10 @@ const loadCardData = async () => {
       .single()
 
     if (error) {
-      console.error('Error loading user data:', error)
+      console.error('Erreur lors du chargement des données:', error)
     }
 
     if (!error && data) {
-      console.log('Data loaded from database:', data)
-      console.log('card_theme from DB:', data.card_theme)
-      console.log('card_background_url from DB:', data.card_background_url)
-      
       cardData.value.companyName = data.company || 'FidApp'
       cardData.value.logoUrl = data.logo_url || null
       cardData.value.themeType = data.card_theme || 'gradient'
@@ -405,8 +414,6 @@ const loadCardData = async () => {
       cardData.value.gradient = data.card_gradient || 'from-violet-600 to-pink-600'
       logoPreview.value = data.logo_url || null
       backgroundPreview.value = data.card_background_url || null
-      
-      console.log('cardData.value.themeType after load:', cardData.value.themeType)
       
       // Charger les paramètres de carte si disponibles
       if (data.card_settings) {
@@ -658,7 +665,6 @@ const saveCardSettings = async () => {
 }
 
 onMounted(() => {
-  console.log('LoyaltyCardSection mounted - Card background feature enabled')
   loadCardData()
 })
 </script>
