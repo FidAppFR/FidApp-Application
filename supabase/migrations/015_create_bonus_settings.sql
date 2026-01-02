@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS bonus_settings (
     birthday_enabled BOOLEAN DEFAULT true,
     birthday_points INTEGER DEFAULT 100 CHECK (birthday_points >= 0),
     birthday_message TEXT DEFAULT 'Joyeux anniversaire ! Voici votre cadeau.',
-    birthday_auto_apply BOOLEAN DEFAULT true,
+    birthday_auto_apply TEXT DEFAULT 'same_day' CHECK (birthday_auto_apply IN ('same_day', 'same_month', 'week_before', 'manual')),
     
     -- Bonus parrainage
     referral_enabled BOOLEAN DEFAULT true,

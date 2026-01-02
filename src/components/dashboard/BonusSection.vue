@@ -81,8 +81,10 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
               :disabled="!bonusSettings.birthday_enabled"
             >
-              <option :value="true">Automatique le jour J</option>
-              <option :value="false">Manuel uniquement</option>
+              <option value="same_day">Le jour de l'anniversaire</option>
+              <option value="same_month">Le mois de l'anniversaire</option>
+              <option value="week_before">J-7 de l'anniversaire</option>
+              <option value="manual">Manuel uniquement</option>
             </select>
           </div>
         </div>
@@ -371,7 +373,7 @@ const bonusSettings = ref({
   birthday_enabled: true,
   birthday_points: 100,
   birthday_message: 'Joyeux anniversaire ! Voici votre cadeau.',
-  birthday_auto_apply: true,
+  birthday_auto_apply: 'same_day',
   referral_enabled: true,
   referral_points_referrer: 75,
   referral_points_referee: 50,
