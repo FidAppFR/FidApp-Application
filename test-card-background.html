@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Card Background</title>
+</head>
+<body>
+    <h1>Test Card Background Columns</h1>
+    <div id="result"></div>
+    
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        
+        const supabaseUrl = 'https://sdbtjaxyhkicnucktkuj.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYnRqYXh5aGtpY251Y2t0a3VqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDA5OTA0NSwiZXhwIjoyMDc5Njc1MDQ1fQ.yPUPegFnSJEzBKdlKWhF4mfOYZpvImQ1Nm0A5DVz9yM'
+        
+        const supabase = createClient(supabaseUrl, supabaseKey)
+        
+        async function testColumns() {
+            const resultDiv = document.getElementById('result')
+            
+            // Test if columns exist by trying to select them
+            const { data, error } = await supabase
+                .from('users')
+                .select('id, card_background_url, card_theme, card_gradient')
+                .limit(1)
+            
+            if (error) {
+                if (error.message.includes('column')) {
+                    resultDiv.innerHTML = '<h2 style="color: red;">❌ Columns do not exist</h2><pre>' + JSON.stringify(error, null, 2) + '</pre>'
+                } else {
+                    resultDiv.innerHTML = '<h2 style="color: orange;">⚠️ Error occurred</h2><pre>' + JSON.stringify(error, null, 2) + '</pre>'
+                }
+            } else {
+                resultDiv.innerHTML = '<h2 style="color: green;">✅ Columns exist!</h2><pre>' + JSON.stringify(data, null, 2) + '</pre>'
+            }
+        }
+        
+        testColumns()
+    </script>
+</body>
+</html>

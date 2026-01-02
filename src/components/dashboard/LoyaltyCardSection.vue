@@ -95,12 +95,40 @@
               />
             </div>
 
-            <!-- Couleur de la carte -->
+            <!-- Thème de la carte -->
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">
-                Thème de couleur
+                Thème de la carte
               </label>
-              <div class="grid grid-cols-3 gap-3">
+              
+              <!-- Sélecteur de type de thème -->
+              <div class="flex gap-2 mb-3">
+                <button
+                  @click="cardData.themeType = 'gradient'"
+                  :class="[
+                    'flex-1 px-3 py-2 rounded-lg font-medium transition-colors',
+                    cardData.themeType === 'gradient' 
+                      ? 'bg-violet-600 text-white' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ]"
+                >
+                  Dégradés
+                </button>
+                <button
+                  @click="cardData.themeType = 'custom'"
+                  :class="[
+                    'flex-1 px-3 py-2 rounded-lg font-medium transition-colors',
+                    cardData.themeType === 'custom' 
+                      ? 'bg-violet-600 text-white' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ]"
+                >
+                  Image personnalisée
+                </button>
+              </div>
+
+              <!-- Options de dégradés -->
+              <div v-if="cardData.themeType === 'gradient'" class="grid grid-cols-3 gap-3">
                 <button
                   @click="cardData.gradient = 'from-violet-600 to-pink-600'"
                   :class="[
@@ -143,6 +171,65 @@
                     cardData.gradient === 'from-gray-800 to-gray-900' ? 'ring-4 ring-gray-800 ring-offset-2' : ''
                   ]"
                 ></button>
+              </div>
+              
+              <!-- Upload d'image personnalisée -->
+              <div v-if="cardData.themeType === 'custom'" class="space-y-3">
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                  <div class="flex items-start space-x-2">
+                    <AlertCircle :size="16" class="text-amber-600 mt-0.5 flex-shrink-0" />
+                    <div class="text-sm text-amber-800">
+                      <p class="font-semibold">Dimensions recommandées :</p>
+                      <p>800 x 450 pixels (format 16:9)</p>
+                      <p class="text-xs mt-1">Formats acceptés : JPG, PNG, WebP (max 10MB)</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Aperçu de l'image de fond -->
+                <div v-if="backgroundPreview || cardData.backgroundUrl" class="relative">
+                  <img 
+                    :src="backgroundPreview || cardData.backgroundUrl" 
+                    alt="Fond de carte"
+                    class="w-full h-32 object-cover rounded-lg"
+                  />
+                  <button
+                    @click="removeBackground"
+                    type="button"
+                    class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 shadow-lg transition-colors"
+                  >
+                    <X :size="16" />
+                  </button>
+                </div>
+                
+                <!-- Zone d'upload -->
+                <div 
+                  v-else 
+                  @click="($refs.backgroundInput as HTMLInputElement)?.click()"
+                  class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-violet-400 transition-colors cursor-pointer"
+                >
+                  <Upload :size="32" class="mx-auto text-gray-400 mb-2" />
+                  <p class="text-sm text-gray-600">Cliquez pour télécharger une image</p>
+                </div>
+                
+                <!-- Input file caché pour le fond -->
+                <input 
+                  ref="backgroundInput"
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg, image/webp"
+                  @change="handleBackgroundUpload"
+                  class="hidden"
+                />
+                
+                <!-- Bouton upload -->
+                <button 
+                  type="button"
+                  @click="($refs.backgroundInput as HTMLInputElement)?.click()"
+                  :disabled="uploadingBackground"
+                  class="w-full px-4 py-2 bg-violet-100 text-violet-600 rounded-lg font-medium hover:bg-violet-200 transition-colors disabled:opacity-50"
+                >
+                  {{ uploadingBackground ? 'Chargement...' : (backgroundPreview ? 'Changer l\'image' : 'Choisir une image') }}
+                </button>
               </div>
             </div>
 
@@ -559,6 +646,7 @@ const saveCardSettings = async () => {
 }
 
 onMounted(() => {
+  console.log('LoyaltyCardSection mounted - Card background feature enabled')
   loadCardData()
 })
 </script>
