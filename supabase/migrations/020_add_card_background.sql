@@ -13,12 +13,12 @@ VALUES (
     'card-backgrounds', 
     true, 
     10485760, -- 10MB max pour des images haute qualité
-    ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+    ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
 )
 ON CONFLICT (id) DO UPDATE SET
     public = true,
     file_size_limit = 10485760,
-    allowed_mime_types = ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
 
 -- Politique de sécurité pour le bucket
 -- Permettre à tous de lire les images (bucket public)
