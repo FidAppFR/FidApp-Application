@@ -125,19 +125,25 @@
               />
             </button>
             
-            <!-- Dropdown menu -->
-            <div 
-              v-if="showRewardsDropdown"
-              class="mt-1 space-y-1 pl-6"
+            <!-- Dropdown menu avec animation -->
+            <transition
+              name="slide-fade"
+              @enter="onDropdownEnter"
+              @leave="onDropdownLeave"
             >
+              <div 
+                v-if="showRewardsDropdown"
+                class="mt-1 space-y-1 pl-6 overflow-hidden"
+              >
               <button
                 @click="setActiveSection('welcome-points')"
                 :class="[
-                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm transform',
                   activeSection === 'welcome-points' 
                     ? 'bg-violet-100 text-violet-700 font-medium' 
-                    : 'hover:bg-gray-100 text-gray-600'
+                    : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
                 ]"
+                :style="{ '--item-index': 0 }"
               >
                 <UserPlus :size="14" />
                 <span class="text-xs">Points de bienvenue</span>
@@ -146,11 +152,12 @@
               <button
                 @click="setActiveSection('offers')"
                 :class="[
-                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm transform',
                   activeSection === 'offers' 
                     ? 'bg-violet-100 text-violet-700 font-medium' 
-                    : 'hover:bg-gray-100 text-gray-600'
+                    : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
                 ]"
+                :style="{ '--item-index': 1 }"
               >
                 <Tag :size="14" />
                 <span class="text-xs">Offres</span>
@@ -159,16 +166,18 @@
               <button
                 @click="setActiveSection('bonus')"
                 :class="[
-                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                  'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm transform',
                   activeSection === 'bonus' 
                     ? 'bg-violet-100 text-violet-700 font-medium' 
-                    : 'hover:bg-gray-100 text-gray-600'
+                    : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
                 ]"
+                :style="{ '--item-index': 2 }"
               >
                 <Sparkles :size="14" />
                 <span class="text-xs">Bonus</span>
               </button>
-            </div>
+              </div>
+            </transition>
           </div>
 
           <!-- Menu Profil Société -->
@@ -600,6 +609,22 @@ const setActiveSection = (section: string) => {
   }
 }
 
+const onDropdownEnter = (el: any) => {
+  el.style.height = '0'
+  el.style.opacity = '0'
+  setTimeout(() => {
+    el.style.transition = 'height 0.3s ease, opacity 0.3s ease'
+    el.style.height = el.scrollHeight + 'px'
+    el.style.opacity = '1'
+  })
+}
+
+const onDropdownLeave = (el: any) => {
+  el.style.transition = 'height 0.3s ease, opacity 0.3s ease'
+  el.style.height = '0'
+  el.style.opacity = '0'
+}
+
 const markAsRead = (index: number) => {
   notifications.value.splice(index, 1)
   if (notifications.value.length === 0) {
@@ -881,3 +906,39 @@ onUnmounted(() => {
   }
 })
 </script>
+
+<style scoped>
+/* Animation pour le dropdown */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-fade-enter-from {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+/* Animation douce pour les items du sous-menu */
+.slide-fade-enter-active button {
+  animation: slideIn 0.3s ease forwards;
+  animation-delay: calc(var(--item-index) * 0.05s);
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+</style>
