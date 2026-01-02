@@ -584,13 +584,18 @@ const uploadBackground = async () => {
 }
 
 // Supprimer l'image de fond
-const removeBackground = () => {
+const removeBackground = async () => {
+  if (!confirm('Voulez-vous vraiment supprimer l\'image de fond ?')) return
+  
   backgroundPreview.value = null
   backgroundFile.value = null
   cardData.value.backgroundUrl = null
   if (backgroundInput.value) {
     backgroundInput.value.value = ''
   }
+  
+  // Optionnel : sauvegarder immédiatement la suppression
+  // await saveCardSettings()
 }
 
 // Sauvegarder les modifications
@@ -651,9 +656,13 @@ const saveCardSettings = async () => {
       console.error('Erreur lors de la sauvegarde:', error)
       uploadError.value = 'Erreur lors de la sauvegarde'
     } else {
-      // Recharger les données
+      // Mettre à jour les données locales
       cardData.value.logoUrl = logoUrl
+      cardData.value.backgroundUrl = backgroundUrl
       selectedFile.value = null
+      backgroundFile.value = null
+      
+      // Message de succès
       alert('Carte de fidélité mise à jour avec succès!')
     }
   } catch (error) {

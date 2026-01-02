@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Upload Background</title>
+</head>
+<body>
+    <h1>Test Upload Image de Fond</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="testUpload()">Tester l'upload</button>
+    <button onclick="checkBucket()">Vérifier le bucket</button>
+    <div id="result"></div>
+    <img id="preview" style="max-width: 400px; display: none;">
+    
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        
+        const supabaseUrl = 'https://sdbtjaxyhkicnucktkuj.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYnRqYXh5aGtpY251Y2t0a3VqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDA5OTA0NSwiZXhwIjoyMDc5Njc1MDQ1fQ.yPUPegFnSJEzBKdlKWhF4mfOYZpvImQ1Nm0A5DVz9yM'
+        
+        const supabase = createClient(supabaseUrl, supabaseKey)
+        const resultDiv = document.getElementById('result')
+        
+        window.checkBucket = async function() {
+            try {
+                // Lister les buckets
+                const { data, error } = await supabase.storage.listBuckets()
+                
+                if (error) {
+                    resultDiv.innerHTML = `<h2 style="color: red;">Erreur:</h2><pre>${JSON.stringify(error, null, 2)}</pre>`
+                } else {
+                    const hasBucket = data.some(b => b.name === 'card-backgrounds')
+                    resultDiv.innerHTML = `
+                        <h2>Buckets disponibles:</h2>
+                        <ul>${data.map(b => `<li>${b.name} (${b.public ? 'public' : 'privé'})</li>`).join('')}</ul>
+                        <h3>card-backgrounds: ${hasBucket ? '✅ Existe' : '❌ N\'existe pas'}</h3>
+                    `
+                }
+            } catch (err) {
+                resultDiv.innerHTML = `<h2 style="color: red;">Exception:</h2><pre>${err}</pre>`
+            }
+        }
+        
+        window.testUpload = async function() {
+            const fileInput = document.getElementById('fileInput')
+            const file = fileInput.files[0]
+            
+            if (!file) {
+                alert('Sélectionnez d\'abord un fichier')
+                return
+            }
+            
+            resultDiv.innerHTML = '<p>Upload en cours...</p>'
+            
+            try {
+                // Générer un nom unique
+                const fileName = `test/${Date.now()}_${file.name}`
+                
+                // Uploader
+                const { data, error } = await supabase.storage
+                    .from('card-backgrounds')
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: true
+                    })
+                
+                if (error) {
+                    resultDiv.innerHTML = `<h2 style="color: red;">Erreur upload:</h2><pre>${JSON.stringify(error, null, 2)}</pre>`
+                } else {
+                    // Obtenir l'URL publique
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('card-backgrounds')
+                        .getPublicUrl(fileName)
+                    
+                    resultDiv.innerHTML = `
+                        <h2 style="color: green;">✅ Upload réussi!</h2>
+                        <p>Chemin: ${fileName}</p>
+                        <p>URL publique: <a href="${publicUrl}" target="_blank">${publicUrl}</a></p>
+                    `
+                    
+                    // Afficher l'aperçu
+                    const preview = document.getElementById('preview')
+                    preview.src = publicUrl
+                    preview.style.display = 'block'
+                }
+            } catch (err) {
+                resultDiv.innerHTML = `<h2 style="color: red;">Exception:</h2><pre>${err}</pre>`
+            }
+        }
+    </script>
+</body>
+</html>
