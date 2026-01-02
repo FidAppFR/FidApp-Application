@@ -72,8 +72,14 @@
             </button>
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
-              <component :is="getOfferIcon(offer.type)" :size="24" class="text-white" />
+            <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center overflow-hidden">
+              <img 
+                v-if="offer.image_url" 
+                :src="offer.image_url" 
+                alt="Icon" 
+                class="w-full h-full object-cover"
+              />
+              <component v-else :is="getOfferIcon(offer.type)" :size="24" class="text-white" />
             </div>
             <div>
               <span class="text-white/80 text-xs uppercase tracking-wider">{{ getOfferTypeLabel(offer.type) }}</span>
@@ -218,6 +224,52 @@
             ></textarea>
           </div>
 
+          <!-- Image de l'offre -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Image de l'offre (optionnel)</label>
+            <div class="flex items-center gap-4">
+              <!-- Preview de l'image -->
+              <div class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50">
+                <img 
+                  v-if="imagePreview || offerForm.image_url" 
+                  :src="imagePreview || offerForm.image_url" 
+                  alt="Aperçu" 
+                  class="w-full h-full object-cover"
+                />
+                <Image v-else :size="32" class="text-gray-400" />
+              </div>
+              
+              <!-- Boutons d'upload et suppression -->
+              <div class="flex-1">
+                <input
+                  ref="imageInput"
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/svg+xml"
+                  @change="handleImageSelect"
+                  class="hidden"
+                />
+                <button
+                  type="button"
+                  @click="$refs.imageInput.click()"
+                  class="px-4 py-2 bg-violet-100 text-violet-600 rounded-lg hover:bg-violet-200 transition-colors text-sm"
+                >
+                  <Upload :size="16" class="inline mr-2" />
+                  Choisir une image
+                </button>
+                <button
+                  v-if="imagePreview || offerForm.image_url"
+                  type="button"
+                  @click="removeImage"
+                  class="ml-2 px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors text-sm"
+                >
+                  <X :size="16" class="inline mr-2" />
+                  Supprimer
+                </button>
+                <p class="text-xs text-gray-500 mt-2">JPG, PNG, WebP ou SVG. Max 5MB.</p>
+              </div>
+            </div>
+          </div>
+
           <!-- Valeur selon le type -->
           <div class="grid grid-cols-2 gap-4">
             <div>
@@ -342,7 +394,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { Plus, Gift, Percent, Star, ArrowUp, Trash2, Tag } from 'lucide-vue-next'
+import { Plus, Gift, Percent, Star, ArrowUp, Trash2, Tag, Image, Upload, X } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 
 interface Offer {
@@ -360,12 +412,16 @@ interface Offer {
   max_uses_per_customer?: number
   is_active: boolean
   total_uses: number
+  image_url?: string
 }
 
 const offers = ref<Offer[]>([])
 const showAddOffer = ref(false)
 const editingOffer = ref<Offer | null>(null)
 const savingOffer = ref(false)
+const imageFile = ref<File | null>(null)
+const imagePreview = ref<string>('')
+const uploadingImage = ref(false)
 
 const searchQuery = ref('')
 const filterStatus = ref('all')
@@ -391,7 +447,8 @@ const offerForm = ref<Offer>({
   max_uses: undefined,
   max_uses_per_customer: undefined,
   is_active: true,
-  total_uses: 0
+  total_uses: 0,
+  image_url: ''
 })
 
 const filteredOffers = computed(() => {
@@ -468,15 +525,88 @@ const loadOffers = async () => {
   }
 }
 
+const handleImageSelect = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  
+  if (!file) return
+  
+  // Vérifier la taille du fichier (5MB max)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('L\'image ne doit pas dépasser 5MB')
+    return
+  }
+  
+  imageFile.value = file
+  
+  // Créer un aperçu de l'image
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    imagePreview.value = e.target?.result as string
+  }
+  reader.readAsDataURL(file)
+}
+
+const removeImage = () => {
+  imageFile.value = null
+  imagePreview.value = ''
+  offerForm.value.image_url = ''
+}
+
+const uploadImage = async (): Promise<string | null> => {
+  if (!imageFile.value) return null
+  
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return null
+    
+    const fileName = `${user.id}/${Date.now()}_${imageFile.value.name}`
+    
+    const { data, error } = await supabase.storage
+      .from('offer-images')
+      .upload(fileName, imageFile.value, {
+        cacheControl: '3600',
+        upsert: false
+      })
+    
+    if (error) {
+      console.error('Erreur upload image:', error)
+      return null
+    }
+    
+    // Obtenir l'URL publique
+    const { data: { publicUrl } } = supabase.storage
+      .from('offer-images')
+      .getPublicUrl(fileName)
+    
+    return publicUrl
+  } catch (error) {
+    console.error('Erreur upload:', error)
+    return null
+  }
+}
+
 const saveOffer = async () => {
   savingOffer.value = true
   try {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
+    // Upload l'image si nécessaire
+    let imageUrl = offerForm.value.image_url
+    if (imageFile.value) {
+      uploadingImage.value = true
+      const uploadedUrl = await uploadImage()
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl
+      }
+      uploadingImage.value = false
+    }
+
     const offerData = {
       company_id: user.id,
-      ...offerForm.value
+      ...offerForm.value,
+      image_url: imageUrl
     }
 
     if (editingOffer.value) {
@@ -509,6 +639,8 @@ const saveOffer = async () => {
 const editOffer = (offer: Offer) => {
   editingOffer.value = offer
   offerForm.value = { ...offer }
+  imagePreview.value = offer.image_url || ''
+  imageFile.value = null
 }
 
 const duplicateOffer = async (offer: Offer) => {
@@ -555,6 +687,8 @@ const deleteOffer = async (offer: Offer) => {
 const closeOfferModal = () => {
   showAddOffer.value = false
   editingOffer.value = null
+  imageFile.value = null
+  imagePreview.value = ''
   offerForm.value = {
     name: '',
     description: '',
@@ -568,7 +702,8 @@ const closeOfferModal = () => {
     max_uses: undefined,
     max_uses_per_customer: undefined,
     is_active: true,
-    total_uses: 0
+    total_uses: 0,
+    image_url: ''
   }
 }
 
