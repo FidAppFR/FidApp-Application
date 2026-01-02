@@ -259,6 +259,100 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Type d'opération
               </label>
+              <div class="grid grid-cols-3 gap-2">
+                <button
+                  @click="selectOperationType('product')"
+                  :class="[
+                    'py-2 px-3 rounded-lg font-medium transition-colors text-sm',
+                    operationType === 'product'
+                      ? 'bg-violet-100 text-violet-700 border-2 border-violet-300'
+                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                  ]"
+                >
+                  <ShoppingCart :size="16" class="inline mr-1" />
+                  Achat Produit
+                </button>
+                <button
+                  @click="selectOperationType('admin')"
+                  :class="[
+                    'py-2 px-3 rounded-lg font-medium transition-colors text-sm',
+                    operationType === 'admin'
+                      ? 'bg-blue-100 text-blue-700 border-2 border-blue-300'
+                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                  ]"
+                >
+                  <Settings :size="16" class="inline mr-1" />
+                  Modif Admin
+                </button>
+                <button
+                  @click="selectOperationType('bonus')"
+                  :class="[
+                    'py-2 px-3 rounded-lg font-medium transition-colors text-sm',
+                    operationType === 'bonus'
+                      ? 'bg-green-100 text-green-700 border-2 border-green-300'
+                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                  ]"
+                >
+                  <Gift :size="16" class="inline mr-1" />
+                  Bonus
+                </button>
+              </div>
+            </div>
+
+            <!-- Section Achat Produit -->
+            <div v-if="operationType === 'product'" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Sélectionner un produit
+                </label>
+                <div v-if="loadingProducts" class="text-center py-4">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600 mx-auto"></div>
+                </div>
+                <div v-else-if="availableProducts.length === 0" class="text-center py-4 text-gray-500">
+                  Aucun produit disponible
+                </div>
+                <div v-else class="max-h-48 overflow-y-auto border border-gray-200 rounded-lg">
+                  <button
+                    v-for="product in availableProducts"
+                    :key="product.id"
+                    @click="selectProduct(product)"
+                    :class="[
+                      'w-full text-left px-3 py-2 hover:bg-violet-50 transition-colors border-b last:border-b-0',
+                      selectedProduct?.id === product.id ? 'bg-violet-50' : ''
+                    ]"
+                  >
+                    <div class="flex justify-between items-center">
+                      <div>
+                        <p class="font-medium text-gray-900">{{ product.name }}</p>
+                        <p class="text-xs text-gray-500">{{ product.description }}</p>
+                      </div>
+                      <div class="text-right">
+                        <p class="font-bold text-violet-600">{{ product.points }} pts</p>
+                        <p v-if="product.price" class="text-xs text-gray-500">{{ product.price }}€</p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              
+              <div v-if="selectedProduct">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Quantité
+                </label>
+                <input
+                  v-model.number="productQuantity"
+                  type="number"
+                  min="1"
+                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                />
+                <p class="text-sm text-gray-500 mt-1">
+                  Total: {{ (selectedProduct.points * productQuantity) }} points
+                </p>
+              </div>
+            </div>
+
+            <!-- Section Modif Admin -->
+            <div v-if="operationType === 'admin'" class="space-y-4">
               <div class="grid grid-cols-2 gap-2">
                 <button
                   @click="pointsOperation = 'add'"
@@ -285,24 +379,42 @@
                   Retirer
                 </button>
               </div>
+              
+              <!-- Nombre de points pour admin -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre de points
+                </label>
+                <input
+                  v-model.number="pointsAmount"
+                  type="number"
+                  min="0"
+                  :max="pointsOperation === 'remove' ? selectedCustomer.points : undefined"
+                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                  placeholder="0"
+                />
+                <p v-if="pointsOperation === 'remove'" class="text-xs text-gray-500 mt-1">
+                  Maximum: {{ selectedCustomer.points }} points
+                </p>
+              </div>
             </div>
 
-            <!-- Nombre de points -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Nombre de points
-              </label>
-              <input
-                v-model.number="pointsAmount"
-                type="number"
-                min="0"
-                :max="pointsOperation === 'remove' ? selectedCustomer.points : undefined"
-                class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
-                placeholder="0"
-              />
-              <p v-if="pointsOperation === 'remove'" class="text-xs text-gray-500 mt-1">
-                Maximum: {{ selectedCustomer.points }} points
-              </p>
+            <!-- Section Bonus -->
+            <div v-if="operationType === 'bonus'" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Type de bonus
+                </label>
+                <select
+                  v-model="bonusType"
+                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                >
+                  <option value="welcome">Bonus de bienvenue (50 pts)</option>
+                  <option value="birthday">Bonus anniversaire (100 pts)</option>
+                  <option value="referral">Parrainage (75 pts)</option>
+                  <option value="special">Événement spécial (25 pts)</option>
+                </select>
+              </div>
             </div>
 
             <!-- Raison (optionnel) -->
@@ -323,10 +435,7 @@
               <p class="text-sm text-violet-700">
                 <span class="font-medium">Nouveau solde:</span>
                 <span class="font-bold ml-2">
-                  {{ pointsOperation === 'add' 
-                    ? selectedCustomer.points + (pointsAmount || 0)
-                    : selectedCustomer.points - (pointsAmount || 0) 
-                  }} points
+                  {{ calculateNewBalance() }} points
                 </span>
               </p>
             </div>
@@ -745,8 +854,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { Search, Filter, Download, UserPlus, Star, Eye, Mail, MoreVertical, Settings, Trash2, Plus, Minus, Edit2, Copy, Check, Calendar, Phone, MapPin, Shield, X, User, TrendingUp } from 'lucide-vue-next'
+import { Search, Filter, Download, UserPlus, Star, Eye, Mail, MoreVertical, Settings, Trash2, Plus, Minus, Edit2, Copy, Check, Calendar, Phone, MapPin, Shield, X, User, TrendingUp, ShoppingCart, Gift } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
+import { getActiveProducts, purchaseProduct, adjustCustomerPoints } from '@/api/productsEndpoint'
+import { recordScan } from '@/api/scanEndpoint'
 
 interface Customer {
   id: string
@@ -776,10 +887,20 @@ const dropdownPosition = ref<{ top: number; left: number } | null>(null)
 const buttonRefs = ref<Record<string, HTMLElement>>({})
 
 // Variables pour la gestion des points
+const operationType = ref<'product' | 'admin' | 'bonus'>('admin')
 const pointsOperation = ref<'add' | 'remove'>('add')
 const pointsAmount = ref(0)
 const pointsReason = ref('')
 const updatingPoints = ref(false)
+
+// Variables pour les produits
+const availableProducts = ref<any[]>([])
+const selectedProduct = ref<any>(null)
+const productQuantity = ref(1)
+const loadingProducts = ref(false)
+
+// Variables pour les bonus
+const bonusType = ref('welcome')
 
 // Variable pour la suppression
 const deleting = ref(false)
@@ -1072,105 +1193,170 @@ const sendEmail = (customer: Customer) => {
 }
 
 // Ouvrir la modal de gestion des points
-const openPointsModal = (customer: Customer | null) => {
+const openPointsModal = async (customer: Customer | null) => {
   if (!customer) return
   selectedCustomer.value = customer
   showPointsModal.value = true
   activeDropdown.value = null
   dropdownPosition.value = null
+  operationType.value = 'admin'
   pointsOperation.value = 'add'
   pointsAmount.value = 0
   pointsReason.value = ''
+  selectedProduct.value = null
+  productQuantity.value = 1
+  bonusType.value = 'welcome'
+  
+  // Charger les produits disponibles
+  await loadProducts()
 }
 
 // Fermer la modal de gestion des points
 const closePointsModal = () => {
   showPointsModal.value = false
   selectedCustomer.value = null
+  operationType.value = 'admin'
+  pointsOperation.value = 'add'
   pointsAmount.value = 0
   pointsReason.value = ''
+  selectedProduct.value = null
+  productQuantity.value = 1
+  bonusType.value = 'welcome'
+}
+
+// Sélectionner le type d'opération
+const selectOperationType = (type: 'product' | 'admin' | 'bonus') => {
+  operationType.value = type
+  selectedProduct.value = null
+  pointsAmount.value = 0
+}
+
+// Charger les produits disponibles
+const loadProducts = async () => {
+  loadingProducts.value = true
+  try {
+    availableProducts.value = await getActiveProducts()
+  } catch (error) {
+    console.error('Erreur chargement produits:', error)
+  } finally {
+    loadingProducts.value = false
+  }
+}
+
+// Sélectionner un produit
+const selectProduct = (product: any) => {
+  selectedProduct.value = product
+  productQuantity.value = 1
+}
+
+// Calculer le nouveau solde
+const calculateNewBalance = () => {
+  if (!selectedCustomer.value) return 0
+  
+  if (operationType.value === 'product' && selectedProduct.value) {
+    return Math.max(0, selectedCustomer.value.points - (selectedProduct.value.points * productQuantity.value))
+  }
+  
+  if (operationType.value === 'admin') {
+    return pointsOperation.value === 'add'
+      ? selectedCustomer.value.points + (pointsAmount.value || 0)
+      : Math.max(0, selectedCustomer.value.points - (pointsAmount.value || 0))
+  }
+  
+  if (operationType.value === 'bonus') {
+    const bonusPoints = {
+      welcome: 50,
+      birthday: 100,
+      referral: 75,
+      special: 25
+    }
+    return selectedCustomer.value.points + (bonusPoints[bonusType.value as keyof typeof bonusPoints] || 0)
+  }
+  
+  return selectedCustomer.value.points
 }
 
 // Mettre à jour les points
 const updatePoints = async () => {
-  if (!selectedCustomer.value || !pointsAmount.value) return
+  if (!selectedCustomer.value) return
+  
+  // Vérifier selon le type d'opération
+  if (operationType.value === 'product' && !selectedProduct.value) return
+  if (operationType.value === 'admin' && !pointsAmount.value) return
   
   updatingPoints.value = true
   
   try {
-    const oldPoints = selectedCustomer.value.points
-    const newPoints = pointsOperation.value === 'add' 
-      ? selectedCustomer.value.points + pointsAmount.value
-      : Math.max(0, selectedCustomer.value.points - pointsAmount.value)
+    let result = { success: false, message: '', newPoints: 0 }
     
-    // Obtenir l'ID de l'entreprise
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) throw new Error('Utilisateur non connecté')
-    
-    const { data: userData } = await supabase
-      .from('users')
-      .select('id')
-      .eq('auth_id', user.id)
-      .single()
-    
-    if (!userData) throw new Error('Données entreprise non trouvées')
-    
-    // Mettre à jour les points
-    const { error: updateError } = await supabase
-      .from('customers')
-      .update({ points: newPoints })
-      .eq('id', selectedCustomer.value.id)
-    
-    if (updateError) {
-      console.error('Erreur lors de la mise à jour des points:', updateError)
-      alert('Erreur lors de la mise à jour des points')
-      return
-    }
-    
-    // Créer l'enregistrement dans l'historique
-    const pointsChange = newPoints - oldPoints
-    const transactionType = pointsOperation.value === 'add' ? 'admin_add' : 'admin_remove'
-    const description = pointsReason.value || 
-      (pointsOperation.value === 'add' ? 'Points ajoutés par l\'administrateur' : 'Points retirés par l\'administrateur')
-    
-    const { error: historyError } = await supabase
-      .from('points_history')
-      .insert({
+    // Traiter selon le type d'opération
+    if (operationType.value === 'product') {
+      // Achat de produit
+      result = await purchaseProduct({
         customer_id: selectedCustomer.value.id,
-        company_id: userData.id,
-        points_amount: pointsChange,
-        points_before: oldPoints,
-        points_after: newPoints,
-        transaction_type: transactionType,
-        description: description,
-        created_by: userData.id
+        product_id: selectedProduct.value.id,
+        quantity: productQuantity.value
       })
-    
-    if (historyError) {
-      console.error('Erreur lors de l\'enregistrement de l\'historique:', historyError)
-      // Ne pas bloquer la mise à jour même si l'historique échoue
+      
+      // Enregistrer le scan
+      await recordScan({
+        customerId: selectedCustomer.value.id,
+        scanType: 'points_add',
+        pointsAdded: -(selectedProduct.value.points * productQuantity.value),
+        euroAmount: selectedProduct.value.price * productQuantity.value,
+        location: `Achat: ${selectedProduct.value.name}`
+      })
+      
+    } else if (operationType.value === 'admin') {
+      // Modification admin
+      const points = pointsOperation.value === 'add' ? pointsAmount.value : -pointsAmount.value
+      result = await adjustCustomerPoints(
+        selectedCustomer.value.id,
+        points,
+        pointsReason.value || 'Ajustement administrateur'
+      )
+      
+    } else if (operationType.value === 'bonus') {
+      // Bonus
+      const bonusPoints = {
+        welcome: 50,
+        birthday: 100,
+        referral: 75,
+        special: 25
+      }
+      const points = bonusPoints[bonusType.value as keyof typeof bonusPoints] || 0
+      const bonusLabels = {
+        welcome: 'Bonus de bienvenue',
+        birthday: 'Bonus anniversaire',
+        referral: 'Bonus parrainage',
+        special: 'Événement spécial'
+      }
+      
+      result = await adjustCustomerPoints(
+        selectedCustomer.value.id,
+        points,
+        bonusLabels[bonusType.value as keyof typeof bonusLabels] || 'Bonus'
+      )
     }
     
-    // Mettre à jour localement
-    const customerIndex = customers.value.findIndex(c => c.id === selectedCustomer.value!.id)
-    if (customerIndex !== -1) {
-      customers.value[customerIndex].points = newPoints
+    if (result.success) {
+      // Mettre à jour l'affichage
+      selectedCustomer.value.points = result.newPoints || calculateNewBalance()
+      
+      // Mettre à jour dans la liste
+      const index = customers.value.findIndex(c => c.id === selectedCustomer.value?.id)
+      if (index !== -1) {
+        customers.value[index].points = selectedCustomer.value.points
+      }
+      
+      // Fermer la modal
+      closePointsModal()
+      
+      // Message de succès
+      alert(result.message || 'Points mis à jour avec succès')
+    } else {
+      alert(result.message || 'Erreur lors de la mise à jour')
     }
-    
-    // Recalculer les statistiques
-    calculateStats(customers.value)
-    
-    // Fermer la modal
-    closePointsModal()
-    
-    // Si la modal de détail est ouverte, mettre à jour les statistiques
-    if (showDetailModal.value && customerDetails.value) {
-      customerDetails.value.points = newPoints
-      await calculatePointsTotals(selectedCustomer.value.id, userData.id)
-    }
-    
-    // Message de succès (optionnel)
-    console.log(`Points mis à jour avec succès. Nouveau solde: ${newPoints}`)
   } catch (error) {
     console.error('Erreur:', error)
     alert('Une erreur est survenue')
