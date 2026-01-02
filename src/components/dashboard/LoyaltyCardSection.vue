@@ -256,12 +256,14 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { Star, QrCode, Upload, Building2, Trash2, AlertCircle } from 'lucide-vue-next'
+import { Star, QrCode, Upload, Building2, Trash2, AlertCircle, X } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 
 const cardData = ref({
   companyName: 'FidApp',
   gradient: 'from-violet-600 to-pink-600',
+  themeType: 'gradient' as 'gradient' | 'custom',
+  backgroundUrl: null as string | null,
   welcomeMessage: 'Merci de votre fidélité !',
   showPoints: true,
   showQR: true,
@@ -270,10 +272,14 @@ const cardData = ref({
 })
 
 const fileInput = ref<HTMLInputElement>()
+const backgroundInput = ref<HTMLInputElement>()
 const logoPreview = ref<string | null>(null)
+const backgroundPreview = ref<string | null>(null)
 const uploadingLogo = ref(false)
+const uploadingBackground = ref(false)
 const uploadError = ref<string | null>(null)
 const selectedFile = ref<File | null>(null)
+const backgroundFile = ref<File | null>(null)
 const saving = ref(false)
 const loading = ref(true)
 
@@ -290,14 +296,18 @@ const loadCardData = async () => {
 
     const { data, error } = await supabase
       .from('users')
-      .select('company, logo_url, card_settings')
+      .select('company, logo_url, card_settings, card_theme, card_background_url, card_gradient')
       .eq('auth_id', user.id)
       .single()
 
     if (!error && data) {
       cardData.value.companyName = data.company || 'FidApp'
       cardData.value.logoUrl = data.logo_url || null
+      cardData.value.themeType = data.card_theme || 'gradient'
+      cardData.value.backgroundUrl = data.card_background_url || null
+      cardData.value.gradient = data.card_gradient || 'from-violet-600 to-pink-600'
       logoPreview.value = data.logo_url || null
+      backgroundPreview.value = data.card_background_url || null
       
       // Charger les paramètres de carte si disponibles
       if (data.card_settings) {
@@ -398,6 +408,85 @@ const removeLogo = () => {
   }
 }
 
+// Gérer l'upload de l'image de fond
+const handleBackgroundUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  
+  if (!file) return
+  
+  // Vérifier la taille du fichier (max 10MB pour une image haute qualité)
+  if (file.size > 10 * 1024 * 1024) {
+    uploadError.value = 'L\'image ne doit pas dépasser 10MB'
+    return
+  }
+  
+  // Vérifier le type de fichier
+  if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
+    uploadError.value = 'Format non supporté. Utilisez JPG, PNG ou WebP'
+    return
+  }
+  
+  uploadError.value = null
+  backgroundFile.value = file
+  
+  // Créer un aperçu
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    backgroundPreview.value = e.target?.result as string
+  }
+  reader.readAsDataURL(file)
+}
+
+// Uploader l'image de fond vers Supabase
+const uploadBackground = async () => {
+  if (!backgroundFile.value) return null
+  
+  try {
+    uploadingBackground.value = true
+    
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return null
+    
+    const fileName = `${user.id}/background_${Date.now()}_${backgroundFile.value.name}`
+    
+    const { data, error } = await supabase.storage
+      .from('card-backgrounds')
+      .upload(fileName, backgroundFile.value, {
+        cacheControl: '3600',
+        upsert: true
+      })
+    
+    if (error) {
+      uploadError.value = 'Erreur lors de l\'upload: ' + error.message
+      return null
+    }
+    
+    // Récupérer l'URL publique
+    const { data: { publicUrl } } = supabase.storage
+      .from('card-backgrounds')
+      .getPublicUrl(fileName)
+    
+    return publicUrl
+  } catch (error) {
+    console.error('Erreur lors de l\'upload:', error)
+    uploadError.value = 'Erreur lors de l\'upload de l\'image de fond'
+    return null
+  } finally {
+    uploadingBackground.value = false
+  }
+}
+
+// Supprimer l'image de fond
+const removeBackground = () => {
+  backgroundPreview.value = null
+  backgroundFile.value = null
+  cardData.value.backgroundUrl = null
+  if (backgroundInput.value) {
+    backgroundInput.value.value = ''
+  }
+}
+
 // Sauvegarder les modifications
 const saveCardSettings = async () => {
   saving.value = true
@@ -411,12 +500,21 @@ const saveCardSettings = async () => {
     }
     
     let logoUrl = cardData.value.logoUrl
+    let backgroundUrl = cardData.value.backgroundUrl
     
     // Uploader le nouveau logo si nécessaire
     if (selectedFile.value) {
       const uploadedUrl = await uploadLogo()
       if (uploadedUrl) {
         logoUrl = uploadedUrl
+      }
+    }
+    
+    // Uploader la nouvelle image de fond si nécessaire
+    if (backgroundFile.value) {
+      const uploadedUrl = await uploadBackground()
+      if (uploadedUrl) {
+        backgroundUrl = uploadedUrl
       }
     }
     
@@ -435,6 +533,9 @@ const saveCardSettings = async () => {
       .update({
         company: cardData.value.companyName,
         logo_url: logoUrl,
+        card_theme: cardData.value.themeType,
+        card_background_url: backgroundUrl,
+        card_gradient: cardData.value.gradient,
         card_settings,
         updated_at: new Date().toISOString()
       })
