@@ -74,7 +74,7 @@
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              Application automatique
+              Attribution des points fidélité
             </label>
             <select
               v-model="bonusSettings.birthday_auto_apply"
