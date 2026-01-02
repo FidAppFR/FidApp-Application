@@ -87,6 +87,20 @@
             <span class="text-sm">Tableau de bord</span>
           </button>
 
+          <!-- Menu Nos Produits -->
+          <button
+            @click="activeSection = 'products'"
+            :class="[
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+              activeSection === 'products' 
+                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
+                : 'hover:bg-gray-100 text-gray-700'
+            ]"
+          >
+            <Package :size="16" />
+            <span class="text-sm">Nos Produits</span>
+          </button>
+
           <!-- Menu Récompenses -->
           <button
             @click="activeSection = 'rewards'"
@@ -336,6 +350,11 @@
           <ScanHistory :limit="10" />
         </div>
 
+        <!-- Section Nos Produits -->
+        <div v-if="activeSection === 'products'" class="space-y-6">
+          <ProductsSection />
+        </div>
+
         <!-- Section Récompenses -->
         <div v-if="activeSection === 'rewards'" class="space-y-6">
           <RewardsSection />
@@ -393,6 +412,7 @@ import {
 } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { logoutOverlay } from '@/services/logoutOverlay'
+import ProductsSection from '@/components/dashboard/ProductsSection.vue'
 import RewardsSection from '@/components/dashboard/RewardsSection.vue'
 import CompanyProfileSection from '@/components/dashboard/CompanyProfileSection.vue'
 import LoyaltyCardSection from '@/components/dashboard/LoyaltyCardSection.vue'
