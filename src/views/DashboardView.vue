@@ -71,7 +71,7 @@
     <!-- Layout avec sidebar -->
     <div class="flex pt-16">
       <!-- Sidebar -->
-      <aside class="fixed left-0 top-16 bottom-0 w-52 bg-white border-r border-gray-200 overflow-y-auto">
+      <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-gray-200 overflow-y-auto">
         <nav class="p-3 space-y-1">
           <!-- Menu Dashboard -->
           <button
@@ -236,7 +236,7 @@
       </aside>
 
       <!-- Contenu principal -->
-      <main class="flex-1 ml-52 p-6">
+      <main class="flex-1 ml-64 p-6">
         <!-- Section Dashboard -->
         <div v-if="activeSection === 'dashboard'" class="space-y-6">
           <div>
