@@ -172,8 +172,18 @@
     </div>
 
     <!-- Modal pour créer/éditer une offre -->
-    <div v-if="showAddOffer || editingOffer" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <transition name="modal">
+      <div 
+        v-if="showAddOffer || editingOffer" 
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+        @click="closeOfferModal"
+      >
+        <transition name="modal-content">
+          <div 
+            v-if="showAddOffer || editingOffer"
+            class="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            @click.stop
+          >
         <h3 class="text-xl font-bold text-gray-900 mb-6">
           {{ editingOffer ? 'Modifier l\'offre' : 'Créer une nouvelle offre' }}
         </h3>
@@ -387,8 +397,10 @@
             Annuler
           </button>
         </div>
+          </div>
+        </transition>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -719,3 +731,33 @@ onMounted(() => {
   loadOffers()
 })
 </script>
+
+<style scoped>
+/* Animation pour le modal overlay */
+.modal-enter-active, .modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-enter-from, .modal-leave-to {
+  opacity: 0;
+}
+
+/* Animation pour le contenu du modal */
+.modal-content-enter-active {
+  transition: all 0.3s ease;
+}
+
+.modal-content-leave-active {
+  transition: all 0.2s ease;
+}
+
+.modal-content-enter-from {
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+.modal-content-leave-to {
+  transform: scale(0.9);
+  opacity: 0;
+}
+</style>
