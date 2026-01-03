@@ -98,6 +98,17 @@
         </div>
       </div>
 
+      <!-- Section QR Code de fidélité -->
+      <div v-if="(isLoggedIn && !isOwner && customerLoyaltyCode) || (isOwner && customerLoyaltyCode)" class="mb-8">
+        <CustomerQRCode
+          :loyalty-code="customerLoyaltyCode"
+          :customer-id="customerId"
+          :company-id="companyId"
+          :customer-name="customerName"
+          :company-name="companyData.name"
+        />
+      </div>
+
       <!-- Section Apple Wallet -->
       <div v-if="isLoggedIn && !isOwner" class="bg-white rounded-2xl shadow-lg p-6 mb-8">
         <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
@@ -442,6 +453,7 @@ import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settin
 import { supabase } from '@/services/supabase'
 import { recordScan } from '@/api/scanEndpoint'
 import AppleWalletButton from '@/components/ui/AppleWalletButton.vue'
+import CustomerQRCode from '@/components/CustomerQRCode.vue'
 
 const router = useRouter()
 
@@ -498,6 +510,7 @@ const customerData = ref<any>(null)
 const customerPoints = ref(0)
 const customerName = ref('')
 const memberSince = ref('')
+const customerLoyaltyCode = ref('')
 
 // Données du profil client pour le modal
 const profileData = ref({
@@ -575,12 +588,13 @@ const loadData = async () => {
       // Rafraîchir les points depuis la base
       const { data: freshCustomer } = await supabase
         .from('customers')
-        .select('points, created_at')
+        .select('points, created_at, loyalty_code')
         .eq('id', session.id)
         .single()
       
       if (freshCustomer) {
         customerPoints.value = freshCustomer.points
+        customerLoyaltyCode.value = freshCustomer.loyalty_code || ''
         const createdDate = new Date(freshCustomer.created_at)
         memberSince.value = createdDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
       }

@@ -170,6 +170,20 @@
             <span class="text-sm">Vos Fidèles</span>
           </button>
 
+          <!-- Menu Recherche Client -->
+          <button
+            @click="navigateToSection('customer-lookup')"
+            :class="[
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+              activeSection === 'customer-lookup' 
+                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
+                : 'hover:bg-gray-100 text-gray-700'
+            ]"
+          >
+            <Search :size="16" />
+            <span class="text-sm">Recherche Client</span>
+          </button>
+
           <!-- Menu Objectifs -->
           <button
             @click="navigateToSection('milestones')"
@@ -508,6 +522,11 @@
           <CustomersSection />
         </div>
 
+        <!-- Section Recherche Client -->
+        <div v-if="activeSection === 'customer-lookup'" class="space-y-6">
+          <CustomerLookup />
+        </div>
+
         <!-- Section Votre Plan -->
         <div v-if="activeSection === 'plan'" class="space-y-6">
           <PlanSection 
@@ -552,7 +571,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { 
   LayoutDashboard, Gift, Building2, CreditCard, Users, Crown,
   Settings, HelpCircle, LogOut, Star, TrendingUp, Coffee, Percent, Bell, QrCode, Package, ShoppingBag,
-  ChevronDown, UserPlus, Tag, Sparkles, Archive, Trophy, Target
+  ChevronDown, UserPlus, Tag, Sparkles, Archive, Trophy, Target, Search
 } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { logoutOverlay } from '@/services/logoutOverlay'
@@ -574,6 +593,7 @@ import BonusSection from '@/components/dashboard/BonusSection.vue'
 import OldRewardsManager from '@/components/dashboard/OldRewardsManager.vue'
 import NotificationCenter from '@/components/NotificationCenter.vue'
 import MilestonesSection from '@/components/dashboard/MilestonesSection.vue'
+import CustomerLookup from '@/components/dashboard/CustomerLookup.vue'
 
 const router = useRouter()
 const route = useRoute()
