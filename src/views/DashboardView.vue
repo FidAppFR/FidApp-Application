@@ -360,6 +360,83 @@
             </div>
           </div>
 
+          <!-- Section Objectifs en cours -->
+          <div class="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-6 border border-violet-200">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <Trophy :size="20" class="text-violet-600" />
+                Objectifs en cours
+              </h3>
+              <button 
+                @click="navigateToSection('milestones')"
+                class="text-sm text-violet-600 hover:text-violet-700 font-medium"
+              >
+                Voir tous →
+              </button>
+            </div>
+            
+            <div v-if="loadingMilestones" class="text-center py-4">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600 mx-auto"></div>
+            </div>
+            
+            <div v-else-if="activeMilestones.length === 0" class="text-center py-8">
+              <Target :size="32" class="mx-auto text-gray-300 mb-3" />
+              <p class="text-sm text-gray-500">Aucun objectif défini</p>
+              <button 
+                @click="navigateToSection('milestones')"
+                class="mt-3 px-4 py-2 bg-violet-600 text-white text-sm rounded-lg hover:bg-violet-700 transition-colors"
+              >
+                Créer un objectif
+              </button>
+            </div>
+            
+            <div v-else class="space-y-3">
+              <div 
+                v-for="milestone in activeMilestones.slice(0, 3)" 
+                :key="milestone.id"
+                class="bg-white rounded-lg p-4 border border-gray-200"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="font-semibold text-gray-900">{{ milestone.name }}</h4>
+                  <span :class="[
+                    'px-2 py-0.5 rounded-full text-xs font-medium',
+                    getMilestoneTypeColor(milestone.type)
+                  ]">
+                    {{ getMilestoneTypeLabel(milestone.type) }}
+                  </span>
+                </div>
+                
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="text-gray-600">Progression</span>
+                    <span class="font-bold text-gray-900">
+                      {{ milestone.current_value }} / {{ milestone.target_value }}
+                    </span>
+                  </div>
+                  
+                  <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div 
+                      :class="[
+                        'h-full transition-all duration-500',
+                        getMilestoneProgressColor(milestone.current_value / milestone.target_value * 100)
+                      ]"
+                      :style="{ width: Math.min(100, (milestone.current_value / milestone.target_value * 100)) + '%' }"
+                    ></div>
+                  </div>
+                  
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs text-gray-500">
+                      {{ Math.round((milestone.current_value / milestone.target_value) * 100) }}% complété
+                    </span>
+                    <span v-if="milestone.reward_description" class="text-xs text-violet-600 font-medium">
+                      {{ milestone.reward_description }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Graphiques -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Graphique des scans -->
@@ -475,7 +552,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { 
   LayoutDashboard, Gift, Building2, CreditCard, Users, Crown,
   Settings, HelpCircle, LogOut, Star, TrendingUp, Coffee, Percent, Bell, QrCode, Package, ShoppingBag,
-  ChevronDown, UserPlus, Tag, Sparkles, Archive, Trophy
+  ChevronDown, UserPlus, Tag, Sparkles, Archive, Trophy, Target
 } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { logoutOverlay } from '@/services/logoutOverlay'
@@ -532,6 +609,19 @@ const userData = ref<{
 
 // Récompenses populaires
 const popularRewards = ref<PopularReward[]>([])
+
+// Milestones actifs
+interface Milestone {
+  id: string
+  name: string
+  type: string
+  target_value: number
+  current_value: number
+  reward_description: string | null
+}
+
+const activeMilestones = ref<Milestone[]>([])
+const loadingMilestones = ref(false)
 
 // Intervalle de rafraîchissement
 let refreshInterval: number | null = null
@@ -622,9 +712,10 @@ const loadUserData = async () => {
   if (data) {
     userData.value = data
     
-    // Charger le nombre de clients fidèles et les récompenses populaires
+    // Charger le nombre de clients fidèles, les récompenses populaires et les objectifs
     await loadCustomerStats(data.id)
     await loadPopularRewards(data.id)
+    await loadActiveMilestones(data.id)
   }
 }
 
@@ -718,6 +809,65 @@ const loadCustomerStats = async (companyId: string) => {
   } catch (error) {
     console.error('Erreur lors du chargement des statistiques:', error)
   }
+}
+
+// Charger les objectifs actifs
+const loadActiveMilestones = async (companyId: string) => {
+  loadingMilestones.value = true
+  try {
+    const { data, error } = await supabase
+      .from('company_milestones')
+      .select('id, name, type, target_value, current_value, reward_description')
+      .eq('company_id', companyId)
+      .eq('is_active', true)
+      .eq('is_achieved', false)
+      .order('created_at', { ascending: false })
+      .limit(3)
+
+    if (!error && data) {
+      activeMilestones.value = data
+    }
+  } catch (error) {
+    console.error('Erreur chargement milestones:', error)
+    activeMilestones.value = []
+  } finally {
+    loadingMilestones.value = false
+  }
+}
+
+// Méthodes pour les milestones
+const getMilestoneTypeLabel = (type: string) => {
+  const labels: Record<string, string> = {
+    customer_count: 'Clients',
+    points_distributed: 'Points',
+    rewards_redeemed: 'Récompenses',
+    monthly_revenue: 'Revenu',
+    daily_scans: 'Scans/jour',
+    weekly_active: 'Actifs/sem',
+    custom: 'Personnalisé'
+  }
+  return labels[type] || type
+}
+
+const getMilestoneTypeColor = (type: string) => {
+  const colors: Record<string, string> = {
+    customer_count: 'bg-green-100 text-green-700',
+    points_distributed: 'bg-blue-100 text-blue-700',
+    rewards_redeemed: 'bg-pink-100 text-pink-700',
+    monthly_revenue: 'bg-amber-100 text-amber-700',
+    daily_scans: 'bg-purple-100 text-purple-700',
+    weekly_active: 'bg-indigo-100 text-indigo-700',
+    custom: 'bg-gray-100 text-gray-700'
+  }
+  return colors[type] || 'bg-gray-100 text-gray-700'
+}
+
+const getMilestoneProgressColor = (percentage: number) => {
+  if (percentage >= 100) return 'bg-green-500'
+  if (percentage >= 75) return 'bg-blue-500'
+  if (percentage >= 50) return 'bg-yellow-500'
+  if (percentage >= 25) return 'bg-orange-500'
+  return 'bg-red-500'
 }
 
 // Charger les récompenses populaires
@@ -839,6 +989,7 @@ onMounted(() => {
     if (userId) {
       loadCustomerStats(userId)
       loadPopularRewards(userId)
+      loadActiveMilestones(userId)
     }
   }, 30000) as unknown as number
 })
