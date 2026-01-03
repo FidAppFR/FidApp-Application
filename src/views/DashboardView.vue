@@ -75,7 +75,7 @@
         <nav class="p-3 space-y-1">
           <!-- Menu Dashboard -->
           <button
-            @click="activeSection = 'dashboard'"
+            @click="navigateToSection('dashboard')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'dashboard' 
@@ -89,7 +89,7 @@
 
           <!-- Menu Nos Produits -->
           <button
-            @click="activeSection = 'products'"
+            @click="navigateToSection('products')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'products' 
@@ -182,7 +182,7 @@
 
           <!-- Menu Profil Société -->
           <button
-            @click="activeSection = 'company'"
+            @click="navigateToSection('company')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'company' 
@@ -196,7 +196,7 @@
 
           <!-- Menu Votre Carte -->
           <button
-            @click="activeSection = 'card'"
+            @click="navigateToSection('card')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'card' 
@@ -210,7 +210,7 @@
 
           <!-- Menu Vos Fidèles -->
           <button
-            @click="activeSection = 'customers'"
+            @click="navigateToSection('customers')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'customers' 
@@ -224,7 +224,7 @@
 
           <!-- Menu QR Code -->
           <button
-            @click="activeSection = 'qrcode'"
+            @click="navigateToSection('qrcode')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'qrcode' 
@@ -238,7 +238,7 @@
 
           <!-- Menu Votre Plan -->
           <button
-            @click="activeSection = 'plan'"
+            @click="navigateToSection('plan')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'plan' 
@@ -257,7 +257,7 @@
 
           <!-- Menu Paramètres -->
           <button
-            @click="activeSection = 'settings'"
+            @click="navigateToSection('settings')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'settings' 
@@ -271,7 +271,7 @@
 
           <!-- Menu Support -->
           <button
-            @click="activeSection = 'support'"
+            @click="navigateToSection('support')"
             :class="[
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'support' 
@@ -607,6 +607,15 @@ const setActiveSection = (section: string) => {
   if (!['welcome-points', 'offers', 'bonus'].includes(section)) {
     showRewardsDropdown.value = false
   }
+  // Scroll vers le haut de la page
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// Fonction pour changer de section avec scroll automatique
+const navigateToSection = (section: string) => {
+  activeSection.value = section
+  showRewardsDropdown.value = false
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const onDropdownEnter = (el: any) => {
