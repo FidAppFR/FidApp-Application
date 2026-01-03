@@ -11,60 +11,8 @@
           />
         </router-link>
         
-        <!-- Icône de notification -->
-        <div class="relative">
-          <button 
-            @click="toggleNotifications"
-            class="relative p-2 text-gray-600 hover:text-violet-600 rounded-lg hover:bg-violet-50 transition-all duration-200"
-          >
-            <Bell :size="22" />
-            <!-- Badge de notification -->
-            <span 
-              v-if="notificationCount > 0"
-              class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-pulse"
-            >
-              {{ notificationCount > 9 ? '9+' : notificationCount }}
-            </span>
-          </button>
-          
-          <!-- Dropdown notifications -->
-          <div 
-            v-if="showNotifications"
-            class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
-          >
-            <div class="px-4 py-3 border-b border-gray-100">
-              <h3 class="font-semibold text-gray-900">Notifications</h3>
-            </div>
-            <div class="max-h-96 overflow-y-auto">
-              <!-- Notifications existantes -->
-              <div v-if="notifications.length > 0">
-                <button 
-                  v-for="(notification, index) in notifications"
-                  :key="index"
-                  @click="markAsRead(index)"
-                  class="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
-                >
-                  <p class="text-sm font-medium text-gray-900">{{ notification.title }}</p>
-                  <p class="text-xs text-gray-600 mt-1">{{ notification.message }}</p>
-                  <p class="text-xs text-gray-400 mt-1">{{ notification.time }}</p>
-                </button>
-              </div>
-              <!-- Pas de notifications -->
-              <div v-else class="px-4 py-8 text-center">
-                <Bell :size="32" class="mx-auto text-gray-300 mb-3" />
-                <p class="text-sm text-gray-500">Aucune nouvelle notification</p>
-              </div>
-            </div>
-            <div class="px-4 py-3 border-t border-gray-100">
-              <button 
-                @click="clearAllNotifications"
-                class="text-sm text-violet-600 hover:text-violet-700 font-medium"
-              >
-                Marquer tout comme lu
-              </button>
-            </div>
-          </div>
-        </div>
+        <!-- Centre de notifications -->
+        <NotificationCenter />
       </div>
     </header>
 
@@ -220,6 +168,20 @@
           >
             <Users :size="16" />
             <span class="text-sm">Vos Fidèles</span>
+          </button>
+
+          <!-- Menu Objectifs -->
+          <button
+            @click="navigateToSection('milestones')"
+            :class="[
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+              activeSection === 'milestones' 
+                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
+                : 'hover:bg-gray-100 text-gray-700'
+            ]"
+          >
+            <Trophy :size="16" />
+            <span class="text-sm">Objectifs</span>
           </button>
 
           <!-- Menu QR Code -->
@@ -488,6 +450,11 @@
           <SupportSection />
         </div>
 
+        <!-- Section Objectifs/Milestones -->
+        <div v-if="activeSection === 'milestones'" class="space-y-6">
+          <MilestonesSection />
+        </div>
+
         <!-- Section QR Code -->
         <div v-if="activeSection === 'qrcode'" class="space-y-6">
           <QRCodeSection />
@@ -508,7 +475,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { 
   LayoutDashboard, Gift, Building2, CreditCard, Users, Crown,
   Settings, HelpCircle, LogOut, Star, TrendingUp, Coffee, Percent, Bell, QrCode, Package, ShoppingBag,
-  ChevronDown, UserPlus, Tag, Sparkles, Archive
+  ChevronDown, UserPlus, Tag, Sparkles, Archive, Trophy
 } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { logoutOverlay } from '@/services/logoutOverlay'
@@ -528,21 +495,14 @@ import WelcomePointsSection from '@/components/dashboard/WelcomePointsSection.vu
 import OffersSection from '@/components/dashboard/OffersSection.vue'
 import BonusSection from '@/components/dashboard/BonusSection.vue'
 import OldRewardsManager from '@/components/dashboard/OldRewardsManager.vue'
+import NotificationCenter from '@/components/NotificationCenter.vue'
+import MilestonesSection from '@/components/dashboard/MilestonesSection.vue'
 
 const router = useRouter()
 const route = useRoute()
 const activeSection = ref('dashboard')
 const selectedPlan = ref('')
-const showNotifications = ref(false)
 const showRewardsDropdown = ref(false)
-
-// Interface pour les notifications
-interface Notification {
-  title: string
-  message: string
-  time: string
-  read?: boolean
-}
 
 // Interface pour les récompenses populaires
 interface PopularReward {
@@ -551,27 +511,6 @@ interface PopularReward {
   category: string
   redemption_count: number
 }
-
-// Notifications - exemples
-const notifications = ref<Notification[]>([
-  {
-    title: 'Nouveau client fidèle',
-    message: 'Jean Dupont vient de s\'inscrire à votre programme',
-    time: 'Il y a 5 min'
-  },
-  {
-    title: 'Récompense échangée',
-    message: 'Marie Martin a échangé 200 points contre un café gratuit',
-    time: 'Il y a 1 heure'
-  },
-  {
-    title: 'Objectif atteint !',
-    message: 'Vous avez dépassé 100 clients fidèles ce mois-ci',
-    time: 'Il y a 2 heures'
-  }
-])
-
-const notificationCount = computed(() => notifications.value.length)
 
 const userData = ref<{
   email: string
@@ -613,10 +552,6 @@ const userInitials = computed(() => {
   return (first + last).toUpperCase() || 'U'
 })
 
-const toggleNotifications = () => {
-  showNotifications.value = !showNotifications.value
-}
-
 const toggleRewardsDropdown = () => {
   showRewardsDropdown.value = !showRewardsDropdown.value
 }
@@ -652,18 +587,6 @@ const onDropdownLeave = (el: any) => {
   el.style.transition = 'height 0.3s ease, opacity 0.3s ease'
   el.style.height = '0'
   el.style.opacity = '0'
-}
-
-const markAsRead = (index: number) => {
-  notifications.value.splice(index, 1)
-  if (notifications.value.length === 0) {
-    showNotifications.value = false
-  }
-}
-
-const clearAllNotifications = () => {
-  notifications.value = []
-  showNotifications.value = false
 }
 
 const handleLogout = async () => {
@@ -909,14 +832,6 @@ onMounted(() => {
   if (route.query.selectedPlan) {
     selectedPlan.value = route.query.selectedPlan as string
   }
-  
-  // Fermer les notifications quand on clique ailleurs
-  window.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement
-    if (!target.closest('.relative')) {
-      showNotifications.value = false
-    }
-  })
   
   // Rafraîchir les données toutes les 30 secondes
   refreshInterval = setInterval(() => {
