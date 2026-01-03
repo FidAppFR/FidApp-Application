@@ -185,30 +185,30 @@
                 <button
                   @click="setActiveSection('customers')"
                   :class="[
-                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
                     activeSection === 'customers'
-                      ? 'bg-violet-100 text-violet-700' 
-                      : 'hover:bg-gray-100 text-gray-600'
+                      ? 'bg-violet-100 text-violet-700 translate-x-1' 
+                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
                   ]"
-                  style="--item-index: 0"
+                  :style="{ '--item-index': 0 }"
                 >
                   <Users :size="14" />
-                  <span class="text-sm">Liste des fidèles</span>
+                  <span class="text-xs">Liste des fidèles</span>
                 </button>
                 
                 <!-- Recherche client -->
                 <button
                   @click="setActiveSection('customer-lookup')"
                   :class="[
-                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
                     activeSection === 'customer-lookup'
-                      ? 'bg-violet-100 text-violet-700' 
-                      : 'hover:bg-gray-100 text-gray-600'
+                      ? 'bg-violet-100 text-violet-700 translate-x-1' 
+                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
                   ]"
-                  style="--item-index: 1"
+                  :style="{ '--item-index': 1 }"
                 >
                   <Search :size="14" />
-                  <span class="text-sm">Recherche par code</span>
+                  <span class="text-xs">Recherche par code</span>
                 </button>
               </div>
             </Transition>
