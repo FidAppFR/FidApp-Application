@@ -107,7 +107,7 @@
                 <p class="text-xs text-white/80">Code de fidélité</p>
                 <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode }}</p>
               </div>
-              <div>
+              <div v-if="memberSince">
                 <p class="text-xs text-white/60">Membre depuis</p>
                 <p class="font-medium">{{ memberSince }}</p>
               </div>
@@ -117,7 +117,7 @@
       </div>
 
       <!-- Section QR Code de fidélité - Toujours visible pour les clients -->
-      <div v-if="customerLoyaltyCode && isLoggedIn && !isOwner" class="mb-8">
+      <div v-if="customerLoyaltyCode && customerId && companyId" class="mb-8">
         <CustomerQRCode
           :loyalty-code="customerLoyaltyCode"
           :customer-id="customerId"
@@ -830,6 +830,12 @@ const loadCustomerFromSession = () => {
       customerName.value = data.name || 'Client'
       customerId.value = data.id
       
+      // Récupérer le company_id depuis l'URL ou la session
+      const companyParam = router.currentRoute.value.query.company as string
+      if (companyParam) {
+        companyId.value = companyParam
+      }
+      
       // Charger les détails complets du client
       loadCustomerDetails(data.id)
     } catch (error) {
@@ -864,6 +870,20 @@ const loadCustomerDetails = async (customerId: string) => {
       customerPoints.value = data.points || 0
       customerName.value = `${data.first_name} ${data.last_name}`
       customerLoyaltyCode.value = data.loyalty_code || ''
+      
+      // S'assurer que companyId est défini
+      if (!companyId.value && data.company_id) {
+        companyId.value = data.company_id
+      }
+      
+      // Debug temporaire
+      console.log('Customer details loaded:', {
+        customerLoyaltyCode: customerLoyaltyCode.value,
+        customerId: customerId.value,
+        companyId: companyId.value,
+        isLoggedIn: isLoggedIn.value,
+        isOwner: isOwner.value
+      })
       
       // Formater la date de membre
       if (data.created_at) {
