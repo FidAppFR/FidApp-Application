@@ -156,33 +156,63 @@
             <span class="text-sm">Votre Carte</span>
           </button>
 
-          <!-- Menu Vos Fidèles -->
-          <button
-            @click="navigateToSection('customers')"
-            :class="[
-              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
-              activeSection === 'customers' 
-                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
-            ]"
-          >
-            <Users :size="16" />
-            <span class="text-sm">Vos Fidèles</span>
-          </button>
-
-          <!-- Menu Recherche Client -->
-          <button
-            @click="navigateToSection('customer-lookup')"
-            :class="[
-              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
-              activeSection === 'customer-lookup' 
-                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
-            ]"
-          >
-            <Search :size="16" />
-            <span class="text-sm">Recherche Client</span>
-          </button>
+          <!-- Menu Gestion Clients avec sous-menu -->
+          <div>
+            <button
+              @click="toggleCustomersDropdown"
+              :class="[
+                'w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                ['customers', 'customer-lookup'].includes(activeSection)
+                  ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
+                  : 'hover:bg-gray-100 text-gray-700'
+              ]"
+            >
+              <div class="flex items-center space-x-2">
+                <Users :size="16" />
+                <span class="text-sm">Gestion Clients</span>
+              </div>
+              <ChevronDown :size="16" :class="showCustomersDropdown ? 'rotate-180' : ''" class="transition-transform duration-200" />
+            </button>
+            
+            <!-- Sous-menu Gestion Clients -->
+            <Transition
+              name="slide-fade"
+              @enter="onDropdownEnter"
+              @leave="onDropdownLeave"
+            >
+              <div v-if="showCustomersDropdown" class="ml-4 mt-1 space-y-1">
+                <!-- Liste des fidèles -->
+                <button
+                  @click="setActiveSection('customers')"
+                  :class="[
+                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                    activeSection === 'customers'
+                      ? 'bg-violet-100 text-violet-700' 
+                      : 'hover:bg-gray-100 text-gray-600'
+                  ]"
+                  style="--item-index: 0"
+                >
+                  <Users :size="14" />
+                  <span class="text-sm">Liste des fidèles</span>
+                </button>
+                
+                <!-- Recherche client -->
+                <button
+                  @click="setActiveSection('customer-lookup')"
+                  :class="[
+                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                    activeSection === 'customer-lookup'
+                      ? 'bg-violet-100 text-violet-700' 
+                      : 'hover:bg-gray-100 text-gray-600'
+                  ]"
+                  style="--item-index: 1"
+                >
+                  <Search :size="14" />
+                  <span class="text-sm">Recherche par code</span>
+                </button>
+              </div>
+            </Transition>
+          </div>
 
           <!-- Menu Objectifs -->
           <button
@@ -600,6 +630,7 @@ const route = useRoute()
 const activeSection = ref('dashboard')
 const selectedPlan = ref('')
 const showRewardsDropdown = ref(false)
+const showCustomersDropdown = ref(false)
 
 // Interface pour les récompenses populaires
 interface PopularReward {
@@ -666,11 +697,19 @@ const toggleRewardsDropdown = () => {
   showRewardsDropdown.value = !showRewardsDropdown.value
 }
 
+const toggleCustomersDropdown = () => {
+  showCustomersDropdown.value = !showCustomersDropdown.value
+}
+
 const setActiveSection = (section: string) => {
   activeSection.value = section
   // Keep dropdown open when selecting a rewards subcategory
   if (!['welcome-points', 'offers', 'bonus'].includes(section)) {
     showRewardsDropdown.value = false
+  }
+  // Keep dropdown open when selecting a customers subcategory
+  if (!['customers', 'customer-lookup'].includes(section)) {
+    showCustomersDropdown.value = false
   }
   // Scroll vers le haut de la page
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -680,6 +719,7 @@ const setActiveSection = (section: string) => {
 const navigateToSection = (section: string) => {
   activeSection.value = section
   showRewardsDropdown.value = false
+  showCustomersDropdown.value = false
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
