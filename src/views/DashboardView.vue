@@ -283,6 +283,20 @@
             <span class="text-sm">Support</span>
           </button>
 
+          <!-- Menu temporaire: Anciennes récompenses -->
+          <button
+            @click="navigateToSection('old-rewards')"
+            :class="[
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+              activeSection === 'old-rewards' 
+                ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg' 
+                : 'hover:bg-gray-100 text-gray-700'
+            ]"
+          >
+            <Archive :size="16" />
+            <span class="text-sm">Anciennes Récompenses</span>
+          </button>
+
           <!-- Menu Déconnexion -->
           <button
             @click="handleLogout"
@@ -478,6 +492,11 @@
         <div v-if="activeSection === 'qrcode'" class="space-y-6">
           <QRCodeSection />
         </div>
+
+        <!-- Section temporaire: Gestionnaire d'anciennes récompenses -->
+        <div v-if="activeSection === 'old-rewards'" class="space-y-6">
+          <OldRewardsManager />
+        </div>
       </main>
     </div>
   </div>
@@ -489,7 +508,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { 
   LayoutDashboard, Gift, Building2, CreditCard, Users, Crown,
   Settings, HelpCircle, LogOut, Star, TrendingUp, Coffee, Percent, Bell, QrCode, Package, ShoppingBag,
-  ChevronDown, UserPlus, Tag, Sparkles
+  ChevronDown, UserPlus, Tag, Sparkles, Archive
 } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { logoutOverlay } from '@/services/logoutOverlay'
@@ -508,6 +527,7 @@ import QRCodeSection from '@/components/dashboard/QRCodeSection.vue'
 import WelcomePointsSection from '@/components/dashboard/WelcomePointsSection.vue'
 import OffersSection from '@/components/dashboard/OffersSection.vue'
 import BonusSection from '@/components/dashboard/BonusSection.vue'
+import OldRewardsManager from '@/components/dashboard/OldRewardsManager.vue'
 
 const router = useRouter()
 const route = useRoute()
