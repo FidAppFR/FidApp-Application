@@ -101,17 +101,23 @@
               <p class="text-white/80 text-sm">{{ customerName }}</p>
             </div>
             
-            <!-- Info membre -->
-            <div>
-              <p class="text-xs text-white/60">Membre depuis</p>
-              <p class="font-medium">{{ memberSince }}</p>
+            <!-- Info membre et code de fidélité -->
+            <div class="space-y-2">
+              <div v-if="customerLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
+                <p class="text-xs text-white/80">Code de fidélité</p>
+                <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode }}</p>
+              </div>
+              <div>
+                <p class="text-xs text-white/60">Membre depuis</p>
+                <p class="font-medium">{{ memberSince }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Section QR Code de fidélité -->
-      <div v-if="(isLoggedIn && !isOwner && customerLoyaltyCode) || (isOwner && customerLoyaltyCode)" class="mb-8">
+      <!-- Section QR Code de fidélité - Toujours visible pour les clients -->
+      <div v-if="customerLoyaltyCode && isLoggedIn && !isOwner" class="mb-8">
         <CustomerQRCode
           :loyalty-code="customerLoyaltyCode"
           :customer-id="customerId"
@@ -599,6 +605,7 @@ const loadData = async () => {
       const session = JSON.parse(customerSession)
       customerData.value = session
       isAuthenticated.value = true
+      isLoggedIn.value = true  // Marquer comme connecté
       customerPoints.value = session.points || 0
       customerName.value = session.name || ''
       customerId.value = session.id
@@ -821,6 +828,7 @@ const loadCustomerFromSession = () => {
       customerData.value = data
       customerPoints.value = data.points || 0
       customerName.value = data.name || 'Client'
+      customerId.value = data.id
       
       // Charger les détails complets du client
       loadCustomerDetails(data.id)
@@ -855,6 +863,7 @@ const loadCustomerDetails = async (customerId: string) => {
       
       customerPoints.value = data.points || 0
       customerName.value = `${data.first_name} ${data.last_name}`
+      customerLoyaltyCode.value = data.loyalty_code || ''
       
       // Formater la date de membre
       if (data.created_at) {
