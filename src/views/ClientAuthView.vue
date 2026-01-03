@@ -17,7 +17,7 @@
         <form @submit.prevent="handleLogin" class="space-y-4">
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">
-              Email ou téléphone
+              Connexion avec email ou téléphone
             </label>
             <div class="relative">
               <input
@@ -32,6 +32,9 @@
                 <Phone v-else :size="20" class="text-gray-400" />
               </div>
             </div>
+            <p class="text-xs text-gray-500 mt-2">
+              Utilisez l'email ou le téléphone avec lequel vous vous êtes inscrit
+            </p>
           </div>
 
           <!-- Message d'erreur -->
@@ -124,7 +127,7 @@
 
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">
-              Téléphone
+              Téléphone (optionnel)
             </label>
             <input
               v-model="registerData.phone"
@@ -132,6 +135,9 @@
               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
               placeholder="0612345678"
             />
+            <p class="text-xs text-gray-500 mt-1">
+              Optionnel : pour recevoir des SMS de notifications
+            </p>
           </div>
 
             <!-- Consentements et mentions -->
@@ -404,21 +410,43 @@ const handleLogin = async () => {
     
     const isEmailLogin = isEmail(identifier)
     
-    // Vérifier si le client existe
-    const query = supabase
-      .from('customers')
-      .select('id, first_name, last_name, is_verified')
-      .eq('company_id', companyId.value)
+    // Vérifier si le client existe avec email OU téléphone
+    let customer = null
+    let searchType = ''
     
     if (isEmailLogin) {
-      query.eq('email', identifier)
+      // Rechercher par email
+      const { data: emailCustomer } = await supabase
+        .from('customers')
+        .select('id, first_name, last_name, is_verified, email, phone')
+        .eq('company_id', companyId.value)
+        .eq('email', identifier)
+        .single()
+      
+      customer = emailCustomer
+      searchType = 'email'
     } else {
-      query.eq('phone', identifier)
+      // Rechercher par téléphone d'abord
+      const { data: phoneCustomer } = await supabase
+        .from('customers')
+        .select('id, first_name, last_name, is_verified, email, phone')
+        .eq('company_id', companyId.value)
+        .eq('phone', identifier)
+        .single()
+      
+      if (phoneCustomer) {
+        customer = phoneCustomer
+        searchType = 'phone'
+      } else {
+        // Si pas trouvé par téléphone et que ça ressemble à un email incomplet, 
+        // suggérer d'utiliser l'email
+        errorMessage.value = `Aucun compte trouvé avec le numéro "${identifier}". Si vous avez créé votre compte avec un email, veuillez utiliser votre adresse email complète pour vous connecter.`
+        loading.value = false
+        return
+      }
     }
     
-    const { data: customer, error } = await query.single()
-    
-    if (error || !customer) {
+    if (!customer) {
       // Message d'erreur spécifique selon le type d'identifiant
       if (isEmailLogin) {
         errorMessage.value = `Aucun compte trouvé avec l'email "${identifier}". Veuillez vérifier l'adresse email ou créer un nouveau compte.`
@@ -444,12 +472,20 @@ const handleLogin = async () => {
       .eq('id', customer.id)
     
     customerId.value = customer.id
-    otpSentTo.value = identifier
+    
+    // Déterminer où envoyer l'OTP basé sur ce qui est disponible
+    if (searchType === 'email' || !customer.phone) {
+      // Envoyer par email si recherché par email ou si pas de téléphone
+      otpSentTo.value = customer.email
+      alert(`Code de vérification: ${otp}\n(En production, envoyé par email à ${customer.email})`)
+    } else {
+      // Envoyer par SMS si trouvé par téléphone et qu'il existe
+      otpSentTo.value = customer.phone
+      alert(`Code de vérification: ${otp}\n(En production, envoyé par SMS au ${customer.phone})`)
+    }
+    
     showOtpForm.value = true
     startResendCooldown()
-    
-    // Simuler l'envoi
-    alert(`Code de vérification: ${otp}\n(En production, envoyé par ${isEmailLogin ? 'email' : 'SMS'})`)
     
   } catch (error) {
     console.error('Erreur lors de la connexion:', error)
