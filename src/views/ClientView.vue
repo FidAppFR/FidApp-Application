@@ -59,8 +59,20 @@
       <div class="mb-8">
         <div 
           class="relative h-56 rounded-2xl shadow-2xl overflow-hidden"
-          :class="cardGradient"
+          :class="companyData.card_theme !== 'custom' ? cardGradient : ''"
         >
+          <!-- Fond personnalisé si type custom -->
+          <div v-if="companyData.card_theme === 'custom' && companyData.card_background_url" 
+               class="absolute inset-0">
+            <img 
+              :src="companyData.card_background_url" 
+              alt="" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <!-- Fond dégradé si type gradient -->
+          <div v-else class="absolute inset-0" :class="cardGradient"></div>
+          
           <div class="absolute inset-0 bg-black/10"></div>
           <div class="relative h-full p-6 flex flex-col justify-between text-white">
             <!-- En-tête de la carte -->
@@ -473,6 +485,9 @@ interface CompanyData {
   logo_url: string | null
   card_settings?: any
   qr_code_id?: string
+  card_theme?: 'gradient' | 'custom'
+  card_background_url?: string | null
+  card_gradient?: string
 }
 
 interface PointsHistory {
@@ -490,7 +505,10 @@ const companyData = ref<CompanyData>({
   name: '',
   logo_url: null,
   card_settings: null,
-  qr_code_id: ''
+  qr_code_id: '',
+  card_theme: 'gradient',
+  card_background_url: null,
+  card_gradient: 'from-violet-600 to-pink-600'
 })
 const pointsHistory = ref<PointsHistory[]>([])
 const loading = ref(true)
@@ -541,7 +559,8 @@ const showPoints = computed(() =>
 )
 
 const cardGradient = computed(() => {
-  const gradient = companyData.value.card_settings?.gradient || 'from-violet-600 to-pink-600'
+  // Utiliser card_gradient depuis la base de données
+  const gradient = companyData.value.card_gradient || companyData.value.card_settings?.gradient || 'from-violet-600 to-pink-600'
   return `bg-gradient-to-br ${gradient}`
 })
 
@@ -608,7 +627,7 @@ const loadData = async () => {
     if (localCompanyId) {
       const { data: companyInfo } = await supabase
         .from('users')
-        .select('company, logo_url, card_settings, qr_code_id')
+        .select('company, logo_url, card_settings, qr_code_id, card_theme, card_background_url, card_gradient')
         .eq('id', localCompanyId)
         .single()
       
@@ -617,7 +636,10 @@ const loadData = async () => {
           name: companyInfo.company || 'FidApp',
           logo_url: companyInfo.logo_url,
           card_settings: companyInfo.card_settings,
-          qr_code_id: companyInfo.qr_code_id
+          qr_code_id: companyInfo.qr_code_id,
+          card_theme: companyInfo.card_theme || 'gradient',
+          card_background_url: companyInfo.card_background_url,
+          card_gradient: companyInfo.card_gradient || 'from-violet-600 to-pink-600'
         }
       }
       
