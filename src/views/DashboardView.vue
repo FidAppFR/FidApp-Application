@@ -35,6 +35,78 @@
             <span class="text-sm">Tableau de bord</span>
           </button>
 
+          <!-- Menu Profil Société -->
+          <button
+            @click="navigateToSection('company')"
+            :class="[
+              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+              activeSection === 'company' 
+                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
+                : 'hover:bg-gray-100 text-gray-700'
+            ]"
+          >
+            <Building2 :size="16" />
+            <span class="text-sm">Profil société</span>
+          </button>
+
+          <!-- Menu Gestion Clients avec sous-menu -->
+          <div>
+            <button
+              @click="toggleCustomersDropdown"
+              :class="[
+                'w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-200 text-sm',
+                ['customers', 'customer-lookup'].includes(activeSection)
+                  ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
+                  : 'hover:bg-gray-100 text-gray-700'
+              ]"
+            >
+              <div class="flex items-center space-x-2">
+                <Users :size="16" />
+                <span class="text-sm">Gestion Clients</span>
+              </div>
+              <ChevronDown :size="16" :class="showCustomersDropdown ? 'rotate-180' : ''" class="transition-transform duration-200" />
+            </button>
+            
+            <!-- Sous-menu Gestion Clients -->
+            <Transition
+              name="slide-fade"
+              @enter="onDropdownEnter"
+              @leave="onDropdownLeave"
+            >
+              <div v-if="showCustomersDropdown" class="ml-4 mt-1 space-y-1">
+                <!-- Liste des fidèles -->
+                <button
+                  @click="setActiveSection('customers')"
+                  :class="[
+                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
+                    activeSection === 'customers'
+                      ? 'bg-violet-100 text-violet-700 translate-x-1' 
+                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
+                  ]"
+                  :style="{ '--item-index': 0 }"
+                >
+                  <Users :size="14" />
+                  <span class="text-xs">Liste des fidèles</span>
+                </button>
+                
+                <!-- Recherche client -->
+                <button
+                  @click="setActiveSection('customer-lookup')"
+                  :class="[
+                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
+                    activeSection === 'customer-lookup'
+                      ? 'bg-violet-100 text-violet-700 translate-x-1' 
+                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
+                  ]"
+                  :style="{ '--item-index': 1 }"
+                >
+                  <Search :size="14" />
+                  <span class="text-xs">Recherche par code</span>
+                </button>
+              </div>
+            </Transition>
+          </div>
+
           <!-- Menu Nos Produits -->
           <button
             @click="navigateToSection('products')"
@@ -128,20 +200,6 @@
             </transition>
           </div>
 
-          <!-- Menu Profil Société -->
-          <button
-            @click="navigateToSection('company')"
-            :class="[
-              'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
-              activeSection === 'company' 
-                ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
-            ]"
-          >
-            <Building2 :size="16" />
-            <span class="text-sm">Profil société</span>
-          </button>
-
           <!-- Menu Votre Carte -->
           <button
             @click="navigateToSection('card')"
@@ -155,64 +213,6 @@
             <CreditCard :size="16" />
             <span class="text-sm">Votre Carte</span>
           </button>
-
-          <!-- Menu Gestion Clients avec sous-menu -->
-          <div>
-            <button
-              @click="toggleCustomersDropdown"
-              :class="[
-                'w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-200 text-sm',
-                ['customers', 'customer-lookup'].includes(activeSection)
-                  ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                  : 'hover:bg-gray-100 text-gray-700'
-              ]"
-            >
-              <div class="flex items-center space-x-2">
-                <Users :size="16" />
-                <span class="text-sm">Gestion Clients</span>
-              </div>
-              <ChevronDown :size="16" :class="showCustomersDropdown ? 'rotate-180' : ''" class="transition-transform duration-200" />
-            </button>
-            
-            <!-- Sous-menu Gestion Clients -->
-            <Transition
-              name="slide-fade"
-              @enter="onDropdownEnter"
-              @leave="onDropdownLeave"
-            >
-              <div v-if="showCustomersDropdown" class="ml-4 mt-1 space-y-1">
-                <!-- Liste des fidèles -->
-                <button
-                  @click="setActiveSection('customers')"
-                  :class="[
-                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
-                    activeSection === 'customers'
-                      ? 'bg-violet-100 text-violet-700 translate-x-1' 
-                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
-                  ]"
-                  :style="{ '--item-index': 0 }"
-                >
-                  <Users :size="14" />
-                  <span class="text-xs">Liste des fidèles</span>
-                </button>
-                
-                <!-- Recherche client -->
-                <button
-                  @click="setActiveSection('customer-lookup')"
-                  :class="[
-                    'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
-                    activeSection === 'customer-lookup'
-                      ? 'bg-violet-100 text-violet-700 translate-x-1' 
-                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
-                  ]"
-                  :style="{ '--item-index': 1 }"
-                >
-                  <Search :size="14" />
-                  <span class="text-xs">Recherche par code</span>
-                </button>
-              </div>
-            </Transition>
-          </div>
 
           <!-- Menu Objectifs -->
           <button
@@ -242,6 +242,11 @@
             <span class="text-sm">QR Code</span>
           </button>
 
+          <!-- Séparateur -->
+          <div class="pt-4 pb-2">
+            <div class="border-t border-gray-200"></div>
+          </div>
+
           <!-- Menu Votre Plan -->
           <button
             @click="navigateToSection('plan')"
@@ -255,11 +260,6 @@
             <Crown :size="16" />
             <span class="text-sm">Votre Plan</span>
           </button>
-
-          <!-- Séparateur -->
-          <div class="pt-4 pb-2">
-            <div class="border-t border-gray-200"></div>
-          </div>
 
           <!-- Menu Paramètres -->
           <button
@@ -288,6 +288,11 @@
             <HelpCircle :size="16" />
             <span class="text-sm">Support</span>
           </button>
+
+          <!-- Séparateur optionnel -->
+          <div class="pt-2 pb-2">
+            <div class="border-t border-gray-100"></div>
+          </div>
 
           <!-- Menu temporaire: Anciennes récompenses -->
           <button
