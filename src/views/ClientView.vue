@@ -93,7 +93,7 @@
             </div>
             
             <!-- Points du client -->
-            <div v-if="showPoints" class="space-y-2">
+            <div v-if="showPoints && isLoggedIn && !isOwner" class="space-y-2">
               <div class="flex items-center space-x-2">
                 <Star :size="20" class="text-yellow-400 fill-current" />
                 <span class="text-2xl font-bold">{{ customerPoints }} pts</span>
@@ -102,14 +102,14 @@
             </div>
             
             <!-- Info membre et code de fidélité -->
-            <div class="space-y-2">
-              <div v-if="customerLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
+            <div v-if="isLoggedIn && !isOwner" class="space-y-2">
+              <div class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
                 <p class="text-xs text-white/80">Code de fidélité</p>
-                <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode }}</p>
+                <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode || 'Chargement...' }}</p>
               </div>
-              <div v-if="memberSince">
+              <div>
                 <p class="text-xs text-white/60">Membre depuis</p>
-                <p class="font-medium">{{ memberSince }}</p>
+                <p class="font-medium">{{ memberSince || 'Janvier 2024' }}</p>
               </div>
             </div>
           </div>
@@ -117,13 +117,13 @@
       </div>
 
       <!-- Section QR Code de fidélité - Toujours visible pour les clients -->
-      <div v-if="customerLoyaltyCode && customerId && companyId" class="mb-8">
+      <div v-if="isLoggedIn && !isOwner" class="mb-8">
         <CustomerQRCode
-          :loyalty-code="customerLoyaltyCode"
-          :customer-id="customerId"
-          :company-id="companyId"
-          :customer-name="customerName"
-          :company-name="companyData.name"
+          :loyalty-code="customerLoyaltyCode || 'XXXX-XXXX-XXXX'"
+          :customer-id="customerId || ''"
+          :company-id="companyId || ''"
+          :customer-name="customerName || 'Client'"
+          :company-name="companyData.name || 'FidApp'"
         />
       </div>
 
@@ -821,9 +821,13 @@ const updateProfile = async () => {
 // Charger les données du client depuis la session
 const loadCustomerFromSession = () => {
   const session = localStorage.getItem('customer_session')
+  console.log('Loading customer from session:', session ? 'Session found' : 'No session')
+  
   if (session) {
     try {
       const data = JSON.parse(session)
+      console.log('Session data:', data)
+      
       isLoggedIn.value = true
       customerData.value = data
       customerPoints.value = data.points || 0
@@ -835,6 +839,8 @@ const loadCustomerFromSession = () => {
       if (companyParam) {
         companyId.value = companyParam
       }
+      
+      console.log('Customer loaded - ID:', customerId.value, 'Company:', companyId.value, 'isOwner:', isOwner.value)
       
       // Charger les détails complets du client
       loadCustomerDetails(data.id)
@@ -854,6 +860,8 @@ const loadCustomerDetails = async (customerId: string) => {
       .single()
     
     if (data) {
+      console.log('Customer details from DB:', data)
+      
       // Mettre à jour les données du profil
       profileData.value = {
         first_name: data.first_name,
@@ -871,19 +879,20 @@ const loadCustomerDetails = async (customerId: string) => {
       customerName.value = `${data.first_name} ${data.last_name}`
       customerLoyaltyCode.value = data.loyalty_code || ''
       
+      console.log('Loyalty code set to:', customerLoyaltyCode.value)
+      
       // S'assurer que companyId est défini
       if (!companyId.value && data.company_id) {
         companyId.value = data.company_id
       }
       
-      // Debug temporaire
-      console.log('Customer details loaded:', {
-        customerLoyaltyCode: customerLoyaltyCode.value,
-        customerId: customerId.value,
-        companyId: companyId.value,
-        isLoggedIn: isLoggedIn.value,
-        isOwner: isOwner.value
-      })
+      // S'assurer que les valeurs obligatoires sont définies avec des valeurs par défaut si nécessaire
+      if (!customerId.value) {
+        customerId.value = data.id
+      }
+      if (!companyId.value) {
+        companyId.value = data.company_id
+      }
       
       // Formater la date de membre
       if (data.created_at) {
@@ -1050,8 +1059,8 @@ const handleWalletError = (error: Error) => {
   }, 3000)
 }
 
-onMounted(() => {
-  loadData()
+onMounted(async () => {
+  await loadData()
   loadCustomerFromSession()
 })
 
