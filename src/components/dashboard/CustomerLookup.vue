@@ -17,10 +17,10 @@
               <input
                 v-model="searchCode"
                 type="text"
-                class="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors uppercase font-mono"
-                placeholder="XXXX-XXXX-XXXX"
+                class="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors uppercase font-mono tracking-wider"
+                placeholder="Entrez le code à 16 caractères"
                 @keyup.enter="searchCustomer"
-                maxlength="14"
+                maxlength="16"
               />
               <div class="absolute left-4 top-1/2 -translate-y-1/2">
                 <CreditCard :size="20" class="text-gray-400" />

@@ -110,7 +110,7 @@
             <div class="space-y-2">
               <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
                 <p class="text-xs text-white/80">Code de fidélité</p>
-                <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode }}</p>
+                <p class="text-base font-mono font-bold text-white tracking-wide break-all">{{ customerLoyaltyCode }}</p>
               </div>
               <div>
                 <p class="text-xs text-white/60">{{ isLoggedIn && !isOwner ? 'Membre depuis' : 'Programme de fidélité' }}</p>

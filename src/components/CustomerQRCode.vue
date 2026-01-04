@@ -18,10 +18,10 @@
     <div class="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-4 mb-4 border border-violet-200">
       <p class="text-sm text-gray-600 mb-1">Code de fidélité</p>
       <div class="flex items-center justify-between">
-        <p class="text-2xl font-mono font-bold text-violet-900">{{ loyaltyCode }}</p>
+        <p class="text-xl font-mono font-bold text-violet-900 tracking-wider break-all">{{ loyaltyCode }}</p>
         <button 
           @click="copyToClipboard"
-          class="p-2 text-violet-600 hover:bg-violet-100 rounded-lg transition-colors"
+          class="p-2 text-violet-600 hover:bg-violet-100 rounded-lg transition-colors ml-2 flex-shrink-0"
         >
           <Copy :size="20" />
         </button>
