@@ -6,14 +6,15 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Aperçu de la carte -->
-      <div>
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Aperçu en temps réel</h3>
-        <div class="bg-gray-100 rounded-xl p-6 flex items-center justify-center min-h-[400px]">
-          <div 
-            :style="cardStyles"
-            class="w-full max-w-sm transform hover:scale-105 transition-transform duration-300"
-          >
+      <!-- Aperçu de la carte - Sticky -->
+      <div class="lg:order-2">
+        <div class="sticky top-24">
+          <h3 class="text-lg font-bold text-gray-900 mb-4">Aperçu en temps réel</h3>
+          <div class="bg-gray-100 rounded-xl p-6 flex items-center justify-center min-h-[400px]">
+            <div 
+              :style="cardStyles"
+              class="w-full max-w-sm transform hover:scale-105 transition-transform duration-300"
+            >
             <!-- Recto de la carte -->
             <div class="relative h-56 rounded-2xl shadow-2xl overflow-hidden">
               <!-- Affichage du fond selon le type de thème -->
@@ -92,9 +93,10 @@
           </div>
         </div>
       </div>
+      </div>
 
       <!-- Options de personnalisation -->
-      <div class="space-y-6">
+      <div class="space-y-6 lg:order-1">
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h3 class="text-lg font-bold text-gray-900 mb-4">Options de personnalisation</h3>
           
