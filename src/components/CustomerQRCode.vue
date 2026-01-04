@@ -16,12 +16,12 @@
 
     <!-- Code de fidélité -->
     <div class="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-4 mb-4 border border-violet-200">
-      <p class="text-sm text-gray-600 mb-1">Code de fidélité</p>
+      <p class="text-sm text-gray-600 mb-2 font-medium">Code de fidélité</p>
       <div class="flex items-center justify-between">
-        <p class="text-xl font-mono font-bold text-violet-900 tracking-wider break-all">{{ loyaltyCode }}</p>
+        <p class="text-lg font-mono font-bold text-violet-900 tracking-wide">{{ formattedCode }}</p>
         <button 
           @click="copyToClipboard"
-          class="p-2 text-violet-600 hover:bg-violet-100 rounded-lg transition-colors ml-2 flex-shrink-0"
+          class="p-2 text-violet-600 hover:bg-violet-100 rounded-lg transition-colors ml-3 flex-shrink-0"
         >
           <Copy :size="20" />
         </button>
@@ -75,6 +75,12 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+// Formater le code en XXXX - XXXX - XXXX - XXXX
+const formattedCode = computed(() => {
+  if (!props.loyaltyCode) return ''
+  return props.loyaltyCode.match(/.{1,4}/g)?.join(' - ') || props.loyaltyCode
+})
 const qrCanvas = ref<HTMLCanvasElement | null>(null)
 const showCopySuccess = ref(false)
 

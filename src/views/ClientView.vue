@@ -108,9 +108,9 @@
             
             <!-- Info membre et code de fidélité -->
             <div class="space-y-2">
-              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
-                <p class="text-xs text-white/80">Code de fidélité</p>
-                <p class="text-base font-mono font-bold text-white tracking-wide break-all">{{ customerLoyaltyCode }}</p>
+              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && showLoyaltyCode" class="bg-white/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
+                <p class="text-xs text-white/90 font-medium mb-1">Code de fidélité</p>
+                <p class="text-sm font-mono font-bold text-white tracking-wider">{{ formattedLoyaltyCode }}</p>
               </div>
               <div>
                 <p class="text-xs text-white/60">{{ isLoggedIn && !isOwner ? 'Membre depuis' : 'Programme de fidélité' }}</p>
@@ -581,6 +581,13 @@ const cardGradient = computed(() => {
   // Utiliser card_gradient depuis la base de données
   const gradient = companyData.value.card_gradient || companyData.value.card_settings?.gradient || 'from-violet-600 to-pink-600'
   return `bg-gradient-to-br ${gradient}`
+})
+
+// Formater le code de fidélité en XXXX-XXXX-XXXX-XXXX
+const formattedLoyaltyCode = computed(() => {
+  if (!customerLoyaltyCode.value) return ''
+  // Diviser en groupes de 4 caractères
+  return customerLoyaltyCode.value.match(/.{1,4}/g)?.join(' - ') || customerLoyaltyCode.value
 })
 
 // Filtrer les récompenses actives

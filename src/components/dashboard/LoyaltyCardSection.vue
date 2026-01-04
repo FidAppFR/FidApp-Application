@@ -63,9 +63,9 @@
                 
                 <!-- Code de fidélité et info membre -->
                 <div class="space-y-2">
-                  <div v-if="cardData.showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
-                    <p class="text-xs text-white/80">Code de fidélité</p>
-                    <p class="text-base font-mono font-bold text-white tracking-wide">A1B2C3D4E5F6G7H8</p>
+                  <div v-if="cardData.showLoyaltyCode" class="bg-white/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
+                    <p class="text-xs text-white/90 font-medium mb-1">Code de fidélité</p>
+                    <p class="text-sm font-mono font-bold text-white tracking-wider">A1B2 - C3D4 - E5F6 - G7H8</p>
                   </div>
                   <div>
                     <p class="text-xs text-white/60">Membre depuis</p>

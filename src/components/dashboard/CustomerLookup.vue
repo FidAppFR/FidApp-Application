@@ -68,7 +68,7 @@
           </div>
           <div class="text-right">
             <p class="text-sm text-white/80">Code de fidélité</p>
-            <p class="text-xl font-mono font-bold">{{ customerFound.loyalty_code }}</p>
+            <p class="text-lg font-mono font-bold tracking-wide">{{ formattedLoyaltyCode }}</p>
           </div>
         </div>
       </div>
@@ -221,7 +221,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { 
   CreditCard, Search, Loader2, AlertCircle, Star, TrendingUp, Gift, 
   CheckCircle, Mail, Phone, Plus, Minus, History, UserX 
@@ -251,6 +251,12 @@ const errorMessage = ref('')
 
 const pointsToAdd = ref<number | null>(null)
 const pointsToRemove = ref<number | null>(null)
+
+// Formater le code de fidélité
+const formattedLoyaltyCode = computed(() => {
+  if (!customerFound.value?.loyalty_code) return ''
+  return customerFound.value.loyalty_code.match(/.{1,4}/g)?.join(' - ') || customerFound.value.loyalty_code
+})
 
 // Formater la date
 const formatDate = (dateString: string) => {
