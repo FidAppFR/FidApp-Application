@@ -1,48 +1,29 @@
 <template>
   <div>
-    <!-- Carte QR Code cliquable -->
+    <!-- Pass Mobile cliquable -->
     <div 
       @click="showModal = true"
-      class="bg-white rounded-2xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-shadow duration-300"
+      class="bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 rounded-2xl shadow-md p-6 cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]"
     >
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xl font-bold text-gray-900 flex items-center space-x-2">
-          <QrCode :size="24" class="text-violet-600" />
-          <span>Ma Carte Dématérialisée</span>
+      <div class="text-center">
+        <h3 class="text-lg font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          Pass Mobile
         </h3>
-        <div class="text-xs text-gray-500">
-          Cliquez pour agrandir
-        </div>
-      </div>
-
-    <!-- Code de fidélité -->
-    <div class="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-4 mb-4 border border-violet-200">
-      <p class="text-sm text-gray-600 mb-2 font-medium">Code de fidélité</p>
-      <div class="flex items-center justify-between">
-        <p class="text-lg font-mono font-bold text-violet-900 tracking-wide">{{ formattedCode }}</p>
-        <button 
-          @click="copyToClipboard"
-          class="p-2 text-violet-600 hover:bg-violet-100 rounded-lg transition-colors ml-3 flex-shrink-0"
-        >
-          <Copy :size="20" />
-        </button>
-      </div>
-    </div>
-
-      <!-- QR Code miniature -->
-      <div class="flex flex-col items-center space-y-4">
-        <div class="bg-gradient-to-br from-violet-50 to-purple-50 p-4 rounded-xl border-2 border-violet-200">
+        
+        <!-- QR Code épuré centré -->
+        <div class="inline-block bg-white p-4 rounded-xl shadow-sm mb-4">
           <canvas ref="qrCanvas" id="qr-canvas"></canvas>
         </div>
         
-        <div class="text-center">
-          <p class="text-sm text-gray-600 mb-1">
-            Présentez ce QR code en caisse
-          </p>
-          <p class="text-xs text-violet-600 font-medium">
-            → Cliquez pour scanner
-          </p>
+        <!-- Code de fidélité intégré -->
+        <div class="bg-white/80 backdrop-blur rounded-lg px-4 py-2 inline-block">
+          <p class="text-xs text-gray-600 mb-1">Code fidélité</p>
+          <p class="text-sm font-mono font-bold text-gray-900 tracking-wide">{{ formattedCode }}</p>
         </div>
+        
+        <p class="text-xs text-gray-600 mt-3 font-medium">
+          Scannable en caisse • Touchez pour agrandir
+        </p>
       </div>
     </div>
 
@@ -64,8 +45,8 @@
           <div class="relative bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
             <!-- Header -->
             <div class="flex items-center justify-between mb-6">
-              <h3 class="text-2xl font-bold text-gray-900">
-                Carte de Fidélité
+              <h3 class="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                Pass Mobile
               </h3>
               <button 
                 @click="showModal = false"

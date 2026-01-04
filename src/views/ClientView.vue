@@ -108,7 +108,7 @@
             
             <!-- Info membre et code de fidélité -->
             <div class="space-y-2">
-              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && showLoyaltyCode" class="bg-white/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
+              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode" class="bg-white/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
                 <p class="text-xs text-white/90 font-medium mb-1">Code de fidélité</p>
                 <p class="text-sm font-mono font-bold text-white tracking-wider">{{ formattedLoyaltyCode }}</p>
               </div>
@@ -569,12 +569,8 @@ const showPoints = computed(() =>
   companyData.value.card_settings?.showPoints !== false
 )
 
-const showLoyaltyCode = computed(() =>
-  companyData.value.card_settings?.showLoyaltyCode !== false
-)
-
 const showQRInCard = computed(() =>
-  companyData.value.card_settings?.showQRInCard === true
+  companyData.value.card_settings?.showQRInCard !== false  // Par défaut à true
 )
 
 const cardGradient = computed(() => {

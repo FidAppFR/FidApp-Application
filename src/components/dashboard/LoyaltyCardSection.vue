@@ -63,7 +63,7 @@
                 
                 <!-- Code de fidélité et info membre -->
                 <div class="space-y-2">
-                  <div v-if="cardData.showLoyaltyCode" class="bg-white/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
+                  <div class="bg-white/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
                     <p class="text-xs text-white/90 font-medium mb-1">Code de fidélité</p>
                     <p class="text-sm font-mono font-bold text-white tracking-wider">A1B2 - C3D4 - E5F6 - G7H8</p>
                   </div>
@@ -75,25 +75,24 @@
               </div>
             </div>
             
-            <!-- Aperçu de la carte QR Code (si l'option est activée) -->
+            <!-- Aperçu du Pass Mobile (si l'option est activée) -->
             <div v-if="cardData.showQRInCard" class="mt-4">
-              <div class="bg-white rounded-2xl shadow-lg p-4 cursor-pointer hover:shadow-xl transition-shadow">
-                <div class="flex items-center justify-between mb-3">
-                  <h4 class="text-sm font-bold text-gray-900 flex items-center space-x-2">
-                    <QrCode :size="18" class="text-violet-600" />
-                    <span>Carte Dématérialisée</span>
+              <div class="bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 rounded-2xl shadow-md p-5 cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
+                <div class="text-center">
+                  <h4 class="text-base font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-3">
+                    Pass Mobile
                   </h4>
-                  <span class="text-xs text-gray-500">Cliquez pour agrandir</span>
-                </div>
-                
-                <!-- Mini QR Code -->
-                <div class="flex flex-col items-center space-y-3">
-                  <div class="bg-gradient-to-br from-violet-50 to-purple-50 p-3 rounded-xl border-2 border-violet-200">
-                    <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center">
-                      <QrCode :size="60" class="text-violet-600" />
+                  
+                  <!-- QR Code épuré -->
+                  <div class="inline-block bg-white p-3 rounded-xl shadow-sm">
+                    <div class="w-28 h-28 flex items-center justify-center">
+                      <QrCode :size="56" class="text-violet-500" />
                     </div>
                   </div>
-                  <p class="text-xs text-violet-600 font-medium">→ Cliquez pour scanner</p>
+                  
+                  <p class="text-xs text-gray-600 mt-3 font-medium">
+                    Scannable en caisse
+                  </p>
                 </div>
               </div>
             </div>
@@ -344,12 +343,8 @@
                   <span class="text-sm">Afficher le solde de points</span>
                 </label>
                 <label class="flex items-center space-x-3">
-                  <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showLoyaltyCode" />
-                  <span class="text-sm">Afficher le code de fidélité sur la carte</span>
-                </label>
-                <label class="flex items-center space-x-3">
                   <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showQRInCard" />
-                  <span class="text-sm">Afficher la carte QR code sous la carte de fidélité</span>
+                  <span class="text-sm">Activer le Pass Mobile (QR Code scannable)</span>
                 </label>
               </div>
             </div>
@@ -383,8 +378,7 @@ const cardData = ref({
   backgroundUrl: null as string | null,
   welcomeMessage: 'Merci de votre fidélité !',
   showPoints: true,
-  showLoyaltyCode: true,  // Option pour afficher le code de fidélité
-  showQRInCard: true,      // Option pour afficher le QR dans la section séparée
+  showQRInCard: true,      // Option pour afficher le Pass Mobile
   logoUrl: null as string | null
 })
 
