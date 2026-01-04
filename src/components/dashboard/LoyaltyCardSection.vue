@@ -50,18 +50,26 @@
                 </div>
                 
                 <!-- Points (affichage conditionnel) -->
-                <div v-if="cardData.showPoints" class="space-y-2">
-                  <div class="flex items-center space-x-2">
-                    <Star :size="20" class="text-yellow-400 fill-current" />
-                    <span class="text-2xl font-bold">250 pts</span>
+                <div class="flex-1">
+                  <div v-if="cardData.showPoints" class="space-y-2">
+                    <div class="flex items-center space-x-2">
+                      <Star :size="20" class="text-yellow-400 fill-current" />
+                      <span class="text-2xl font-bold">250 pts</span>
+                    </div>
+                    <p class="text-white/80 text-sm">Jean Dupont</p>
                   </div>
-                  <p class="text-white/80 text-sm">Membre depuis 2024</p>
                 </div>
                 
-                <!-- Numéro de carte -->
+                <!-- Code de fidélité et info membre -->
                 <div>
-                  <p class="text-xs text-white/60">N° de carte</p>
-                  <p class="font-mono text-sm">**** **** **** 1234</p>
+                  <div v-if="cardData.showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2 mb-2">
+                    <p class="text-xs text-white/80">Code de fidélité</p>
+                    <p class="text-lg font-mono font-bold text-white">ABCD-1234-EFGH</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-white/60">Membre depuis</p>
+                    <p class="font-medium">Janvier 2024</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -327,8 +335,16 @@
                   <span class="text-sm">Afficher le solde de points</span>
                 </label>
                 <label class="flex items-center space-x-3">
+                  <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showLoyaltyCode" />
+                  <span class="text-sm">Afficher le code de fidélité sur la carte</span>
+                </label>
+                <label class="flex items-center space-x-3">
+                  <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showQRInCard" />
+                  <span class="text-sm">Afficher le QR code en section séparée</span>
+                </label>
+                <label class="flex items-center space-x-3">
                   <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showQR" />
-                  <span class="text-sm">Afficher le QR code</span>
+                  <span class="text-sm">Afficher le QR code au verso (optionnel)</span>
                 </label>
                 <label class="flex items-center space-x-3">
                   <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showExpiry" />
@@ -368,6 +384,8 @@ const cardData = ref({
   showPoints: true,
   showQR: true,
   showExpiry: true,
+  showLoyaltyCode: true,  // Nouvelle option pour afficher le code de fidélité
+  showQRInCard: false,     // Nouvelle option pour afficher le QR dans la section séparée
   logoUrl: null as string | null
 })
 
@@ -423,6 +441,8 @@ const loadCardData = async () => {
         cardData.value.showPoints = data.card_settings.showPoints !== undefined ? data.card_settings.showPoints : true
         cardData.value.showQR = data.card_settings.showQR !== undefined ? data.card_settings.showQR : true
         cardData.value.showExpiry = data.card_settings.showExpiry !== undefined ? data.card_settings.showExpiry : true
+        cardData.value.showLoyaltyCode = data.card_settings.showLoyaltyCode !== undefined ? data.card_settings.showLoyaltyCode : true
+        cardData.value.showQRInCard = data.card_settings.showQRInCard !== undefined ? data.card_settings.showQRInCard : false
       }
     }
   } catch (error) {
@@ -635,7 +655,9 @@ const saveCardSettings = async () => {
       welcomeMessage: cardData.value.welcomeMessage,
       showPoints: cardData.value.showPoints,
       showQR: cardData.value.showQR,
-      showExpiry: cardData.value.showExpiry
+      showExpiry: cardData.value.showExpiry,
+      showLoyaltyCode: cardData.value.showLoyaltyCode,
+      showQRInCard: cardData.value.showQRInCard
     }
     
     // Mettre à jour les données

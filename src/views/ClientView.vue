@@ -108,7 +108,7 @@
             
             <!-- Info membre et code de fidélité -->
             <div>
-              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2 mb-2">
+              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2 mb-2">
                 <p class="text-xs text-white/80">Code de fidélité</p>
                 <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode }}</p>
               </div>
@@ -121,8 +121,8 @@
         </div>
       </div>
 
-      <!-- Section QR Code de fidélité - Visible uniquement si toutes les données sont présentes -->
-      <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && customerId" class="mb-8">
+      <!-- Section QR Code de fidélité - Visible uniquement si l'option est activée -->
+      <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && customerId && showQRInCard" class="mb-8">
         <CustomerQRCode
           :loyalty-code="customerLoyaltyCode"
           :customer-id="customerId"
@@ -567,6 +567,14 @@ const qrCodeValue = computed(() => {
 // Paramètres de la carte
 const showPoints = computed(() => 
   companyData.value.card_settings?.showPoints !== false
+)
+
+const showLoyaltyCode = computed(() =>
+  companyData.value.card_settings?.showLoyaltyCode !== false
+)
+
+const showQRInCard = computed(() =>
+  companyData.value.card_settings?.showQRInCard === true
 )
 
 const cardGradient = computed(() => {
