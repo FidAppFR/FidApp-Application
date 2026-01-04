@@ -93,37 +93,42 @@
             </div>
             
             <!-- Points du client -->
-            <div v-if="showPoints && isLoggedIn && !isOwner" class="space-y-2">
-              <div class="flex items-center space-x-2">
-                <Star :size="20" class="text-yellow-400 fill-current" />
-                <span class="text-2xl font-bold">{{ customerPoints }} pts</span>
+            <div class="flex-1">
+              <div v-if="showPoints && isLoggedIn && !isOwner" class="space-y-2">
+                <div class="flex items-center space-x-2">
+                  <Star :size="20" class="text-yellow-400 fill-current" />
+                  <span class="text-2xl font-bold">{{ customerPoints }} pts</span>
+                </div>
+                <p class="text-white/80 text-sm">{{ customerName }}</p>
               </div>
-              <p class="text-white/80 text-sm">{{ customerName }}</p>
+              <div v-else-if="!isOwner && !isLoggedIn">
+                <p class="text-white/80 text-sm">Connectez-vous pour voir vos points</p>
+              </div>
             </div>
             
             <!-- Info membre et code de fidélité -->
-            <div v-if="isLoggedIn && !isOwner" class="space-y-2">
-              <div class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
+            <div>
+              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2 mb-2">
                 <p class="text-xs text-white/80">Code de fidélité</p>
-                <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode || 'Chargement...' }}</p>
+                <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode }}</p>
               </div>
               <div>
-                <p class="text-xs text-white/60">Membre depuis</p>
-                <p class="font-medium">{{ memberSince || 'Janvier 2024' }}</p>
+                <p class="text-xs text-white/60">{{ isLoggedIn && !isOwner ? 'Membre depuis' : 'Programme de fidélité' }}</p>
+                <p class="font-medium">{{ isLoggedIn && !isOwner ? memberSince : 'Rejoignez-nous !' }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Section QR Code de fidélité - Toujours visible pour les clients -->
-      <div v-if="isLoggedIn && !isOwner" class="mb-8">
+      <!-- Section QR Code de fidélité - Visible uniquement si toutes les données sont présentes -->
+      <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && customerId" class="mb-8">
         <CustomerQRCode
-          :loyalty-code="customerLoyaltyCode || 'XXXX-XXXX-XXXX'"
-          :customer-id="customerId || ''"
+          :loyalty-code="customerLoyaltyCode"
+          :customer-id="customerId"
           :company-id="companyId || ''"
-          :customer-name="customerName || 'Client'"
-          :company-name="companyData.name || 'FidApp'"
+          :customer-name="customerName"
+          :company-name="companyData.name"
         />
       </div>
 
@@ -821,12 +826,10 @@ const updateProfile = async () => {
 // Charger les données du client depuis la session
 const loadCustomerFromSession = () => {
   const session = localStorage.getItem('customer_session')
-  console.log('Loading customer from session:', session ? 'Session found' : 'No session')
   
   if (session) {
     try {
       const data = JSON.parse(session)
-      console.log('Session data:', data)
       
       isLoggedIn.value = true
       customerData.value = data
@@ -839,8 +842,6 @@ const loadCustomerFromSession = () => {
       if (companyParam) {
         companyId.value = companyParam
       }
-      
-      console.log('Customer loaded - ID:', customerId.value, 'Company:', companyId.value, 'isOwner:', isOwner.value)
       
       // Charger les détails complets du client
       loadCustomerDetails(data.id)
@@ -860,8 +861,6 @@ const loadCustomerDetails = async (customerId: string) => {
       .single()
     
     if (data) {
-      console.log('Customer details from DB:', data)
-      
       // Mettre à jour les données du profil
       profileData.value = {
         first_name: data.first_name,
@@ -878,8 +877,6 @@ const loadCustomerDetails = async (customerId: string) => {
       customerPoints.value = data.points || 0
       customerName.value = `${data.first_name} ${data.last_name}`
       customerLoyaltyCode.value = data.loyalty_code || ''
-      
-      console.log('Loyalty code set to:', customerLoyaltyCode.value)
       
       // S'assurer que companyId est défini
       if (!companyId.value && data.company_id) {
