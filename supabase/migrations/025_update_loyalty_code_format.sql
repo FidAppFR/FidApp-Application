@@ -1,9 +1,24 @@
 -- Mise à jour de la fonction de génération de code de fidélité pour un format 16 caractères alphanumériques
 
--- 1. Supprimer l'ancienne fonction et trigger
+-- 0. D'abord s'assurer que la colonne loyalty_code existe (depuis migration 024)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'customers' 
+                   AND column_name = 'loyalty_code') THEN
+        -- Ajouter la colonne si elle n'existe pas
+        ALTER TABLE customers ADD COLUMN loyalty_code TEXT UNIQUE;
+        
+        -- Créer les index
+        CREATE INDEX IF NOT EXISTS idx_customers_loyalty_code ON customers(loyalty_code);
+        CREATE INDEX IF NOT EXISTS idx_customers_company_loyalty ON customers(company_id, loyalty_code);
+    END IF;
+END $$;
+
+-- 1. Supprimer l'ancienne fonction et trigger s'ils existent
 DROP TRIGGER IF EXISTS trigger_set_loyalty_code ON customers;
-DROP FUNCTION IF EXISTS set_customer_loyalty_code();
-DROP FUNCTION IF EXISTS generate_loyalty_code();
+DROP FUNCTION IF EXISTS set_customer_loyalty_code() CASCADE;
+DROP FUNCTION IF EXISTS generate_loyalty_code() CASCADE;
 
 -- 2. Créer une nouvelle fonction pour générer un code unique de 16 caractères
 CREATE OR REPLACE FUNCTION generate_loyalty_code_v2()
@@ -58,21 +73,31 @@ DO $$
 DECLARE
     v_customer RECORD;
     v_new_code TEXT;
+    v_count INTEGER;
 BEGIN
-    -- Parcourir tous les clients
-    FOR v_customer IN 
-        SELECT id FROM customers
-    LOOP
-        -- Générer un nouveau code unique pour chaque client
-        v_new_code := generate_loyalty_code_v2();
+    -- Vérifier s'il y a des clients
+    SELECT COUNT(*) INTO v_count FROM customers;
+    
+    IF v_count > 0 THEN
+        -- Parcourir tous les clients
+        FOR v_customer IN 
+            SELECT id, loyalty_code FROM customers
+        LOOP
+            -- Générer un nouveau code unique pour chaque client
+            v_new_code := generate_loyalty_code_v2();
+            
+            -- Mettre à jour le client avec le nouveau code
+            UPDATE customers 
+            SET loyalty_code = v_new_code
+            WHERE id = v_customer.id;
+            
+            RAISE NOTICE 'Client % mis à jour avec le code %', v_customer.id, v_new_code;
+        END LOOP;
         
-        -- Mettre à jour le client avec le nouveau code
-        UPDATE customers 
-        SET loyalty_code = v_new_code
-        WHERE id = v_customer.id;
-        
-        RAISE NOTICE 'Client % mis à jour avec le code %', v_customer.id, v_new_code;
-    END LOOP;
+        RAISE NOTICE 'Total de % clients mis à jour', v_count;
+    ELSE
+        RAISE NOTICE 'Aucun client existant à mettre à jour';
+    END IF;
 END $$;
 
 -- 5. Créer une fonction pour obtenir les infos client par code de fidélité (mise à jour)
