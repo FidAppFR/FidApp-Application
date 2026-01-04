@@ -74,22 +74,6 @@
                 </div>
               </div>
             </div>
-            
-            <!-- Verso avec QR code (affichage conditionnel) -->
-            <div v-if="cardData.showQR || cardData.showExpiry" class="mt-4 bg-white rounded-2xl shadow-lg p-6">
-              <div class="flex items-center justify-between">
-                <div v-if="cardData.showQR" class="flex-1">
-                  <p class="text-xs text-gray-500 uppercase tracking-wider">Scannez pour gagner des points</p>
-                  <div class="mt-3 w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <QrCode :size="48" class="text-gray-400" />
-                  </div>
-                </div>
-                <div v-if="cardData.showExpiry" class="text-right">
-                  <p class="text-xs text-gray-500">Valable jusqu'au</p>
-                  <p class="font-bold">12/2025</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -342,15 +326,7 @@
                 </label>
                 <label class="flex items-center space-x-3">
                   <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showQRInCard" />
-                  <span class="text-sm">Afficher le QR code en section séparée</span>
-                </label>
-                <label class="flex items-center space-x-3">
-                  <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showQR" />
-                  <span class="text-sm">Afficher le QR code au verso (optionnel)</span>
-                </label>
-                <label class="flex items-center space-x-3">
-                  <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showExpiry" />
-                  <span class="text-sm">Afficher la date d'expiration</span>
+                  <span class="text-sm">Afficher la carte QR code sous la carte de fidélité</span>
                 </label>
               </div>
             </div>
@@ -384,10 +360,8 @@ const cardData = ref({
   backgroundUrl: null as string | null,
   welcomeMessage: 'Merci de votre fidélité !',
   showPoints: true,
-  showQR: true,
-  showExpiry: true,
-  showLoyaltyCode: true,  // Nouvelle option pour afficher le code de fidélité
-  showQRInCard: false,     // Nouvelle option pour afficher le QR dans la section séparée
+  showLoyaltyCode: true,  // Option pour afficher le code de fidélité
+  showQRInCard: true,      // Option pour afficher le QR dans la section séparée
   logoUrl: null as string | null
 })
 
@@ -441,10 +415,8 @@ const loadCardData = async () => {
         // cardData.value.gradient est déjà défini depuis card_gradient
         cardData.value.welcomeMessage = data.card_settings.welcomeMessage || cardData.value.welcomeMessage
         cardData.value.showPoints = data.card_settings.showPoints !== undefined ? data.card_settings.showPoints : true
-        cardData.value.showQR = data.card_settings.showQR !== undefined ? data.card_settings.showQR : true
-        cardData.value.showExpiry = data.card_settings.showExpiry !== undefined ? data.card_settings.showExpiry : true
         cardData.value.showLoyaltyCode = data.card_settings.showLoyaltyCode !== undefined ? data.card_settings.showLoyaltyCode : true
-        cardData.value.showQRInCard = data.card_settings.showQRInCard !== undefined ? data.card_settings.showQRInCard : false
+        cardData.value.showQRInCard = data.card_settings.showQRInCard !== undefined ? data.card_settings.showQRInCard : true
       }
     }
   } catch (error) {
@@ -656,8 +628,6 @@ const saveCardSettings = async () => {
       gradient: cardData.value.gradient,
       welcomeMessage: cardData.value.welcomeMessage,
       showPoints: cardData.value.showPoints,
-      showQR: cardData.value.showQR,
-      showExpiry: cardData.value.showExpiry,
       showLoyaltyCode: cardData.value.showLoyaltyCode,
       showQRInCard: cardData.value.showQRInCard
     }

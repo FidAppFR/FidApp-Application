@@ -1,18 +1,19 @@
 <template>
-  <div class="bg-white rounded-2xl shadow-lg p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-xl font-bold text-gray-900 flex items-center space-x-2">
-        <QrCode :size="24" class="text-violet-600" />
-        <span>Ma Carte de Fidélité</span>
-      </h3>
-      <button 
-        @click="downloadQRCode"
-        class="text-sm text-violet-600 hover:text-violet-700 font-medium flex items-center space-x-1"
-      >
-        <Download :size="16" />
-        <span>Télécharger</span>
-      </button>
-    </div>
+  <div>
+    <!-- Carte QR Code cliquable -->
+    <div 
+      @click="showModal = true"
+      class="bg-white rounded-2xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-shadow duration-300"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold text-gray-900 flex items-center space-x-2">
+          <QrCode :size="24" class="text-violet-600" />
+          <span>Ma Carte Dématérialisée</span>
+        </h3>
+        <div class="text-xs text-gray-500">
+          Cliquez pour agrandir
+        </div>
+      </div>
 
     <!-- Code de fidélité -->
     <div class="bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-4 mb-4 border border-violet-200">
@@ -28,22 +29,98 @@
       </div>
     </div>
 
-    <!-- QR Code -->
-    <div class="flex flex-col items-center space-y-4">
-      <div class="bg-white p-4 rounded-xl border-2 border-gray-200">
-        <canvas ref="qrCanvas" id="qr-canvas"></canvas>
-      </div>
-      
-      <div class="text-center">
-        <p class="text-sm text-gray-600 mb-2">
-          Présentez ce QR code en caisse pour cumuler vos points
-        </p>
-        <p class="text-xs text-gray-500">
-          Ce code est unique et personnel, ne le partagez pas
-        </p>
+      <!-- QR Code miniature -->
+      <div class="flex flex-col items-center space-y-4">
+        <div class="bg-gradient-to-br from-violet-50 to-purple-50 p-4 rounded-xl border-2 border-violet-200">
+          <canvas ref="qrCanvas" id="qr-canvas"></canvas>
+        </div>
+        
+        <div class="text-center">
+          <p class="text-sm text-gray-600 mb-1">
+            Présentez ce QR code en caisse
+          </p>
+          <p class="text-xs text-violet-600 font-medium">
+            → Cliquez pour scanner
+          </p>
+        </div>
       </div>
     </div>
 
+    <!-- Modal QR Code agrandi -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <!-- Backdrop -->
+          <div class="absolute inset-0 bg-black/70" @click="showModal = false"></div>
+          
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-2xl font-bold text-gray-900">
+                Carte de Fidélité
+              </h3>
+              <button 
+                @click="showModal = false"
+                class="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X :size="24" class="text-gray-500" />
+              </button>
+            </div>
+            
+            <!-- Code de fidélité -->
+            <div class="bg-gradient-to-r from-violet-100 to-purple-100 rounded-xl p-4 mb-6">
+              <p class="text-sm text-gray-700 font-medium mb-2">Code de fidélité</p>
+              <div class="flex items-center justify-between">
+                <p class="text-xl font-mono font-bold text-violet-900">{{ formattedCode }}</p>
+                <button 
+                  @click="copyToClipboard"
+                  class="p-2 text-violet-600 hover:bg-white/50 rounded-lg transition-colors"
+                >
+                  <Copy :size="20" />
+                </button>
+              </div>
+            </div>
+            
+            <!-- QR Code grand format -->
+            <div class="flex flex-col items-center space-y-4">
+              <div class="bg-white p-6 rounded-xl border-2 border-gray-200 shadow-inner">
+                <canvas ref="qrCanvasLarge" id="qr-canvas-large"></canvas>
+              </div>
+              
+              <p class="text-center text-sm text-gray-600">
+                Présentez ce code au commerçant
+              </p>
+              
+              <!-- Boutons d'action -->
+              <div class="flex space-x-3 w-full">
+                <button 
+                  @click="downloadQRCode"
+                  class="flex-1 px-4 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-medium rounded-xl hover:shadow-lg transition-all flex items-center justify-center space-x-2"
+                >
+                  <Download :size="18" />
+                  <span>Télécharger</span>
+                </button>
+                <button 
+                  @click="showModal = false"
+                  class="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
+                >
+                  Fermer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+    
     <!-- Message de succès pour la copie -->
     <Transition
       enter-active-class="duration-200 ease-out"
@@ -53,7 +130,7 @@
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 translate-y-2"
     >
-      <div v-if="showCopySuccess" class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2">
+      <div v-if="showCopySuccess" class="fixed bottom-4 right-4 z-[60] bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2">
         <CheckCircle :size="16" />
         <span class="text-sm">Code copié !</span>
       </div>
@@ -63,7 +140,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
-import { QrCode, Download, Copy, CheckCircle } from 'lucide-vue-next'
+import { QrCode, Download, Copy, CheckCircle, X } from 'lucide-vue-next'
 import QRCode from 'qrcode'
 
 interface Props {
@@ -82,7 +159,9 @@ const formattedCode = computed(() => {
   return props.loyaltyCode.match(/.{1,4}/g)?.join(' - ') || props.loyaltyCode
 })
 const qrCanvas = ref<HTMLCanvasElement | null>(null)
+const qrCanvasLarge = ref<HTMLCanvasElement | null>(null)
 const showCopySuccess = ref(false)
+const showModal = ref(false)
 
 // Données à encoder dans le QR code
 const qrData = computed(() => {
@@ -99,22 +178,45 @@ const qrData = computed(() => {
 
 // Générer le QR code
 const generateQRCode = async () => {
-  if (!qrCanvas.value) return
-  
   try {
-    await QRCode.toCanvas(qrCanvas.value, qrData.value, {
-      width: 250,
-      margin: 2,
-      color: {
-        dark: '#5B21B6',  // Violet foncé
-        light: '#FFFFFF'
-      },
-      errorCorrectionLevel: 'H'
-    })
+    // Générer le QR code miniature
+    if (qrCanvas.value) {
+      await QRCode.toCanvas(qrCanvas.value, qrData.value, {
+        width: 180,
+        margin: 2,
+        color: {
+          dark: '#5B21B6',  // Violet foncé
+          light: '#FFFFFF'
+        },
+        errorCorrectionLevel: 'H'
+      })
+    }
+    
+    // Générer le QR code grand format si la modal est ouverte
+    if (qrCanvasLarge.value) {
+      await QRCode.toCanvas(qrCanvasLarge.value, qrData.value, {
+        width: 300,
+        margin: 2,
+        color: {
+          dark: '#5B21B6',  // Violet foncé
+          light: '#FFFFFF'
+        },
+        errorCorrectionLevel: 'H'
+      })
+    }
   } catch (error) {
     console.error('Erreur génération QR code:', error)
   }
 }
+
+// Observer l'ouverture de la modal pour générer le grand QR code
+watch(showModal, async (newVal) => {
+  if (newVal) {
+    // Attendre que le DOM soit mis à jour
+    await new Promise(resolve => setTimeout(resolve, 100))
+    generateQRCode()
+  }
+})
 
 // Télécharger le QR code
 const downloadQRCode = () => {
