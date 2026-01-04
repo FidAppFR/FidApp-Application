@@ -76,23 +76,36 @@
             </div>
             
             <!-- Aperçu du Pass Mobile (si l'option est activée) -->
-            <div v-if="cardData.showQRInCard" class="mt-4">
-              <div class="bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 rounded-2xl shadow-md p-5 cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]">
-                <div class="text-center">
-                  <h4 class="text-base font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-3">
+            <div v-if="cardData.showQRInCard" class="mt-4 flex justify-center">
+              <div class="w-full bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 rounded-2xl shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02] overflow-hidden">
+                <!-- Header du Pass -->
+                <div class="bg-gradient-to-r from-violet-600 to-purple-600 py-2 text-center">
+                  <h4 class="text-sm font-bold text-white">
                     Pass Mobile
                   </h4>
-                  
-                  <!-- QR Code épuré -->
-                  <div class="inline-block bg-white p-3 rounded-xl shadow-sm">
-                    <div class="w-28 h-28 flex items-center justify-center">
-                      <QrCode :size="56" class="text-violet-500" />
+                </div>
+                
+                <!-- Contenu -->
+                <div class="p-4">
+                  <div class="flex flex-col items-center space-y-3">
+                    <!-- QR Code -->
+                    <div class="bg-white p-3 rounded-lg shadow-inner">
+                      <div class="w-24 h-24 flex items-center justify-center">
+                        <QrCode :size="48" class="text-violet-500" />
+                      </div>
                     </div>
+                    
+                    <!-- Code -->
+                    <div class="w-full bg-white rounded px-3 py-2 text-center shadow-sm">
+                      <p class="text-[10px] text-gray-500 uppercase tracking-wider mb-0.5">Code</p>
+                      <p class="text-xs font-mono font-bold text-gray-900">A1B2-C3D4-E5F6-G7H8</p>
+                    </div>
+                    
+                    <!-- Info -->
+                    <p class="text-[10px] text-gray-600">
+                      Scannable en caisse
+                    </p>
                   </div>
-                  
-                  <p class="text-xs text-gray-600 mt-3 font-medium">
-                    Scannable en caisse
-                  </p>
                 </div>
               </div>
             </div>

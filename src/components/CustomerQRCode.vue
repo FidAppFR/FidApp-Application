@@ -1,29 +1,42 @@
 <template>
-  <div>
+  <div class="flex flex-col items-center">
     <!-- Pass Mobile cliquable -->
     <div 
       @click="showModal = true"
-      class="bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 rounded-2xl shadow-md p-6 cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02]"
+      class="w-full max-w-sm bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 rounded-2xl shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02] overflow-hidden"
     >
-      <div class="text-center">
-        <h3 class="text-lg font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-4">
+      <!-- Header du Pass -->
+      <div class="bg-gradient-to-r from-violet-600 to-purple-600 py-3 text-center">
+        <h3 class="text-lg font-bold text-white">
           Pass Mobile
         </h3>
-        
-        <!-- QR Code épuré centré -->
-        <div class="inline-block bg-white p-4 rounded-xl shadow-sm mb-4">
-          <canvas ref="qrCanvas" id="qr-canvas"></canvas>
+      </div>
+      
+      <!-- Contenu centré -->
+      <div class="p-6">
+        <div class="flex flex-col items-center space-y-4">
+          <!-- QR Code -->
+          <div class="bg-white p-4 rounded-xl shadow-inner">
+            <canvas ref="qrCanvas" id="qr-canvas"></canvas>
+          </div>
+          
+          <!-- Code de fidélité -->
+          <div class="w-full bg-white rounded-lg px-4 py-3 text-center shadow-sm">
+            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Code fidélité</p>
+            <p class="text-base font-mono font-bold text-gray-900 tracking-wide">{{ formattedCode }}</p>
+          </div>
+          
+          <!-- Instructions -->
+          <p class="text-xs text-gray-600 text-center">
+            <span class="inline-flex items-center">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              Touchez pour agrandir
+            </span>
+          </p>
         </div>
-        
-        <!-- Code de fidélité intégré -->
-        <div class="bg-white/80 backdrop-blur rounded-lg px-4 py-2 inline-block">
-          <p class="text-xs text-gray-600 mb-1">Code fidélité</p>
-          <p class="text-sm font-mono font-bold text-gray-900 tracking-wide">{{ formattedCode }}</p>
-        </div>
-        
-        <p class="text-xs text-gray-600 mt-3 font-medium">
-          Scannable en caisse • Touchez pour agrandir
-        </p>
       </div>
     </div>
 
@@ -163,23 +176,23 @@ const generateQRCode = async () => {
     // Générer le QR code miniature
     if (qrCanvas.value) {
       await QRCode.toCanvas(qrCanvas.value, qrData.value, {
-        width: 180,
-        margin: 2,
+        width: 160,
+        margin: 1,
         color: {
-          dark: '#5B21B6',  // Violet foncé
+          dark: '#7C3AED',  // Violet
           light: '#FFFFFF'
         },
-        errorCorrectionLevel: 'H'
+        errorCorrectionLevel: 'M'
       })
     }
     
     // Générer le QR code grand format si la modal est ouverte
     if (qrCanvasLarge.value) {
       await QRCode.toCanvas(qrCanvasLarge.value, qrData.value, {
-        width: 300,
+        width: 280,
         margin: 2,
         color: {
-          dark: '#5B21B6',  // Violet foncé
+          dark: '#7C3AED',  // Violet
           light: '#FFFFFF'
         },
         errorCorrectionLevel: 'H'
