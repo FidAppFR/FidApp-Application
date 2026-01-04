@@ -58,7 +58,7 @@
       <!-- Carte de fidélité -->
       <div class="mb-8">
         <div 
-          class="relative h-56 rounded-2xl shadow-2xl overflow-hidden"
+          class="relative h-64 rounded-2xl shadow-2xl overflow-hidden"
           :class="companyData.card_theme !== 'custom' ? cardGradient : ''"
         >
           <!-- Fond personnalisé si type custom -->
@@ -107,14 +107,14 @@
             </div>
             
             <!-- Info membre et code de fidélité -->
-            <div>
-              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2 mb-2">
+            <div class="space-y-2">
+              <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
                 <p class="text-xs text-white/80">Code de fidélité</p>
                 <p class="text-lg font-mono font-bold text-white">{{ customerLoyaltyCode }}</p>
               </div>
               <div>
                 <p class="text-xs text-white/60">{{ isLoggedIn && !isOwner ? 'Membre depuis' : 'Programme de fidélité' }}</p>
-                <p class="font-medium">{{ isLoggedIn && !isOwner ? memberSince : 'Rejoignez-nous !' }}</p>
+                <p class="text-sm font-medium text-white">{{ isLoggedIn && !isOwner ? memberSince : 'Rejoignez-nous !' }}</p>
               </div>
             </div>
           </div>

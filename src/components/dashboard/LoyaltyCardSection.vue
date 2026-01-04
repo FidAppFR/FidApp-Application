@@ -10,13 +10,13 @@
       <div class="lg:order-2">
         <div class="sticky top-24">
           <h3 class="text-lg font-bold text-gray-900 mb-4">Aperçu en temps réel</h3>
-          <div class="bg-gray-100 rounded-xl p-6 flex items-center justify-center min-h-[400px]">
+          <div class="bg-gray-100 rounded-xl p-6 flex items-center justify-center min-h-[450px]">
             <div 
               :style="cardStyles"
-              class="w-full max-w-sm transform hover:scale-105 transition-transform duration-300"
+              class="w-full max-w-md transform hover:scale-105 transition-transform duration-300"
             >
             <!-- Recto de la carte -->
-            <div class="relative h-56 rounded-2xl shadow-2xl overflow-hidden">
+            <div class="relative h-64 rounded-2xl shadow-2xl overflow-hidden">
               <!-- Affichage du fond selon le type de thème -->
               <div v-if="cardData.themeType === 'custom' && (backgroundPreview || cardData.backgroundUrl)" 
                    class="absolute inset-0">
@@ -62,14 +62,14 @@
                 </div>
                 
                 <!-- Code de fidélité et info membre -->
-                <div>
-                  <div v-if="cardData.showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2 mb-2">
+                <div class="space-y-2">
+                  <div v-if="cardData.showLoyaltyCode" class="bg-white/20 backdrop-blur rounded-lg px-3 py-2">
                     <p class="text-xs text-white/80">Code de fidélité</p>
                     <p class="text-lg font-mono font-bold text-white">ABCD-1234-EFGH</p>
                   </div>
                   <div>
                     <p class="text-xs text-white/60">Membre depuis</p>
-                    <p class="font-medium">Janvier 2024</p>
+                    <p class="text-sm font-medium text-white">Janvier 2024</p>
                   </div>
                 </div>
               </div>
