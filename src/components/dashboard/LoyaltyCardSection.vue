@@ -74,6 +74,29 @@
                 </div>
               </div>
             </div>
+            
+            <!-- Aperçu de la carte QR Code (si l'option est activée) -->
+            <div v-if="cardData.showQRInCard" class="mt-4">
+              <div class="bg-white rounded-2xl shadow-lg p-4 cursor-pointer hover:shadow-xl transition-shadow">
+                <div class="flex items-center justify-between mb-3">
+                  <h4 class="text-sm font-bold text-gray-900 flex items-center space-x-2">
+                    <QrCode :size="18" class="text-violet-600" />
+                    <span>Carte Dématérialisée</span>
+                  </h4>
+                  <span class="text-xs text-gray-500">Cliquez pour agrandir</span>
+                </div>
+                
+                <!-- Mini QR Code -->
+                <div class="flex flex-col items-center space-y-3">
+                  <div class="bg-gradient-to-br from-violet-50 to-purple-50 p-3 rounded-xl border-2 border-violet-200">
+                    <div class="w-32 h-32 bg-white rounded-lg flex items-center justify-center">
+                      <QrCode :size="60" class="text-violet-600" />
+                    </div>
+                  </div>
+                  <p class="text-xs text-violet-600 font-medium">→ Cliquez pour scanner</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
