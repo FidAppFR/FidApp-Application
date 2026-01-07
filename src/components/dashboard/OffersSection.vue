@@ -24,12 +24,12 @@
             v-model="searchQuery"
             type="text"
             placeholder="Rechercher une offre..."
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
           />
         </div>
         <select
           v-model="filterStatus"
-          class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+          class="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
         >
           <option value="all">Toutes les offres</option>
           <option value="active">Actives</option>
@@ -38,7 +38,7 @@
         </select>
         <select
           v-model="filterType"
-          class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+          class="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
         >
           <option value="all">Tous types</option>
           <option value="discount">Réduction</option>
@@ -211,7 +211,7 @@
             <input
               v-model="offerForm.name"
               type="text"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               placeholder="Ex: Café offert, -20% sur votre commande..."
             />
           </div>
@@ -222,7 +222,7 @@
             <textarea
               v-model="offerForm.description"
               rows="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               placeholder="Décrivez votre offre en détail..."
             ></textarea>
           </div>
@@ -284,13 +284,13 @@
                 v-model.number="offerForm.value"
                 type="number"
                 min="0"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               />
               <input
                 v-else
                 v-model="offerForm.value_text"
                 type="text"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
                 placeholder="Ex: 1 produit offert"
               />
             </div>
@@ -301,7 +301,7 @@
                 v-model.number="offerForm.points_cost"
                 type="number"
                 min="0"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               />
             </div>
           </div>
@@ -312,7 +312,7 @@
             <textarea
               v-model="offerForm.conditions"
               rows="2"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               placeholder="Ex: Valable sur présentation en caisse, non cumulable..."
             ></textarea>
           </div>
@@ -324,7 +324,7 @@
               <input
                 v-model="offerForm.start_date"
                 type="date"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               />
             </div>
             <div>
@@ -332,7 +332,7 @@
               <input
                 v-model="offerForm.end_date"
                 type="date"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               />
             </div>
           </div>
@@ -345,7 +345,7 @@
                 v-model.number="offerForm.max_uses"
                 type="number"
                 min="0"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
                 placeholder="Laisser vide pour illimité"
               />
             </div>
@@ -355,7 +355,7 @@
                 v-model.number="offerForm.max_uses_per_customer"
                 type="number"
                 min="0"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
                 placeholder="Laisser vide pour illimité"
               />
             </div>

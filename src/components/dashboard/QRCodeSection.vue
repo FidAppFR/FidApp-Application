@@ -65,7 +65,7 @@
                 <input 
                   :value="qrUrl" 
                   readonly
-                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-600 dark:text-gray-400"
+                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-600 dark:text-gray-300"
                 />
                 <button 
                   @click="copyUrl"

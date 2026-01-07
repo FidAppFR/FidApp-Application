@@ -49,7 +49,7 @@
                       type="number"
                       min="0"
                       max="1000"
-                      class="w-32 px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500 transition-colors"
+                      class="w-32 px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                       placeholder="50"
                     />
                     <span class="text-gray-600 dark:text-gray-400 font-medium">points</span>
@@ -99,14 +99,14 @@
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Langue</label>
-                <select class="w-full md:w-64 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500">
+                <select class="w-full md:w-64 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400">
                   <option>Français</option>
                   <option>English</option>
                 </select>
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fuseau horaire</label>
-                <select class="w-full md:w-64 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500">
+                <select class="w-full md:w-64 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400">
                   <option>Paris (GMT+1)</option>
                   <option>Londres (GMT)</option>
                 </select>

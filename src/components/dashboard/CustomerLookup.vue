@@ -17,7 +17,7 @@
               <input
                 v-model="searchCode"
                 type="text"
-                class="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors uppercase font-mono tracking-wider"
+                class="w-full px-4 py-3 pl-12 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors uppercase font-mono tracking-wider"
                 placeholder="Entrez le code à 16 caractères"
                 @keyup.enter="searchCustomer"
                 maxlength="16"
@@ -155,7 +155,7 @@
                   v-model.number="pointsToAdd"
                   type="number"
                   min="1"
-                  class="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="flex-1 px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                   placeholder="Points"
                 />
                 <button
@@ -180,7 +180,7 @@
                   type="number"
                   min="1"
                   :max="customerFound.points"
-                  class="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="flex-1 px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                   placeholder="Points"
                 />
                 <button

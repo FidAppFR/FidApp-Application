@@ -67,7 +67,7 @@
               v-model.number="bonusSettings.birthday_points"
               type="number"
               min="0"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               :disabled="!bonusSettings.birthday_enabled"
             />
           </div>
@@ -78,7 +78,7 @@
             </label>
             <select
               v-model="bonusSettings.birthday_auto_apply"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               :disabled="!bonusSettings.birthday_enabled"
             >
               <option value="same_day">Le jour de l'anniversaire</option>
@@ -95,7 +95,7 @@
           <textarea
             v-model="bonusSettings.birthday_message"
             rows="2"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
             :disabled="!bonusSettings.birthday_enabled"
           ></textarea>
         </div>
@@ -143,7 +143,7 @@
               v-model.number="bonusSettings.referral_points_referrer"
               type="number"
               min="0"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               :disabled="!bonusSettings.referral_enabled"
             />
           </div>
@@ -156,7 +156,7 @@
               v-model.number="bonusSettings.referral_points_referee"
               type="number"
               min="0"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               :disabled="!bonusSettings.referral_enabled"
             />
           </div>
@@ -169,7 +169,7 @@
           <textarea
             v-model="bonusSettings.referral_conditions"
             rows="3"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
             :disabled="!bonusSettings.referral_enabled"
             placeholder="Ex: Le filleul doit effectuer un premier achat..."
           ></textarea>
@@ -279,7 +279,7 @@
             <input
               v-model="eventForm.name"
               type="text"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               placeholder="Ex: Black Friday"
             />
           </div>
@@ -289,7 +289,7 @@
             <textarea
               v-model="eventForm.description"
               rows="2"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
             ></textarea>
           </div>
 
@@ -299,7 +299,7 @@
               v-model.number="eventForm.points"
               type="number"
               min="1"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
             />
           </div>
 
@@ -309,7 +309,7 @@
               <input
                 v-model="eventForm.start_date"
                 type="date"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               />
             </div>
             <div>
@@ -317,7 +317,7 @@
               <input
                 v-model="eventForm.end_date"
                 type="date"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+                class="w-full px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               />
             </div>
           </div>

@@ -47,7 +47,7 @@
               v-model.number="settings.welcome_points"
               type="number"
               min="0"
-              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+              class="flex-1 px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
               :disabled="!settings.welcome_enabled"
             />
             <div class="flex items-center gap-1 px-3 py-2 bg-amber-50 rounded-lg">
@@ -65,7 +65,7 @@
           <input
             v-model="settings.welcome_message"
             type="text"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
             :disabled="!settings.welcome_enabled"
             placeholder="Ex: Bienvenue dans notre programme !"
           />
@@ -80,7 +80,7 @@
         <textarea
           v-model="settings.welcome_conditions"
           rows="3"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600"
+          class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-600"
           :disabled="!settings.welcome_enabled"
           placeholder="Ex: Valide après première visite, nécessite vérification email..."
         ></textarea>

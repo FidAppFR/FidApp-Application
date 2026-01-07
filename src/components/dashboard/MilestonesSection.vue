@@ -224,7 +224,7 @@
                   v-model="formData.name"
                   type="text"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   placeholder="Ex: Atteindre 100 clients"
                 />
               </div>
@@ -237,7 +237,7 @@
                 <textarea
                   v-model="formData.description"
                   rows="2"
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   placeholder="Décrivez votre objectif..."
                 ></textarea>
               </div>
@@ -250,7 +250,7 @@
                 <select
                   v-model="formData.type"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                 >
                   <option value="customer_count">Nombre de clients</option>
                   <option value="points_distributed">Points distribués</option>
@@ -273,7 +273,7 @@
                     type="number"
                     min="1"
                     required
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                     placeholder="100"
                   />
                 </div>
@@ -285,7 +285,7 @@
                     v-model.number="formData.current_value"
                     type="number"
                     min="0"
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                     placeholder="0"
                     :disabled="!editingMilestone"
                   />
@@ -301,7 +301,7 @@
                   <input
                     v-model="formData.start_date"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   />
                 </div>
                 <div>
@@ -311,7 +311,7 @@
                   <input
                     v-model="formData.end_date"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   />
                 </div>
               </div>
@@ -324,7 +324,7 @@
                 <input
                   v-model="formData.reward_description"
                   type="text"
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   placeholder="Ex: Bonus de 500€"
                 />
               </div>

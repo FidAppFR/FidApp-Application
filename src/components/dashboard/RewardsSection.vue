@@ -185,7 +185,7 @@
                   v-model="formData.name"
                   type="text"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   placeholder="Ex: Café gratuit"
                 />
               </div>
@@ -198,7 +198,7 @@
                 <textarea
                   v-model="formData.description"
                   rows="3"
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   placeholder="Ex: Un café offert après 10 achats"
                 ></textarea>
               </div>
@@ -211,7 +211,7 @@
                 <select
                   v-model="formData.category"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                 >
                   <option value="product">Produit</option>
                   <option value="discount">Réduction</option>
@@ -232,7 +232,7 @@
                   type="number"
                   min="0"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   placeholder="100"
                 />
               </div>
@@ -248,7 +248,7 @@
                     type="number"
                     min="0"
                     max="100"
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                     placeholder="20"
                   />
                 </div>
@@ -261,7 +261,7 @@
                     type="number"
                     min="0"
                     step="0.01"
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                     placeholder="5.00"
                   />
                 </div>
@@ -276,7 +276,7 @@
                   v-model.number="formData.max_uses_per_customer"
                   type="number"
                   min="0"
-                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   placeholder="Illimité"
                 />
               </div>
@@ -290,7 +290,7 @@
                   <input
                     v-model="formData.valid_from"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   />
                 </div>
                 <div>
@@ -300,7 +300,7 @@
                   <input
                     v-model="formData.valid_until"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                   />
                 </div>
               </div>

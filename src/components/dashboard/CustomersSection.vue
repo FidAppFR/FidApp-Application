@@ -26,12 +26,12 @@
             v-model="searchQuery"
             type="text"
             placeholder="Rechercher un client..."
-            class="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500 transition-colors"
+            class="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
           />
         </div>
         <select 
           v-model="filter"
-          class="px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500 transition-colors"
+          class="px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
         >
           <option value="all">Tous les clients</option>
           <option value="active">Clients actifs</option>
@@ -343,7 +343,7 @@
                   v-model.number="productQuantity"
                   type="number"
                   min="1"
-                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                 />
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Total: {{ (selectedProduct.points * productQuantity) }} points
@@ -390,7 +390,7 @@
                   type="number"
                   min="0"
                   :max="pointsOperation === 'remove' ? selectedCustomer.points : undefined"
-                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                   placeholder="0"
                 />
                 <p v-if="pointsOperation === 'remove'" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -407,7 +407,7 @@
                 </label>
                 <select
                   v-model="bonusType"
-                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                 >
                   <option value="welcome">Bonus de bienvenue (50 pts)</option>
                   <option value="birthday">Bonus anniversaire (100 pts)</option>
@@ -425,7 +425,7 @@
               <textarea
                 v-model="pointsReason"
                 rows="2"
-                class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                 placeholder="Ex: Bonus anniversaire, Ajustement manuel..."
               ></textarea>
             </div>
@@ -590,7 +590,7 @@
                       <input
                         v-model="editValue"
                         type="text"
-                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                       />
                       <button
                         @click="saveDirectEdit('first_name')"
@@ -625,7 +625,7 @@
                       <input
                         v-model="editValue"
                         type="text"
-                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                       />
                       <button
                         @click="saveDirectEdit('last_name')"
@@ -663,7 +663,7 @@
                       <input
                         v-model="editValue"
                         type="email"
-                        class="w-full px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="w-full px-3 py-1 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                         placeholder="Nouveau email"
                       />
                       <div class="flex items-center space-x-2">
@@ -687,7 +687,7 @@
                           <input
                             :value="generatedLink"
                             readonly
-                            class="flex-1 px-2 py-1 bg-white dark:bg-gray-800 border border-orange-200 rounded text-xs"
+                            class="flex-1 px-2 py-1 bg-white dark:bg-gray-700 border border-orange-200 dark:border-gray-600 rounded text-xs text-gray-900 dark:text-white"
                           />
                           <button
                             @click="copyLink"
@@ -721,7 +721,7 @@
                       <input
                         v-model="editValue"
                         type="tel"
-                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400"
                       />
                       <button
                         @click="saveDirectEdit('phone')"

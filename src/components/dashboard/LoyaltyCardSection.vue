@@ -128,7 +128,7 @@
               <input
                 v-model="cardData.companyName"
                 type="text"
-                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                 placeholder="Nom de votre entreprise"
               />
             </div>
@@ -340,7 +340,7 @@
               <textarea
                 v-model="cardData.welcomeMessage"
                 rows="3"
-                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
                 placeholder="Merci de votre fidélité !"
               ></textarea>
             </div>
