@@ -73,14 +73,14 @@
           </div>
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-white dark:bg-gray-800/20 backdrop-blur rounded-xl flex items-center justify-center overflow-hidden">
-              <!-- Image désactivée temporairement jusqu'à migration DB -->
-              <!-- <img 
+              <img 
                 v-if="offer.image_url" 
                 :src="offer.image_url" 
                 alt="Icon" 
                 class="w-full h-full object-cover"
-              /> -->
-              <component :is="getOfferIcon(offer.type)" :size="24" class="text-white" />
+                @error="(e) => e.target.style.display = 'none'"
+              />
+              <component v-if="!offer.image_url" :is="getOfferIcon(offer.type)" :size="24" class="text-white" />
             </div>
             <div>
               <span class="text-white/80 text-xs uppercase tracking-wider">{{ getOfferTypeLabel(offer.type) }}</span>
@@ -228,9 +228,7 @@
             ></textarea>
           </div>
 
-          <!-- Image de l'offre - DÉSACTIVÉ TEMPORAIREMENT -->
-          <!-- La fonction image sera réactivée après migration de la base de données -->
-          <!--
+          <!-- Image de l'offre (optionnel) -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image de l'offre (optionnel)</label>
             <div class="flex items-center gap-4">
@@ -269,11 +267,10 @@
                   <X :size="16" class="inline mr-2" />
                   Supprimer
                 </button>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">JPG, PNG, WebP ou SVG. Max 5MB.</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">JPG, PNG, WebP ou SVG. Max 5MB. (Optionnel)</p>
               </div>
             </div>
           </div>
-          -->
 
           <!-- Valeur selon le type -->
           <div class="grid grid-cols-2 gap-4">
@@ -639,7 +636,7 @@ const saveOffer = async () => {
       uploadingImage.value = false
     }
 
-    // Préparer les données de l'offre (sans image_url pour l'instant)
+    // Préparer les données de l'offre
     const offerData: any = {
       company_id: userData.id,
       name: offerForm.value.name,
@@ -655,21 +652,36 @@ const saveOffer = async () => {
       max_uses_per_customer: offerForm.value.max_uses_per_customer || null,
       is_active: offerForm.value.is_active
     }
-    
-    // Ajouter image_url seulement si la colonne existe
-    // Ceci sera activé après migration de la base de données
-    // if (imageUrl) {
-    //   offerData.image_url = imageUrl
-    // }
 
     console.log('Données à sauvegarder:', offerData)
 
     if (editingOffer.value) {
-      const { data, error } = await supabase
+      // Première tentative avec image_url si disponible
+      let dataToUpdate = { ...offerData }
+      if (imageUrl) {
+        dataToUpdate.image_url = imageUrl
+      }
+      
+      let { data, error } = await supabase
         .from('offers')
-        .update(offerData)
+        .update(dataToUpdate)
         .eq('id', editingOffer.value.id)
         .select()
+
+      // Si erreur avec image_url, réessayer sans
+      if (error && error.message.includes('image_url')) {
+        console.log('Colonne image_url non disponible, mise à jour sans image')
+        delete dataToUpdate.image_url
+        
+        const retryResult = await supabase
+          .from('offers')
+          .update(dataToUpdate)
+          .eq('id', editingOffer.value.id)
+          .select()
+        
+        data = retryResult.data
+        error = retryResult.error
+      }
 
       if (error) {
         console.error('Erreur mise à jour offre:', error)
@@ -680,10 +692,30 @@ const saveOffer = async () => {
         closeOfferModal()
       }
     } else {
-      const { data, error } = await supabase
+      // Première tentative avec image_url si disponible
+      let dataToInsert = { ...offerData }
+      if (imageUrl) {
+        dataToInsert.image_url = imageUrl
+      }
+      
+      let { data, error } = await supabase
         .from('offers')
-        .insert([offerData])
+        .insert([dataToInsert])
         .select()
+
+      // Si erreur avec image_url, réessayer sans
+      if (error && error.message.includes('image_url')) {
+        console.log('Colonne image_url non disponible, création sans image')
+        delete dataToInsert.image_url
+        
+        const retryResult = await supabase
+          .from('offers')
+          .insert([dataToInsert])
+          .select()
+        
+        data = retryResult.data
+        error = retryResult.error
+      }
 
       if (error) {
         console.error('Erreur création offre:', error)
