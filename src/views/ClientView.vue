@@ -61,7 +61,7 @@
       <!-- Section Points et Récompenses style McDonald's -->
       <div class="mb-12">
         <!-- Carte principale des points -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6">
           <!-- En-tête avec nom de l'entreprise et points -->
           <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
@@ -124,14 +124,14 @@
           <div class="grid grid-cols-2 gap-3">
             <button 
               @click="openProfileModal"
-              class="px-4 py-3 bg-gray-50 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 font-medium"
+              class="px-4 py-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 font-medium"
             >
               <User :size="18" />
               Mon identifiant
             </button>
             <button 
               @click="handleAddToWallet"
-              class="px-4 py-3 bg-violet-50 text-violet-600 rounded-xl hover:bg-violet-100 transition-colors flex items-center justify-center gap-2 font-medium"
+              class="px-4 py-3 bg-violet-50 text-violet-600 rounded-lg hover:bg-violet-100 transition-colors flex items-center justify-center gap-2 font-medium"
             >
               <Smartphone :size="18" />
               Ajouter ma carte à mon Wallet
@@ -173,7 +173,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <!-- Carte récompense -->
               <div v-for="offer in availableOffers" :key="offer.id" 
-                   class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+                   class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all cursor-pointer"
                    @click="selectedReward = offer">
                 <div class="flex">
                   <!-- Image de la récompense -->
@@ -215,7 +215,7 @@
           </div>
           
           <!-- Historique -->
-          <div v-else-if="rewardsTab === 'history'" class="bg-white rounded-xl p-6">
+          <div v-else-if="rewardsTab === 'history'" class="bg-white rounded-lg p-6">
             <p class="text-gray-500 text-center py-8">Votre historique apparaîtra ici</p>
           </div>
         </div>
@@ -228,7 +228,7 @@
       
       <!-- Message si aucune récompense -->
       <div v-else-if="rewards.length === 0 && offers.length === 0" class="text-center py-16">
-        <div class="w-32 h-32 bg-gradient-to-br from-violet-100 to-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-6 rotate-3">
+        <div class="w-32 h-32 bg-gradient-to-br from-violet-100 to-pink-100 rounded-lg flex items-center justify-center mx-auto mb-6 rotate-3">
           <Gift :size="48" class="text-violet-400" />
         </div>
         <p class="text-gray-600 text-xl font-medium">Le catalogue est en préparation</p>
@@ -250,7 +250,7 @@
         <div v-if="showRedeemModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div class="absolute inset-0 bg-black/50" @click="showRedeemModal = false"></div>
           
-          <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
+          <div class="relative bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
             <div class="text-center">
               <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle :size="32" class="text-green-600" />
@@ -284,7 +284,7 @@
         <div v-if="showProfileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div class="absolute inset-0 bg-black/50" @click="showProfileModal = false"></div>
           
-          <div class="relative bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full">
+          <div class="relative bg-white rounded-lg shadow-2xl p-6 max-w-sm w-full">
             <!-- Header du modal -->
             <div class="flex items-center justify-between mb-6">
               <h3 class="text-xl font-bold text-gray-900">Mon identifiant</h3>
@@ -298,12 +298,12 @@
             
             <!-- QR Code centré -->
             <div class="flex flex-col items-center space-y-4">
-              <div class="bg-white p-4 rounded-xl shadow-inner border border-gray-200">
+              <div class="bg-white p-4 rounded-lg shadow-inner border border-gray-200">
                 <canvas ref="qrCanvasProfile" id="qr-canvas-profile"></canvas>
               </div>
               
               <!-- Code de fidélité -->
-              <div class="w-full bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4">
+              <div class="w-full bg-gradient-to-br from-violet-50 to-purple-50 rounded-lg p-4">
                 <p class="text-xs text-gray-600 font-medium mb-2 text-center">Code de fidélité</p>
                 <p class="text-xl font-mono font-bold text-violet-900 text-center">{{ formattedLoyaltyCode }}</p>
               </div>
