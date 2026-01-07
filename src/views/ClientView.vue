@@ -251,392 +251,178 @@
         </Transition>
       </div>
 
-      <!-- Section récompenses moderne et épurée -->
+      <!-- Section Points et Récompenses style McDonald's -->
       <div class="mb-8">
-        <!-- En-tête minimaliste avec animations -->
-        <div class="relative mb-8 py-8">
-          <!-- Fond animé subtil -->
-          <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-80 h-80 bg-violet-200/30 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-200/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
-          </div>
-          
-          <div class="relative z-10">
-            <!-- Titre et sous-titre centrés -->
-            <div class="text-center mb-8">
-              <div class="inline-flex items-center gap-2 mb-4">
-                <div class="h-px w-12 bg-gradient-to-r from-transparent to-violet-400"></div>
-                <span class="text-violet-600 text-sm font-medium tracking-wider uppercase">Programme fidélité</span>
-                <div class="h-px w-12 bg-gradient-to-l from-transparent to-violet-400"></div>
-              </div>
-              <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
-                Vos Privilèges
-              </h2>
-              <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-                Profitez de récompenses exclusives et cumulez des points à chaque visite
-              </p>
+        <!-- Carte principale des points -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-4">
+          <!-- En-tête avec nom de l'entreprise et points -->
+          <div class="mb-6">
+            <div class="flex items-center gap-2 mb-3">
+              <Star class="w-5 h-5 text-yellow-500 fill-yellow-500" />
+              <h3 class="text-lg font-bold text-gray-900">{{ companyData.name || 'PROGRAMME FIDÉLITÉ' }}</h3>
             </div>
             
-            <!-- Cartes de stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              <!-- Carte points -->
-              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 p-6 group">
-                <div class="flex items-start justify-between mb-4">
-                  <div class="p-3 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
-                    <Star class="w-6 h-6 text-white fill-white" />
-                  </div>
-                  <span class="text-xs text-gray-500 font-medium">Solde actuel</span>
+            <div class="flex items-baseline gap-3">
+              <span class="text-5xl font-black text-violet-600">{{ customerPoints }}</span>
+              <span class="text-2xl font-medium text-gray-600">points</span>
+            </div>
+            
+            <p v-if="customerPoints > 0" class="text-sm text-gray-500 mt-2">
+              dont <span class="font-semibold">{{ customerPoints }}</span> points expirant le {{ getExpirationDate() }}
+            </p>
+          </div>
+          
+          <!-- Barre de progression vers la prochaine récompense -->
+          <div class="mb-6">
+            <div class="relative">
+              <!-- Barre de fond -->
+              <div class="h-12 bg-gray-100 rounded-full overflow-hidden">
+                <!-- Barre de progression -->
+                <div 
+                  class="h-full bg-gradient-to-r from-violet-500 to-purple-600 rounded-full transition-all duration-1000 relative"
+                  :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
+                >
+                  <!-- Indicateur actuel -->
+                  <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 bg-white border-4 border-violet-600 rounded-full shadow-lg"></div>
                 </div>
-                <div class="space-y-1">
-                  <h3 class="text-3xl font-black text-gray-900">{{ customerPoints }}</h3>
-                  <p class="text-sm text-gray-500">points disponibles</p>
-                  <!-- Mini graphique de progression -->
-                  <div class="pt-3">
-                    <div class="flex items-center gap-2 text-xs">
-                      <span class="text-gray-500">Prochain palier</span>
-                      <span class="font-bold text-violet-600">{{ getNextRewardThreshold() }} pts</span>
+              </div>
+              
+              <!-- Marqueurs de progression -->
+              <div class="absolute inset-0 flex items-center">
+                <div class="flex justify-between w-full px-1">
+                  <!-- Points de référence -->
+                  <span v-for="threshold in getProgressThresholds()" 
+                        :key="threshold"
+                        :style="`left: ${(threshold / getNextRewardThreshold()) * 100}%`"
+                        class="absolute text-xs font-semibold text-gray-600 -bottom-6">
+                    {{ threshold }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Labels sous la barre -->
+            <div class="flex justify-between items-center mt-8 text-sm">
+              <span class="text-gray-500">0</span>
+              <span class="text-gray-500">{{ getNextRewardThreshold() }} pts</span>
+            </div>
+          </div>
+          
+          <!-- Boutons d'action -->
+          <div class="grid grid-cols-2 gap-3">
+            <button 
+              @click="showProfileModal = true"
+              class="px-4 py-3 bg-gray-50 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 font-medium"
+            >
+              <User :size="18" />
+              Mon identifiant
+            </button>
+            <button 
+              @click="showQRModal = true"
+              v-if="customerLoyaltyCode && customerId"
+              class="px-4 py-3 bg-violet-50 text-violet-600 rounded-xl hover:bg-violet-100 transition-colors flex items-center justify-center gap-2 font-medium"
+            >
+              Ajouter ma carte à mon Wallet
+            </button>
+          </div>
+        </div>
+        
+        <!-- Section "Mes avantages" -->
+        <div class="mb-8">
+          <!-- Onglets -->
+          <div class="flex gap-4 mb-6">
+            <button 
+              @click="rewardsTab = 'available'"
+              :class="[
+                'text-lg font-bold pb-2 border-b-2 transition-colors',
+                rewardsTab === 'available' 
+                  ? 'text-violet-600 border-violet-600' 
+                  : 'text-gray-400 border-transparent hover:text-gray-600'
+              ]"
+            >
+              Mes avantages
+            </button>
+            <button 
+              @click="rewardsTab = 'history'"
+              :class="[
+                'text-lg font-bold pb-2 border-b-2 transition-colors',
+                rewardsTab === 'history' 
+                  ? 'text-violet-600 border-violet-600' 
+                  : 'text-gray-400 border-transparent hover:text-gray-600'
+              ]"
+            >
+              Mon historique
+            </button>
+          </div>
+          
+          <!-- Contenu des onglets -->
+          <div v-if="rewardsTab === 'available'">
+            <!-- Grille des récompenses disponibles -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Carte récompense -->
+              <div v-for="offer in availableOffers" :key="offer.id" 
+                   class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+                   @click="selectedReward = offer">
+                <div class="flex">
+                  <!-- Image de la récompense -->
+                  <div class="w-32 h-32 bg-gradient-to-br from-violet-100 to-purple-100 flex items-center justify-center p-4">
+                    <div v-if="offer.image_url" class="w-full h-full">
+                      <img :src="offer.image_url" alt="" class="w-full h-full object-contain" />
                     </div>
-                    <div class="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div 
-                        class="h-full bg-gradient-to-r from-violet-400 to-purple-500 rounded-full transition-all duration-1000"
-                        :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
-                      ></div>
+                    <div v-else class="w-20 h-20 rounded-full border-4 border-dashed border-violet-300 flex items-center justify-center">
+                      <component :is="getOfferIcon(offer.type)" class="w-10 h-10 text-violet-400" />
+                    </div>
+                  </div>
+                  
+                  <!-- Contenu de la récompense -->
+                  <div class="flex-1 p-4">
+                    <h4 class="font-bold text-gray-900 mb-1">{{ offer.name }}</h4>
+                    <p class="text-sm text-gray-500 mb-2">{{ offer.points_cost }} points</p>
+                    
+                    <!-- Bouton d'ajout -->
+                    <button 
+                      v-if="customerPoints >= offer.points_cost"
+                      @click.stop="redeemOffer(offer)"
+                      class="w-8 h-8 bg-violet-600 text-white rounded-full flex items-center justify-center hover:bg-violet-700 transition-colors"
+                    >
+                      <Plus :size="20" />
+                    </button>
+                    <div v-else class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                      <Lock :size="16" class="text-gray-400" />
                     </div>
                   </div>
                 </div>
               </div>
               
-              <!-- Carte récompenses disponibles -->
-              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 p-6 group">
-                <div class="flex items-start justify-between mb-4">
-                  <div class="p-3 bg-gradient-to-br from-violet-400 to-purple-500 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
-                    <Gift class="w-6 h-6 text-white" />
-                  </div>
-                  <span class="text-xs text-gray-500 font-medium">Disponibles</span>
-                </div>
-                <div class="space-y-1">
-                  <h3 class="text-3xl font-black text-gray-900">{{ availableOffersCount }}</h3>
-                  <p class="text-sm text-gray-500">récompenses à échanger</p>
-                  <div class="pt-3">
-                    <div class="flex -space-x-2">
-                      <div v-for="i in Math.min(availableOffersCount, 5)" :key="i" 
-                           class="w-8 h-8 bg-gradient-to-br from-violet-400 to-purple-500 rounded-full border-2 border-white flex items-center justify-center">
-                        <Star class="w-4 h-4 text-white fill-white" />
-                      </div>
-                      <div v-if="availableOffersCount > 5" 
-                           class="w-8 h-8 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center">
-                        <span class="text-xs font-bold text-gray-600">+{{ availableOffersCount - 5 }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <!-- Message si aucune récompense -->
+              <div v-if="availableOffers.length === 0" class="col-span-2 text-center py-12">
+                <Gift :size="48" class="mx-auto mb-4 text-gray-300" />
+                <p class="text-gray-500">Aucune récompense disponible pour le moment</p>
               </div>
-              
-              <!-- Carte niveau fidélité -->
-              <div class="bg-gradient-to-br from-violet-600 to-purple-600 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 text-white group">
-                <div class="flex items-start justify-between mb-4">
-                  <div class="p-3 bg-white/20 backdrop-blur rounded-xl group-hover:scale-110 transition-transform">
-                    <Award class="w-6 h-6 text-white" />
-                  </div>
-                  <span class="text-xs text-white/80 font-medium">Votre niveau</span>
-                </div>
-                <div class="space-y-1">
-                  <h3 class="text-3xl font-black">
-                    {{ customerPoints >= 1000 ? 'Gold' : customerPoints >= 500 ? 'Silver' : 'Bronze' }}
-                  </h3>
-                  <p class="text-sm text-white/80">Membre {{ customerPoints >= 1000 ? 'premium' : customerPoints >= 500 ? 'privilégié' : 'fidèle' }}</p>
-                  <div class="pt-3">
-                    <div class="flex items-center gap-2">
-                      <div v-for="i in 3" :key="i" 
-                           :class="[
-                             'w-8 h-1 rounded-full transition-all',
-                             customerPoints >= (i === 1 ? 0 : i === 2 ? 500 : 1000) 
-                               ? 'bg-white' 
-                               : 'bg-white/30'
-                           ]">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Liste moderne des offres -->
-        <div v-if="loading" class="flex justify-center py-12">
-          <Loader2 :size="40" class="text-violet-600 animate-spin" />
-        </div>
-        
-        <div v-else-if="rewards.length === 0 && offers.length === 0" class="text-center py-16">
-          <div class="w-32 h-32 bg-gradient-to-br from-violet-100 to-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-6 rotate-3">
-            <Gift :size="48" class="text-violet-400" />
-          </div>
-          <p class="text-gray-600 text-xl font-medium">Le catalogue est en préparation</p>
-          <p class="text-gray-400 mt-2">De nouvelles surprises arrivent bientôt !</p>
-        </div>
-        
-        <div v-else>
-          <!-- Filtres et tri -->
-          <div class="flex flex-wrap items-center gap-3 mb-8">
-            <button 
-              @click="filterCategory = 'all'"
-              :class="filterCategory === 'all' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="px-4 py-2 rounded-full font-medium transition-all"
-            >
-              Tout voir
-            </button>
-            <button 
-              @click="filterCategory = 'offers'"
-              :class="filterCategory === 'offers' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="px-4 py-2 rounded-full font-medium transition-all"
-            >
-              Offres spéciales
-            </button>
-            <button 
-              @click="filterCategory = 'rewards'"
-              :class="filterCategory === 'rewards' ? 'bg-violet-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-              class="px-4 py-2 rounded-full font-medium transition-all"
-            >
-              Récompenses
-            </button>
-            <div class="ml-auto">
-              <select v-model="sortBy" class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-violet-600">
-                <option value="points_asc">Points croissants</option>
-                <option value="points_desc">Points décroissants</option>
-                <option value="available">Disponibles d'abord</option>
-              </select>
             </div>
           </div>
           
-          <!-- Liste des items façon marketplace -->
-          <div class="space-y-4">
-            <!-- Offres -->
-            <template v-if="filterCategory === 'all' || filterCategory === 'offers'">
-              <div 
-                v-for="offer in sortedOffers" 
-                :key="'offer-' + offer.id"
-                class="group relative bg-white rounded-2xl border-2 transition-all duration-300"
-                :class="customerPoints >= offer.points_cost ? 'border-violet-200 hover:border-violet-400 hover:shadow-xl' : 'border-gray-100 opacity-75'"
-              >
-                <div class="flex flex-col md:flex-row">
-                  <!-- Zone visuelle -->
-                  <div class="relative w-full md:w-48 h-48 md:h-auto">
-                    <div 
-                      v-if="offer.image_url"
-                      class="absolute inset-0 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none overflow-hidden"
-                    >
-                      <img :src="offer.image_url" alt="" class="w-full h-full object-cover" />
-                    </div>
-                    <div 
-                      v-else
-                      :class="getOfferGradient(offer.type)"
-                      class="absolute inset-0 bg-gradient-to-br rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none"
-                    >
-                      <div class="absolute inset-0 flex items-center justify-center">
-                        <component :is="getOfferIcon(offer.type)" :size="48" class="text-white/80" />
-                      </div>
-                    </div>
-                    
-                    <!-- Badge de type -->
-                    <div class="absolute top-4 left-4">
-                      <span :class="getOfferBadgeClass(offer.type)" class="px-3 py-1.5 text-xs font-bold rounded-full backdrop-blur-md">
-                        {{ getOfferTypeLabel(offer.type) }}
-                      </span>
-                    </div>
-                    
-                    <!-- Valeur mise en avant -->
-                    <div v-if="offer.type === 'discount' && offer.value" class="absolute bottom-4 right-4">
-                      <div class="bg-white/95 backdrop-blur rounded-xl px-3 py-2 shadow-lg">
-                        <p class="text-2xl font-black text-green-600">-{{ offer.value }}%</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Contenu -->
-                  <div class="flex-1 p-6">
-                    <div class="flex flex-col h-full">
-                      <div class="flex-1">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ offer.name }}</h3>
-                        <p class="text-gray-600 mb-4">{{ offer.description || 'Offre exclusive pour nos membres fidèles' }}</p>
-                        
-                        <!-- Points et progression -->
-                        <div class="flex items-center gap-4 mb-4">
-                          <div class="flex items-center gap-2">
-                            <Star class="w-5 h-5 text-amber-500 fill-current" />
-                            <span class="text-lg font-bold text-gray-900">{{ offer.points_cost }}</span>
-                            <span class="text-sm text-gray-500">points</span>
-                          </div>
-                          
-                          <!-- Mini progression circulaire -->
-                          <div class="relative w-12 h-12">
-                            <svg class="transform -rotate-90 w-12 h-12">
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                stroke-width="4"
-                                fill="none"
-                                class="text-gray-200"
-                              />
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                stroke-width="4"
-                                fill="none"
-                                :stroke-dasharray="`${Math.min((customerPoints / offer.points_cost) * 126, 126)} 126`"
-                                class="text-violet-600 transition-all duration-500"
-                              />
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                              <span class="text-xs font-bold">{{ Math.round((customerPoints / offer.points_cost) * 100) }}%</span>
-                            </div>
-                          </div>
-                          
-                          <div v-if="offer.value_text" class="ml-auto">
-                            <span class="px-3 py-1 bg-violet-100 text-violet-700 rounded-lg text-sm font-medium">
-                              {{ offer.value_text }}
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <div v-if="offer.conditions" class="text-xs text-gray-500 italic">
-                          {{ offer.conditions }}
-                        </div>
-                      </div>
-                      
-                      <!-- Action -->
-                      <div class="mt-4">
-                        <button 
-                          v-if="customerPoints >= offer.points_cost"
-                          @click="redeemOffer(offer)"
-                          class="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all"
-                        >
-                          Obtenir cette offre →
-                        </button>
-                        <div v-else class="flex items-center gap-2 text-gray-500">
-                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                          </svg>
-                          <span class="text-sm">Il vous manque <strong>{{ offer.points_cost - customerPoints }} points</strong></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </template>
-            
-            <!-- Récompenses -->
-            <template v-if="filterCategory === 'all' || filterCategory === 'rewards'">
-              <div 
-                v-for="reward in sortedRewards" 
-                :key="'reward-' + reward.id"
-                class="group relative bg-white rounded-2xl border-2 transition-all duration-300"
-                :class="customerPoints >= reward.points_required ? 'border-yellow-200 hover:border-yellow-400 hover:shadow-xl' : 'border-gray-100 opacity-75'"
-              >
-                <div class="flex flex-col md:flex-row">
-                  <!-- Zone visuelle -->
-                  <div class="relative w-full md:w-48 h-48 md:h-auto">
-                    <div class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
-                      <div class="absolute inset-0 flex items-center justify-center">
-                        <Award :size="48" class="text-white/80" />
-                      </div>
-                    </div>
-                    
-                    <!-- Badge récompense -->
-                    <div class="absolute top-4 left-4">
-                      <span class="px-3 py-1.5 bg-yellow-500/90 text-white text-xs font-bold rounded-full backdrop-blur-md">
-                        RÉCOMPENSE
-                      </span>
-                    </div>
-                    
-                    <!-- Valeur mise en avant -->
-                    <div v-if="reward.discount_percentage" class="absolute bottom-4 right-4">
-                      <div class="bg-white/95 backdrop-blur rounded-xl px-3 py-2 shadow-lg">
-                        <p class="text-2xl font-black text-green-600">-{{ reward.discount_percentage }}%</p>
-                      </div>
-                    </div>
-                    <div v-else-if="reward.discount_amount" class="absolute bottom-4 right-4">
-                      <div class="bg-white/95 backdrop-blur rounded-xl px-3 py-2 shadow-lg">
-                        <p class="text-2xl font-black text-green-600">-{{ reward.discount_amount }}€</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Contenu -->
-                  <div class="flex-1 p-6">
-                    <div class="flex flex-col h-full">
-                      <div class="flex-1">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ reward.name }}</h3>
-                        <p class="text-gray-600 mb-4">{{ reward.description || 'Récompense pour votre fidélité' }}</p>
-                        
-                        <!-- Points et progression -->
-                        <div class="flex items-center gap-4 mb-4">
-                          <div class="flex items-center gap-2">
-                            <Star class="w-5 h-5 text-amber-500 fill-current" />
-                            <span class="text-lg font-bold text-gray-900">{{ reward.points_required }}</span>
-                            <span class="text-sm text-gray-500">points</span>
-                          </div>
-                          
-                          <!-- Mini progression circulaire -->
-                          <div class="relative w-12 h-12">
-                            <svg class="transform -rotate-90 w-12 h-12">
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                stroke-width="4"
-                                fill="none"
-                                class="text-gray-200"
-                              />
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                stroke-width="4"
-                                fill="none"
-                                :stroke-dasharray="`${Math.min((customerPoints / reward.points_required) * 126, 126)} 126`"
-                                class="text-yellow-500 transition-all duration-500"
-                              />
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                              <span class="text-xs font-bold">{{ Math.round((customerPoints / reward.points_required) * 100) }}%</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <!-- Action -->
-                      <div class="mt-4">
-                        <button 
-                          v-if="customerPoints >= reward.points_required"
-                          @click="redeemReward(reward)"
-                          class="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all"
-                        >
-                          Obtenir cette récompense →
-                        </button>
-                        <div v-else class="flex items-center gap-2 text-gray-500">
-                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                          </svg>
-                          <span class="text-sm">Il vous manque <strong>{{ reward.points_required - customerPoints }} points</strong></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </template>
+          <!-- Historique -->
+          <div v-else-if="rewardsTab === 'history'" class="bg-white rounded-xl p-6">
+            <p class="text-gray-500 text-center py-8">Votre historique apparaîtra ici</p>
           </div>
         </div>
       </div>
-
+        
+      <!-- État de chargement -->
+      <div v-if="loading" class="flex justify-center py-12">
+        <Loader2 :size="40" class="text-violet-600 animate-spin" />
+      </div>
+      
+      <!-- Message si aucune récompense -->
+      <div v-else-if="rewards.length === 0 && offers.length === 0" class="text-center py-16">
+        <div class="w-32 h-32 bg-gradient-to-br from-violet-100 to-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-6 rotate-3">
+          <Gift :size="48" class="text-violet-400" />
+        </div>
+        <p class="text-gray-600 text-xl font-medium">Le catalogue est en préparation</p>
+        <p class="text-gray-400 mt-2">De nouvelles surprises arrivent bientôt !</p>
+      </div>
+      
       <!-- Section Historique -->
       <div class="bg-white rounded-2xl shadow-lg p-6">
         <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
@@ -898,7 +684,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone, Tag, Award, Percent, ArrowUp } from 'lucide-vue-next'
+import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone, Tag, Award, Percent, ArrowUp, Lock } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { recordScan } from '@/api/scanEndpoint'
 import AppleWalletButton from '@/components/ui/AppleWalletButton.vue'
@@ -941,6 +727,7 @@ const rewards = ref<Reward[]>([])
 const offers = ref<any[]>([])
 const filterCategory = ref<'all' | 'offers' | 'rewards'>('all')
 const sortBy = ref<'points_asc' | 'points_desc' | 'available'>('available')
+const rewardsTab = ref<'available' | 'history'>('available')
 const companyData = ref<CompanyData>({
   name: '',
   logo_url: null,
@@ -1206,6 +993,35 @@ const getNextRewardThreshold = () => {
   return allPoints[0] || getMaxRewardPoints()
 }
 
+// Obtenir la date d'expiration des points (30 jours dans le futur par défaut)
+const getExpirationDate = () => {
+  const date = new Date()
+  date.setDate(date.getDate() + 30)
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+// Obtenir les seuils de progression pour la barre
+const getProgressThresholds = () => {
+  const max = getNextRewardThreshold()
+  const step = Math.round(max / 4)
+  return [step, step * 2, step * 3]
+}
+
+// Obtenir les offres disponibles en fonction des points
+const availableOffers = computed(() => {
+  return offers.value.filter(offer => offer.is_active)
+})
+
+// Obtenir l'icône selon le type d'offre
+const getOfferIcon = (type: string) => {
+  switch (type) {
+    case 'discount': return Percent
+    case 'gift': return Gift
+    case 'points': return Star
+    case 'upgrade': return ArrowUp
+    default: return Tag
+  }
+}
 // Obtenir le label du type d'offre
 const getOfferTypeLabel = (type: string) => {
   switch (type) {
@@ -1217,16 +1033,6 @@ const getOfferTypeLabel = (type: string) => {
   }
 }
 
-// Obtenir l'icône pour le type d'offre
-const getOfferIcon = (type: string) => {
-  switch (type) {
-    case 'discount': return Percent
-    case 'gift': return Gift
-    case 'points': return Star
-    case 'upgrade': return ArrowUp
-    default: return Tag
-  }
-}
 
 // Obtenir le gradient pour le type d'offre
 const getOfferGradient = (type: string) => {
