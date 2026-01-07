@@ -561,19 +561,20 @@ const downloadInvoice = async (invoice: any) => {
       currentY += 5
     }
     
-    // Email
+    // Email sous l'adresse
     const emailText = userData?.email || 'Non défini'
     if (emailText.length > 30) {
       doc.setFontSize(9)
-      doc.text(`Email: ${emailText}`, 25, 121)
+      doc.text(`Email: ${emailText}`, 115, currentY)
       doc.setFontSize(10)
     } else {
-      doc.text(`Email: ${emailText}`, 25, 121)
+      doc.text(`Email: ${emailText}`, 115, currentY)
     }
+    currentY += 5
     
-    // Téléphone
+    // Téléphone sous l'email
     const phoneText = userData?.phone || 'Non défini'
-    doc.text(`Tél: ${phoneText}`, 25, 127)
+    doc.text(`Tél: ${phoneText}`, 115, currentY)
     
     // Tableau des services
     const startY = 145
