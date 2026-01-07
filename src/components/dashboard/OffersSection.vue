@@ -135,22 +135,22 @@
           </div>
 
           <!-- Actions -->
-          <div class="pt-3 flex gap-2 border-t border-gray-100">
+          <div class="pt-3 flex gap-2 border-t border-gray-100 dark:border-gray-700">
             <button
               @click="editOffer(offer)"
-              class="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+              class="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               Modifier
             </button>
             <button
               @click="duplicateOffer(offer)"
-              class="flex-1 px-3 py-2 bg-violet-50 text-violet-600 rounded-lg text-sm hover:bg-violet-100 transition-colors"
+              class="flex-1 px-3 py-2 bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 rounded-lg text-sm hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors"
             >
               Dupliquer
             </button>
             <button
               @click="deleteOffer(offer)"
-              class="px-3 py-2 bg-red-50 text-red-600 rounded-lg text-sm hover:bg-red-100 transition-colors"
+              class="px-3 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg text-sm hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
             >
               <Trash2 :size="16" />
             </button>
@@ -193,8 +193,8 @@
                 :class="[
                   'p-3 rounded-lg border-2 transition-all',
                   offerForm.type === type.value
-                    ? 'border-violet-600 bg-violet-50'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                    ? 'border-violet-600 bg-violet-50 dark:bg-violet-900/20'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-800'
                 ]"
               >
                 <component :is="type.icon" :size="24" class="mx-auto mb-1" :class="offerForm.type === type.value ? 'text-violet-600' : 'text-gray-400'" />
@@ -232,14 +232,14 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image de l'offre (optionnel)</label>
             <div class="flex items-center gap-4">
               <!-- Preview de l'image -->
-              <div class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50">
+              <div class="w-24 h-24 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-700">
                 <img 
                   v-if="imagePreview || offerForm.image_url" 
                   :src="imagePreview || offerForm.image_url" 
                   alt="Aperçu" 
                   class="w-full h-full object-cover"
                 />
-                <Image v-else :size="32" class="text-gray-400" />
+                <Image v-else :size="32" class="text-gray-400 dark:text-gray-500" />
               </div>
               
               <!-- Boutons d'upload et suppression -->
@@ -254,7 +254,7 @@
                 <button
                   type="button"
                   @click="$refs.imageInput.click()"
-                  class="px-4 py-2 bg-violet-100 text-violet-600 rounded-lg hover:bg-violet-200 transition-colors text-sm"
+                  class="px-4 py-2 bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 rounded-lg hover:bg-violet-200 dark:hover:bg-violet-900/40 transition-colors text-sm"
                 >
                   <Upload :size="16" class="inline mr-2" />
                   Choisir une image
@@ -263,7 +263,7 @@
                   v-if="imagePreview || offerForm.image_url"
                   type="button"
                   @click="removeImage"
-                  class="ml-2 px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors text-sm"
+                  class="ml-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/40 transition-colors text-sm"
                 >
                   <X :size="16" class="inline mr-2" />
                   Supprimer

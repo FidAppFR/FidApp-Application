@@ -10,7 +10,7 @@
           <div 
             v-if="modelValue"
             :class="[
-              'bg-white rounded-xl p-6 w-full overflow-y-auto',
+              'bg-white dark:bg-gray-800 rounded-xl p-6 w-full overflow-y-auto',
               sizeClass
             ]"
             @click.stop
