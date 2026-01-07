@@ -318,6 +318,7 @@ import { ref, onMounted, computed } from 'vue'
 import { Gift, Loader2, CheckCircle, FileText, Download, CreditCard, Calendar, Euro } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import jsPDF from 'jspdf'
+import { getFidAppLogoBase64 } from '@/utils/pdfLogo'
 
 const activeTab = ref('loyalty')
 const signupPoints = ref(50)
@@ -439,45 +440,44 @@ const downloadInvoice = async (invoice: any) => {
     const grayColor = '#666666'
     
     // Logo de l'entreprise (FidApp)
+    let logoAdded = false
+    
     try {
-      // Charger et convertir le logo en base64
-      const logoUrl = '/Logo_Trans_unique.png' // Logo FidApp transparent
-      const response = await fetch(logoUrl)
-      const blob = await response.blob()
-      
-      // Convertir le blob en base64
-      const reader = new FileReader()
-      const base64Logo = await new Promise<string>((resolve, reject) => {
-        reader.onloadend = () => resolve(reader.result as string)
-        reader.onerror = reject
-        reader.readAsDataURL(blob)
-      })
+      // Essayer de charger le logo avec l'utilitaire
+      const logoBase64 = await getFidAppLogoBase64()
       
       // Ajouter le logo au PDF avec ratio préservé
-      // Logo original a un ratio d'environ 2.5:1 (largeur:hauteur)
-      const logoWidth = 35  // largeur en mm
-      const logoHeight = 14  // hauteur proportionnelle
-      doc.addImage(base64Logo, 'PNG', 20, 15, logoWidth, logoHeight)
+      const logoWidth = 40  // largeur en mm
+      const logoHeight = 16  // hauteur proportionnelle (ratio ~2.5:1)
+      
+      // Ajouter le logo
+      doc.addImage(logoBase64, 'PNG', 20, 15, logoWidth, logoHeight)
+      logoAdded = true
+      console.log('Logo FidApp ajouté avec succès')
+      
     } catch (error) {
-      console.error('Erreur chargement logo:', error)
-      // Si le logo ne charge pas, afficher le texte
-      doc.setFontSize(24)
+      console.error('Impossible de charger le logo, utilisation du texte:', error)
+    }
+    
+    // Si le logo n'a pas pu être ajouté, utiliser le texte
+    if (!logoAdded) {
+      doc.setFontSize(22)
       doc.setTextColor(primaryColor)
       doc.setFont('helvetica', 'bold')
-      doc.text('FidApp', 20, 20)
+      doc.text('FidApp', 20, 25)
     }
     
     // Informations de FidApp (émetteur de la facture)
     doc.setFontSize(10)
     doc.setTextColor(grayColor)
     doc.setFont('helvetica', 'normal')
-    doc.text('FidApp SAS', 20, 38)
-    doc.text('123 Avenue des Champs-Élysées', 20, 43)
-    doc.text('75008 Paris, France', 20, 48)
-    doc.text('SIRET: 123 456 789 00012', 20, 53)
-    doc.text('TVA: FR 12 123456789', 20, 58)
-    doc.text('Email: facturation@fidapp.fr', 20, 63)
-    doc.text('Tél: +33 1 23 45 67 89', 20, 68)
+    doc.text('FidApp SAS', 20, 40)
+    doc.text('123 Avenue des Champs-Élysées', 20, 45)
+    doc.text('75008 Paris, France', 20, 50)
+    doc.text('SIRET: 123 456 789 00012', 20, 55)
+    doc.text('TVA: FR 12 123456789', 20, 60)
+    doc.text('Email: facturation@fidapp.fr', 20, 65)
+    doc.text('Tél: +33 1 23 45 67 89', 20, 70)
     
     // Titre FACTURE
     doc.setFontSize(28)
