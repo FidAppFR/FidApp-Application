@@ -10,7 +10,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Aperçu du QR Code</h3>
         
-        <div id="qr-container" class="bg-gradient-to-br from-violet-50 to-pink-50 rounded-2xl p-8">
+        <div id="qr-container" class="bg-gradient-to-br from-violet-50 to-pink-50 dark:from-gray-700 dark:to-gray-800 rounded-2xl p-8">
           <!-- Logo et nom de l'entreprise -->
           <div class="text-center mb-6">
             <div v-if="companyData.logo_url" class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden shadow-lg">

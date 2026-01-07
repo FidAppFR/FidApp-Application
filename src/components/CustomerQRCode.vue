@@ -3,7 +3,7 @@
     <!-- Pass Mobile cliquable -->
     <div 
       @click="showModal = true"
-      class="w-full max-w-sm bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 rounded-2xl shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02] overflow-hidden"
+      class="w-full max-w-sm bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 dark:from-gray-700 dark:via-gray-750 dark:to-gray-800 rounded-2xl shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-[1.02] overflow-hidden"
     >
       <!-- Header du Pass -->
       <div class="bg-gradient-to-r from-violet-600 to-purple-600 py-3 text-center">
@@ -16,18 +16,18 @@
       <div class="p-6">
         <div class="flex flex-col items-center space-y-4">
           <!-- QR Code -->
-          <div class="bg-white p-4 rounded-xl shadow-inner">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-inner">
             <canvas ref="qrCanvas" id="qr-canvas"></canvas>
           </div>
           
           <!-- Code de fidélité -->
-          <div class="w-full bg-white rounded-lg px-4 py-3 text-center shadow-sm">
-            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Code fidélité</p>
-            <p class="text-base font-mono font-bold text-gray-900 tracking-wide">{{ formattedCode }}</p>
+          <div class="w-full bg-white dark:bg-gray-800 rounded-lg px-4 py-3 text-center shadow-sm">
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Code fidélité</p>
+            <p class="text-base font-mono font-bold text-gray-900 dark:text-white tracking-wide">{{ formattedCode }}</p>
           </div>
           
           <!-- Instructions -->
-          <p class="text-xs text-gray-600 text-center">
+          <p class="text-xs text-gray-600 dark:text-gray-400 text-center">
             <span class="inline-flex items-center">
               <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -55,7 +55,7 @@
           <div class="absolute inset-0 bg-black/70" @click="showModal = false"></div>
           
           <!-- Modal content -->
-          <div class="relative bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
+          <div class="relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 max-w-md w-full">
             <!-- Header -->
             <div class="flex items-center justify-between mb-6">
               <h3 class="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
@@ -70,10 +70,10 @@
             </div>
             
             <!-- Code de fidélité -->
-            <div class="bg-gradient-to-r from-violet-100 to-purple-100 rounded-xl p-4 mb-6">
-              <p class="text-sm text-gray-700 font-medium mb-2">Code de fidélité</p>
+            <div class="bg-gradient-to-r from-violet-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 rounded-xl p-4 mb-6">
+              <p class="text-sm text-gray-700 dark:text-gray-300 font-medium mb-2">Code de fidélité</p>
               <div class="flex items-center justify-between">
-                <p class="text-xl font-mono font-bold text-violet-900">{{ formattedCode }}</p>
+                <p class="text-xl font-mono font-bold text-violet-900 dark:text-violet-300">{{ formattedCode }}</p>
                 <button 
                   @click="copyToClipboard"
                   class="p-2 text-violet-600 hover:bg-white/50 rounded-lg transition-colors"
@@ -85,11 +85,11 @@
             
             <!-- QR Code grand format -->
             <div class="flex flex-col items-center space-y-4">
-              <div class="bg-white p-6 rounded-xl border-2 border-gray-200 shadow-inner">
+              <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border-2 border-gray-200 dark:border-gray-600 shadow-inner">
                 <canvas ref="qrCanvasLarge" id="qr-canvas-large"></canvas>
               </div>
               
-              <p class="text-center text-sm text-gray-600">
+              <p class="text-center text-sm text-gray-600 dark:text-gray-400">
                 Présentez ce code au commerçant
               </p>
               
