@@ -188,6 +188,13 @@
               <User :size="18" />
               Mon identifiant
             </button>
+            <button 
+              @click="handleAddToWallet"
+              class="px-4 py-3 bg-violet-50 text-violet-600 rounded-xl hover:bg-violet-100 transition-colors flex items-center justify-center gap-2 font-medium"
+            >
+              <Smartphone :size="18" />
+              Ajouter ma carte à mon Wallet
+            </button>
           </div>
         </div>
         
@@ -548,7 +555,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Tag, Award, Percent, ArrowUp, Lock } from 'lucide-vue-next'
+import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone, Tag, Award, Percent, ArrowUp, Lock } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { recordScan } from '@/api/scanEndpoint'
 
@@ -1359,33 +1366,17 @@ const formatTransactionDate = (dateString: string) => {
   })
 }
 
-// Méthodes pour Apple Wallet
-const handleWalletAdded = (serialNumber: string) => {
-  console.log('Carte ajoutée à Apple Wallet:', serialNumber)
-  
-  // Afficher une notification de succès
+// Méthode pour ajouter au wallet
+const handleAddToWallet = () => {
+  // Afficher une notification temporaire
   const notification = document.createElement('div')
-  notification.className = 'fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2'
+  notification.className = 'fixed top-4 right-4 z-50 bg-violet-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2'
   notification.innerHTML = `
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
     </svg>
-    <span>Carte ajoutée à Apple Wallet avec succès!</span>
+    <span>Fonction Wallet temporairement indisponible</span>
   `
-  document.body.appendChild(notification)
-  
-  setTimeout(() => {
-    notification.remove()
-  }, 3000)
-}
-
-const handleWalletError = (error: Error) => {
-  console.error('Erreur Apple Wallet:', error)
-  
-  // Afficher une notification d'erreur
-  const notification = document.createElement('div')
-  notification.className = 'fixed top-4 right-4 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg'
-  notification.textContent = 'Erreur lors de l\'ajout à Apple Wallet'
   document.body.appendChild(notification)
   
   setTimeout(() => {
