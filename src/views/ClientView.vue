@@ -154,7 +154,7 @@
                   :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
                 >
                   <!-- Indicateur actuel -->
-                  <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-5 h-5 bg-white border-3 border-violet-600 rounded-full shadow-lg"></div>
+                  <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-8 bg-white border-4 border-violet-600 rounded-full shadow-lg"></div>
                 </div>
               </div>
               
