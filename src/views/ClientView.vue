@@ -147,15 +147,18 @@
           <div class="mb-8">
             <div class="relative">
               <!-- Barre de fond -->
-              <div class="h-6 bg-gray-100 rounded-full overflow-hidden">
+              <div class="h-6 bg-gray-100 rounded-full relative">
                 <!-- Barre de progression -->
                 <div 
-                  class="h-full bg-gradient-to-r from-violet-500 to-purple-600 rounded-full transition-all duration-1000 relative"
+                  class="h-full bg-gradient-to-r from-violet-500 to-purple-600 rounded-full transition-all duration-1000 overflow-hidden"
                   :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
                 >
-                  <!-- Indicateur actuel -->
-                  <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-8 bg-white border-4 border-violet-600 rounded-full shadow-lg"></div>
                 </div>
+                <!-- Indicateur actuel - placé en dehors de la barre -->
+                <div 
+                  class="absolute top-1/2 -translate-y-1/2 w-8 h-8 bg-white border-4 border-violet-600 rounded-full shadow-lg z-10"
+                  :style="`left: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%; transform: translateX(-50%) translateY(-50%);`"
+                ></div>
               </div>
               
               <!-- Marqueurs de progression avec nombres -->
