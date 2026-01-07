@@ -152,41 +152,112 @@
         />
       </div>
 
-      <!-- Catalogue moderne façon marketplace -->
-      <div class="mb-8 relative">
-        <!-- Bannière hero avec effet parallax -->
-        <div class="relative h-48 md:h-64 rounded-3xl overflow-hidden mb-6">
-          <div class="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-pink-600">
-            <div class="absolute inset-0 bg-black/20"></div>
-            <!-- Motifs décoratifs -->
-            <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl"></div>
+      <!-- Section récompenses moderne et épurée -->
+      <div class="mb-8">
+        <!-- En-tête minimaliste avec animations -->
+        <div class="relative mb-8 py-8">
+          <!-- Fond animé subtil -->
+          <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-violet-200/30 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-200/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
           </div>
           
-          <div class="relative z-10 h-full flex flex-col justify-center px-8 md:px-12">
-            <div class="max-w-2xl">
-              <h2 class="text-3xl md:text-4xl font-black text-white mb-3">
-                Vos avantages exclusifs
+          <div class="relative z-10">
+            <!-- Titre et sous-titre centrés -->
+            <div class="text-center mb-8">
+              <div class="inline-flex items-center gap-2 mb-4">
+                <div class="h-px w-12 bg-gradient-to-r from-transparent to-violet-400"></div>
+                <span class="text-violet-600 text-sm font-medium tracking-wider uppercase">Programme fidélité</span>
+                <div class="h-px w-12 bg-gradient-to-l from-transparent to-violet-400"></div>
+              </div>
+              <h2 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
+                Vos Privilèges
               </h2>
-              <p class="text-white/90 text-lg mb-6">
-                Découvrez un monde de privilèges réservé à nos membres fidèles
+              <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Profitez de récompenses exclusives et cumulez des points à chaque visite
               </p>
-              
-              <!-- Compteur de points flottant -->
-              <div class="inline-flex items-center gap-3 bg-white/95 backdrop-blur rounded-2xl px-5 py-3 shadow-2xl">
-                <div class="flex items-center gap-2">
-                  <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
+            </div>
+            
+            <!-- Cartes de stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+              <!-- Carte points -->
+              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 p-6 group">
+                <div class="flex items-start justify-between mb-4">
+                  <div class="p-3 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
                     <Star class="w-6 h-6 text-white fill-white" />
                   </div>
-                  <div>
-                    <p class="text-xs text-gray-600">Votre solde</p>
-                    <p class="text-2xl font-black text-gray-900">{{ customerPoints }} <span class="text-sm font-normal text-gray-500">points</span></p>
+                  <span class="text-xs text-gray-500 font-medium">Solde actuel</span>
+                </div>
+                <div class="space-y-1">
+                  <h3 class="text-3xl font-black text-gray-900">{{ customerPoints }}</h3>
+                  <p class="text-sm text-gray-500">points disponibles</p>
+                  <!-- Mini graphique de progression -->
+                  <div class="pt-3">
+                    <div class="flex items-center gap-2 text-xs">
+                      <span class="text-gray-500">Prochain palier</span>
+                      <span class="font-bold text-violet-600">{{ getNextRewardThreshold() }} pts</span>
+                    </div>
+                    <div class="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                      <div 
+                        class="h-full bg-gradient-to-r from-violet-400 to-purple-500 rounded-full transition-all duration-1000"
+                        :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
+                      ></div>
+                    </div>
                   </div>
                 </div>
-                <div class="w-px h-10 bg-gray-200"></div>
-                <div>
-                  <p class="text-xs text-gray-600">Offres débloquées</p>
-                  <p class="text-lg font-bold text-violet-600">{{ availableOffersCount }}/{{ totalOffersCount }}</p>
+              </div>
+              
+              <!-- Carte récompenses disponibles -->
+              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 p-6 group">
+                <div class="flex items-start justify-between mb-4">
+                  <div class="p-3 bg-gradient-to-br from-violet-400 to-purple-500 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
+                    <Gift class="w-6 h-6 text-white" />
+                  </div>
+                  <span class="text-xs text-gray-500 font-medium">Disponibles</span>
+                </div>
+                <div class="space-y-1">
+                  <h3 class="text-3xl font-black text-gray-900">{{ availableOffersCount }}</h3>
+                  <p class="text-sm text-gray-500">récompenses à échanger</p>
+                  <div class="pt-3">
+                    <div class="flex -space-x-2">
+                      <div v-for="i in Math.min(availableOffersCount, 5)" :key="i" 
+                           class="w-8 h-8 bg-gradient-to-br from-violet-400 to-purple-500 rounded-full border-2 border-white flex items-center justify-center">
+                        <Star class="w-4 h-4 text-white fill-white" />
+                      </div>
+                      <div v-if="availableOffersCount > 5" 
+                           class="w-8 h-8 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center">
+                        <span class="text-xs font-bold text-gray-600">+{{ availableOffersCount - 5 }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Carte niveau fidélité -->
+              <div class="bg-gradient-to-br from-violet-600 to-purple-600 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 text-white group">
+                <div class="flex items-start justify-between mb-4">
+                  <div class="p-3 bg-white/20 backdrop-blur rounded-xl group-hover:scale-110 transition-transform">
+                    <Award class="w-6 h-6 text-white" />
+                  </div>
+                  <span class="text-xs text-white/80 font-medium">Votre niveau</span>
+                </div>
+                <div class="space-y-1">
+                  <h3 class="text-3xl font-black">
+                    {{ customerPoints >= 1000 ? 'Gold' : customerPoints >= 500 ? 'Silver' : 'Bronze' }}
+                  </h3>
+                  <p class="text-sm text-white/80">Membre {{ customerPoints >= 1000 ? 'premium' : customerPoints >= 500 ? 'privilégié' : 'fidèle' }}</p>
+                  <div class="pt-3">
+                    <div class="flex items-center gap-2">
+                      <div v-for="i in 3" :key="i" 
+                           :class="[
+                             'w-8 h-1 rounded-full transition-all',
+                             customerPoints >= (i === 1 ? 0 : i === 2 ? 500 : 1000) 
+                               ? 'bg-white' 
+                               : 'bg-white/30'
+                           ]">
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
