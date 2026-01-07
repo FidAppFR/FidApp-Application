@@ -154,6 +154,14 @@
                   :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
                 >
                 </div>
+                
+                <!-- Points blancs pour chaque seuil -->
+                <div v-for="threshold in getProgressThresholds()" 
+                     :key="threshold"
+                     class="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full z-5"
+                     :style="`left: ${(threshold / getNextRewardThreshold()) * 100}%; transform: translateX(-50%) translateY(-50%);`"
+                ></div>
+                
                 <!-- Indicateur actuel - placé en dehors de la barre -->
                 <div 
                   class="absolute top-1/2 -translate-y-1/2 w-8 h-8 bg-white border-4 border-violet-600 rounded-full shadow-lg z-10 transition-all duration-1000"
