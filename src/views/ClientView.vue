@@ -145,37 +145,16 @@
           
           <!-- Barre de progression vers la prochaine récompense -->
           <div class="mb-6">
-            <div class="relative">
-              <!-- Barre de fond -->
-              <div class="h-12 bg-gray-100 rounded-full overflow-hidden">
-                <!-- Barre de progression -->
-                <div 
-                  class="h-full bg-gradient-to-r from-violet-500 to-purple-600 rounded-full transition-all duration-1000 relative"
-                  :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
-                >
-                  <!-- Indicateur actuel -->
-                  <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 bg-white border-4 border-violet-600 rounded-full shadow-lg"></div>
-                </div>
+            <!-- Barre de fond -->
+            <div class="h-12 bg-gray-100 rounded-full overflow-hidden">
+              <!-- Barre de progression -->
+              <div 
+                class="h-full bg-gradient-to-r from-violet-500 to-purple-600 rounded-full transition-all duration-1000 relative"
+                :style="`width: ${Math.min((customerPoints / getNextRewardThreshold()) * 100, 100)}%`"
+              >
+                <!-- Indicateur actuel -->
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 bg-white border-4 border-violet-600 rounded-full shadow-lg"></div>
               </div>
-              
-              <!-- Marqueurs de progression -->
-              <div class="absolute inset-0 flex items-center">
-                <div class="flex justify-between w-full px-1">
-                  <!-- Points de référence -->
-                  <span v-for="threshold in getProgressThresholds()" 
-                        :key="threshold"
-                        :style="`left: ${(threshold / getNextRewardThreshold()) * 100}%`"
-                        class="absolute text-xs font-semibold text-gray-600 -bottom-6">
-                    {{ threshold }}
-                  </span>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Labels sous la barre -->
-            <div class="flex justify-between items-center mt-8 text-sm">
-              <span class="text-gray-500">0</span>
-              <span class="text-gray-500">{{ getNextRewardThreshold() }} pts</span>
             </div>
           </div>
           
