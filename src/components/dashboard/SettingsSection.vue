@@ -145,6 +145,113 @@
           </div>
         </div>
 
+        <!-- Facturation -->
+        <div v-if="activeTab === 'billing'" class="space-y-6">
+          <div>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Historique de facturation</h3>
+            
+            <!-- Statistiques de facturation -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div class="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-gray-700 dark:to-gray-800 rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Total dépensé</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ totalSpent }}€</p>
+                  </div>
+                  <Euro :size="24" class="text-violet-600" />
+                </div>
+              </div>
+              <div class="bg-gradient-to-br from-pink-50 to-rose-50 dark:from-gray-700 dark:to-gray-800 rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Mois payés</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ billingHistory.length }}</p>
+                  </div>
+                  <Calendar :size="24" class="text-pink-600" />
+                </div>
+              </div>
+              <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-800 rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-1">Plan actuel</p>
+                    <p class="text-lg font-bold text-gray-900 dark:text-white">{{ currentUserPlan }}</p>
+                  </div>
+                  <CreditCard :size="24" class="text-green-600" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Liste des factures -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+              <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h4 class="font-semibold text-gray-900 dark:text-white">Historique des factures</h4>
+              </div>
+              <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                <!-- Si pas de factures -->
+                <div v-if="billingHistory.length === 0" class="p-8 text-center">
+                  <FileText :size="48" class="mx-auto text-gray-300 dark:text-gray-600 mb-3" />
+                  <p class="text-gray-500 dark:text-gray-400">Aucune facture disponible</p>
+                  <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Vos factures apparaîtront ici après votre premier paiement</p>
+                </div>
+                
+                <!-- Liste des factures -->
+                <div v-else v-for="invoice in billingHistory" :key="invoice.id" 
+                     class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                      <div class="w-10 h-10 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center">
+                        <FileText :size="20" class="text-violet-600 dark:text-violet-400" />
+                      </div>
+                      <div>
+                        <p class="font-medium text-gray-900 dark:text-white">
+                          Facture #{{ invoice.number }}
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                          {{ formatDate(invoice.date) }} • Plan {{ invoice.plan }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                      <span class="font-bold text-gray-900 dark:text-white">{{ invoice.amount }}€</span>
+                      <span :class="[
+                        'px-2 py-1 text-xs rounded-full font-medium',
+                        invoice.status === 'paid' 
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
+                          : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                      ]">
+                        {{ invoice.status === 'paid' ? 'Payée' : 'En attente' }}
+                      </span>
+                      <button
+                        @click="downloadInvoice(invoice)"
+                        class="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-sm rounded-lg font-medium transition-colors flex items-center space-x-1"
+                      >
+                        <Download :size="14" />
+                        <span>PDF</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Information de facturation -->
+            <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+              <div class="flex items-start space-x-3">
+                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                <div class="flex-1">
+                  <p class="text-sm text-blue-800 dark:text-blue-300 font-medium">Information importante</p>
+                  <p class="text-sm text-blue-700 dark:text-blue-400 mt-1">
+                    Les factures sont générées automatiquement chaque mois et envoyées à votre adresse email. 
+                    Vous pouvez télécharger vos factures au format PDF pour votre comptabilité.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Sécurité -->
         <div v-if="activeTab === 'security'" class="space-y-6">
           <div>
@@ -207,8 +314,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { Gift, Loader2, CheckCircle } from 'lucide-vue-next'
+import { ref, onMounted, computed } from 'vue'
+import { Gift, Loader2, CheckCircle, FileText, Download, CreditCard, Calendar, Euro } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 
 const activeTab = ref('loyalty')
@@ -217,11 +324,22 @@ const originalSignupPoints = ref(50)
 const savingPoints = ref(false)
 const showSuccess = ref(false)
 const successMessage = ref('')
+const currentUserPlan = ref('Free')
+const billingHistory = ref<any[]>([])
+const loadingInvoices = ref(false)
+
+// Calculer le total dépensé
+const totalSpent = computed(() => {
+  return billingHistory.value.reduce((sum, invoice) => {
+    return sum + (invoice.status === 'paid' ? invoice.amount : 0)
+  }, 0)
+})
 
 const tabs = [
   { id: 'loyalty', name: 'Programme de fidélité' },
   { id: 'general', name: 'Général' },
   { id: 'notifications', name: 'Notifications' },
+  { id: 'billing', name: 'Facturation' },
   { id: 'security', name: 'Sécurité' },
   { id: 'integrations', name: 'Intégrations' }
 ]
@@ -234,17 +352,151 @@ const loadSettings = async () => {
 
     const { data } = await supabase
       .from('users')
-      .select('signup_points')
+      .select('signup_points, selected_plan')
       .eq('auth_id', user.id)
       .single()
 
     if (data) {
       signupPoints.value = data.signup_points || 50
       originalSignupPoints.value = data.signup_points || 50
+      currentUserPlan.value = data.selected_plan || 'Free'
     }
   } catch (error) {
     console.error('Erreur lors du chargement des paramètres:', error)
   }
+}
+
+// Charger l'historique de facturation
+const loadBillingHistory = async () => {
+  loadingInvoices.value = true
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    // Pour l'instant, on simule des données de facturation
+    // Dans un cas réel, on chargerait depuis une table 'invoices'
+    billingHistory.value = [
+      {
+        id: 1,
+        number: 'INV-2024-001',
+        date: new Date('2024-01-15'),
+        plan: 'Starter',
+        amount: 49,
+        status: 'paid'
+      },
+      {
+        id: 2,
+        number: 'INV-2024-002',
+        date: new Date('2024-02-15'),
+        plan: 'Starter',
+        amount: 49,
+        status: 'paid'
+      },
+      {
+        id: 3,
+        number: 'INV-2024-003',
+        date: new Date('2024-03-15'),
+        plan: 'Premium',
+        amount: 99,
+        status: 'paid'
+      }
+    ]
+  } catch (error) {
+    console.error('Erreur lors du chargement de l\'historique:', error)
+  } finally {
+    loadingInvoices.value = false
+  }
+}
+
+// Formater la date
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  }).format(date)
+}
+
+// Télécharger une facture en PDF
+const downloadInvoice = async (invoice: any) => {
+  // Créer un contenu HTML pour le PDF
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body { font-family: Arial, sans-serif; padding: 40px; }
+        .header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: bold; color: #7C3AED; }
+        .invoice-title { font-size: 28px; font-weight: bold; margin: 20px 0; }
+        .info-section { margin: 20px 0; }
+        .info-row { display: flex; justify-content: space-between; margin: 10px 0; }
+        .table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+        .table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        .table th { background-color: #f5f5f5; font-weight: bold; }
+        .total { font-size: 20px; font-weight: bold; text-align: right; margin-top: 20px; }
+        .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="logo">FidApp</div>
+        <div class="invoice-title">FACTURE</div>
+      </div>
+      
+      <div class="info-section">
+        <div class="info-row">
+          <div><strong>Numéro de facture:</strong> ${invoice.number}</div>
+          <div><strong>Date:</strong> ${formatDate(invoice.date)}</div>
+        </div>
+        <div class="info-row">
+          <div><strong>Plan:</strong> ${invoice.plan}</div>
+          <div><strong>Statut:</strong> ${invoice.status === 'paid' ? 'Payée' : 'En attente'}</div>
+        </div>
+      </div>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Période</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Abonnement FidApp - Plan ${invoice.plan}</td>
+            <td>${formatDate(invoice.date)}</td>
+            <td>${invoice.amount}€</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="total">
+        Total: ${invoice.amount}€ TTC
+      </div>
+      
+      <div class="footer">
+        <p>FidApp - Solution de fidélisation client</p>
+        <p>contact@fidapp.fr | www.fidapp.fr</p>
+      </div>
+    </body>
+    </html>
+  `
+
+  // Créer un blob et télécharger
+  const blob = new Blob([htmlContent], { type: 'text/html' })
+  const url = window.URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `facture-${invoice.number}.html`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
+
+  showSuccessMessage(`Facture ${invoice.number} téléchargée`)
 }
 
 // Sauvegarder les points d'inscription
@@ -281,5 +533,6 @@ const showSuccessMessage = (message: string) => {
 
 onMounted(() => {
   loadSettings()
+  loadBillingHistory()
 })
 </script>
