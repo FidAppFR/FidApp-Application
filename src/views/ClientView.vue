@@ -55,7 +55,8 @@
     </header>
 
     <div class="max-w-4xl mx-auto px-4 py-8">
-
+      <!-- Titre principal -->
+      <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">Mon programme de fidélité</h1>
 
       <!-- Section Points et Récompenses style McDonald's -->
       <div class="mb-8">
