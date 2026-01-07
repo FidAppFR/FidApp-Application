@@ -271,9 +271,9 @@
           <tbody class="divide-y divide-gray-100">
             <tr>
               <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Nombre de clients</td>
-              <td class="text-center py-3 px-4">100</td>
-              <td class="text-center py-3 px-4">500</td>
-              <td class="text-center py-3 px-4">Illimité</td>
+              <td class="text-center py-3 px-4 text-gray-900 dark:text-white">100</td>
+              <td class="text-center py-3 px-4 text-gray-900 dark:text-white">500</td>
+              <td class="text-center py-3 px-4 text-gray-900 dark:text-white">Illimité</td>
             </tr>
             <tr>
               <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Programme de fidélité</td>
@@ -301,9 +301,9 @@
             </tr>
             <tr>
               <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Support</td>
-              <td class="text-center py-3 px-4 text-xs">Email</td>
-              <td class="text-center py-3 px-4 text-xs">Email prioritaire</td>
-              <td class="text-center py-3 px-4 text-xs">Prioritaire</td>
+              <td class="text-center py-3 px-4 text-xs text-gray-700 dark:text-gray-300">Email</td>
+              <td class="text-center py-3 px-4 text-xs text-gray-700 dark:text-gray-300">Email prioritaire</td>
+              <td class="text-center py-3 px-4 text-xs text-gray-700 dark:text-gray-300">Prioritaire</td>
             </tr>
             <tr>
               <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Dashboard Analytics</td>
@@ -411,16 +411,16 @@
           </div>
 
           <!-- Message de succès -->
-          <div v-if="successMessage" class="mb-4 p-4 bg-green-50 border border-green-200 rounded-xl">
-            <p class="text-green-700 font-medium text-center">{{ successMessage }}</p>
+          <div v-if="successMessage" class="mb-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-xl">
+            <p class="text-green-700 dark:text-green-300 font-medium text-center">{{ successMessage }}</p>
           </div>
           
           <!-- Message d'erreur -->
-          <div v-if="errorMessage" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl">
-            <p class="text-red-700 font-medium text-center">{{ errorMessage }}</p>
+          <div v-if="errorMessage" class="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-xl">
+            <p class="text-red-700 dark:text-red-300 font-medium text-center">{{ errorMessage }}</p>
           </div>
 
-          <div class="bg-gray-50 rounded-xl p-4 mb-6">
+          <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 mb-6">
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-600 dark:text-gray-400">Plan actuel</span>
