@@ -522,18 +522,42 @@ const downloadInvoice = async (invoice: any) => {
     doc.text(`TVA: ${tvaText}`, 25, 115)
     
     // Colonne droite - Adresse et contact
-    // Adresse complète en bloc
+    // Adresse complète formatée
     let currentY = 103
     if (userData?.address) {
-      doc.text(userData.address, 115, currentY)
+      // Essayer de séparer le numéro et la rue
+      const addressParts = userData.address.match(/^(\d+[a-zA-Z]?\s*(?:bis|ter)?)\s+(.+)$/)
+      if (addressParts) {
+        // Format: numéro - rue
+        doc.text(`${addressParts[1]} - ${addressParts[2]}`, 115, currentY)
+      } else {
+        // Si pas de numéro détecté, afficher tel quel
+        doc.text(userData.address, 115, currentY)
+      }
       currentY += 5
     }
-    if (userData?.city && userData?.postal_code) {
-      doc.text(`${userData.postal_code} ${userData.city}`, 115, currentY)
-      currentY += 5
-    }
-    if (userData?.country) {
-      doc.text(userData.country || 'France', 115, currentY)
+    
+    // Ligne 2: département - ville, pays
+    if (userData?.postal_code || userData?.city || userData?.country) {
+      let line2 = ''
+      
+      // Extraire le département du code postal (2 premiers chiffres)
+      if (userData?.postal_code) {
+        const dept = userData.postal_code.substring(0, 2)
+        line2 = dept
+      }
+      
+      // Ajouter la ville
+      if (userData?.city) {
+        line2 += line2 ? ' - ' : ''
+        line2 += userData.city
+      }
+      
+      // Ajouter le pays
+      const country = userData?.country || 'France'
+      line2 += ', ' + country
+      
+      doc.text(line2, 115, currentY)
       currentY += 5
     }
     
