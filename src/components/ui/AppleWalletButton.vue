@@ -33,7 +33,6 @@
         @click="showQRCode = true"
         class="text-violet-600 hover:text-violet-700 font-medium text-sm underline"
       >
-        Afficher le QR code à la place
       </button>
     </div>
 
