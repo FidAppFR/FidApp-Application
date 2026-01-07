@@ -261,14 +261,14 @@
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead>
-            <tr class="border-b border-gray-200 dark:border-gray-700">
+            <tr class="border-b-2 border-gray-300 dark:border-gray-600">
               <th class="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Fonctionnalité</th>
               <th class="text-center py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Free</th>
               <th class="text-center py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Starter</th>
               <th class="text-center py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Premium</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
             <tr>
               <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Nombre de clients</td>
               <td class="text-center py-3 px-4 text-gray-900 dark:text-white">100</td>
