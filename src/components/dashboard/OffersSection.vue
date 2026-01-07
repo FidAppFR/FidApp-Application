@@ -73,13 +73,14 @@
           </div>
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-white dark:bg-gray-800/20 backdrop-blur rounded-xl flex items-center justify-center overflow-hidden">
-              <img 
+              <!-- Image désactivée temporairement jusqu'à migration DB -->
+              <!-- <img 
                 v-if="offer.image_url" 
                 :src="offer.image_url" 
                 alt="Icon" 
                 class="w-full h-full object-cover"
-              />
-              <component v-else :is="getOfferIcon(offer.type)" :size="24" class="text-white" />
+              /> -->
+              <component :is="getOfferIcon(offer.type)" :size="24" class="text-white" />
             </div>
             <div>
               <span class="text-white/80 text-xs uppercase tracking-wider">{{ getOfferTypeLabel(offer.type) }}</span>
@@ -227,11 +228,12 @@
             ></textarea>
           </div>
 
-          <!-- Image de l'offre -->
+          <!-- Image de l'offre - DÉSACTIVÉ TEMPORAIREMENT -->
+          <!-- La fonction image sera réactivée après migration de la base de données -->
+          <!--
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image de l'offre (optionnel)</label>
             <div class="flex items-center gap-4">
-              <!-- Preview de l'image -->
               <div class="w-24 h-24 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-700">
                 <img 
                   v-if="imagePreview || offerForm.image_url" 
@@ -242,7 +244,6 @@
                 <Image v-else :size="32" class="text-gray-400 dark:text-gray-500" />
               </div>
               
-              <!-- Boutons d'upload et suppression -->
               <div class="flex-1">
                 <input
                   ref="imageInput"
@@ -272,6 +273,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- Valeur selon le type -->
           <div class="grid grid-cols-2 gap-4">
@@ -637,8 +639,8 @@ const saveOffer = async () => {
       uploadingImage.value = false
     }
 
-    // Préparer les données de l'offre
-    const offerData = {
+    // Préparer les données de l'offre (sans image_url pour l'instant)
+    const offerData: any = {
       company_id: userData.id,
       name: offerForm.value.name,
       description: offerForm.value.description || null,
@@ -651,9 +653,14 @@ const saveOffer = async () => {
       end_date: offerForm.value.end_date || null,
       max_uses: offerForm.value.max_uses || null,
       max_uses_per_customer: offerForm.value.max_uses_per_customer || null,
-      is_active: offerForm.value.is_active,
-      image_url: imageUrl || null
+      is_active: offerForm.value.is_active
     }
+    
+    // Ajouter image_url seulement si la colonne existe
+    // Ceci sera activé après migration de la base de données
+    // if (imageUrl) {
+    //   offerData.image_url = imageUrl
+    // }
 
     console.log('Données à sauvegarder:', offerData)
 
