@@ -317,6 +317,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { Gift, Loader2, CheckCircle, FileText, Download, CreditCard, Calendar, Euro } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
+import jsPDF from 'jspdf'
 
 const activeTab = ref('loyalty')
 const signupPoints = ref(50)
@@ -419,84 +420,163 @@ const formatDate = (date: Date) => {
 
 // Télécharger une facture en PDF
 const downloadInvoice = async (invoice: any) => {
-  // Créer un contenu HTML pour le PDF
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <style>
-        body { font-family: Arial, sans-serif; padding: 40px; }
-        .header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
-        .logo { font-size: 24px; font-weight: bold; color: #7C3AED; }
-        .invoice-title { font-size: 28px; font-weight: bold; margin: 20px 0; }
-        .info-section { margin: 20px 0; }
-        .info-row { display: flex; justify-content: space-between; margin: 10px 0; }
-        .table { width: 100%; border-collapse: collapse; margin: 30px 0; }
-        .table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        .table th { background-color: #f5f5f5; font-weight: bold; }
-        .total { font-size: 20px; font-weight: bold; text-align: right; margin-top: 20px; }
-        .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #666; }
-      </style>
-    </head>
-    <body>
-      <div class="header">
-        <div class="logo">FidApp</div>
-        <div class="invoice-title">FACTURE</div>
-      </div>
-      
-      <div class="info-section">
-        <div class="info-row">
-          <div><strong>Numéro de facture:</strong> ${invoice.number}</div>
-          <div><strong>Date:</strong> ${formatDate(invoice.date)}</div>
-        </div>
-        <div class="info-row">
-          <div><strong>Plan:</strong> ${invoice.plan}</div>
-          <div><strong>Statut:</strong> ${invoice.status === 'paid' ? 'Payée' : 'En attente'}</div>
-        </div>
-      </div>
-      
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Période</th>
-            <th>Montant</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Abonnement FidApp - Plan ${invoice.plan}</td>
-            <td>${formatDate(invoice.date)}</td>
-            <td>${invoice.amount}€</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div class="total">
-        Total: ${invoice.amount}€ TTC
-      </div>
-      
-      <div class="footer">
-        <p>FidApp - Solution de fidélisation client</p>
-        <p>contact@fidapp.fr | www.fidapp.fr</p>
-      </div>
-    </body>
-    </html>
-  `
+  try {
+    // Récupérer les infos de l'utilisateur
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
 
-  // Créer un blob et télécharger
-  const blob = new Blob([htmlContent], { type: 'text/html' })
-  const url = window.URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `facture-${invoice.number}.html`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  window.URL.revokeObjectURL(url)
+    const { data: userData } = await supabase
+      .from('users')
+      .select('company, email, first_name, last_name, address, city, postal_code, country, phone')
+      .eq('auth_id', user.id)
+      .single()
 
-  showSuccessMessage(`Facture ${invoice.number} téléchargée`)
+    // Créer un nouveau document PDF
+    const doc = new jsPDF()
+    
+    // Couleurs
+    const primaryColor = '#7C3AED'
+    const grayColor = '#666666'
+    
+    // Logo et en-tête de l'entreprise (FidApp)
+    doc.setFontSize(24)
+    doc.setTextColor(primaryColor)
+    doc.setFont('helvetica', 'bold')
+    doc.text('FidApp', 20, 20)
+    
+    // Informations de FidApp (émetteur de la facture)
+    doc.setFontSize(10)
+    doc.setTextColor(grayColor)
+    doc.setFont('helvetica', 'normal')
+    doc.text('FidApp SAS', 20, 30)
+    doc.text('123 Avenue des Champs-Élysées', 20, 35)
+    doc.text('75008 Paris, France', 20, 40)
+    doc.text('SIRET: 123 456 789 00012', 20, 45)
+    doc.text('TVA: FR 12 123456789', 20, 50)
+    doc.text('Email: facturation@fidapp.fr', 20, 55)
+    doc.text('Tél: +33 1 23 45 67 89', 20, 60)
+    
+    // Titre FACTURE
+    doc.setFontSize(28)
+    doc.setTextColor('#000000')
+    doc.setFont('helvetica', 'bold')
+    doc.text('FACTURE', 140, 30)
+    
+    // Numéro et date de facture
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'normal')
+    doc.text(`N° ${invoice.number}`, 140, 40)
+    doc.text(`Date: ${formatDate(invoice.date)}`, 140, 45)
+    doc.text(`Échéance: ${formatDate(new Date(invoice.date.getTime() + 30 * 24 * 60 * 60 * 1000))}`, 140, 50)
+    
+    // Rectangle pour les infos client
+    doc.setDrawColor(200, 200, 200)
+    doc.setFillColor(245, 245, 245)
+    doc.rect(20, 75, 170, 35, 'F')
+    
+    // Informations du client
+    doc.setFontSize(12)
+    doc.setTextColor('#000000')
+    doc.setFont('helvetica', 'bold')
+    doc.text('FACTURÉ À:', 25, 85)
+    
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'normal')
+    const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
+    doc.text(clientName, 25, 92)
+    if (userData?.address) doc.text(userData.address, 25, 97)
+    if (userData?.city && userData?.postal_code) {
+      doc.text(`${userData.postal_code} ${userData.city}`, 25, 102)
+    }
+    if (userData?.email) doc.text(`Email: ${userData.email}`, 25, 107)
+    
+    // Tableau des services
+    const startY = 125
+    
+    // En-tête du tableau
+    doc.setFillColor(primaryColor)
+    doc.setTextColor('#FFFFFF')
+    doc.rect(20, startY, 170, 10, 'F')
+    doc.setFont('helvetica', 'bold')
+    doc.text('Description', 25, startY + 7)
+    doc.text('Quantité', 100, startY + 7)
+    doc.text('Prix unitaire', 130, startY + 7)
+    doc.text('Total HT', 165, startY + 7)
+    
+    // Ligne de service
+    doc.setTextColor('#000000')
+    doc.setFont('helvetica', 'normal')
+    const lineY = startY + 15
+    doc.text(`Abonnement FidApp - Plan ${invoice.plan}`, 25, lineY)
+    doc.text('1', 105, lineY)
+    const priceHT = (invoice.amount / 1.20).toFixed(2)
+    doc.text(`${priceHT}€`, 135, lineY)
+    doc.text(`${priceHT}€`, 168, lineY)
+    
+    // Ligne de séparation
+    doc.setDrawColor(200, 200, 200)
+    doc.line(20, lineY + 5, 190, lineY + 5)
+    
+    // Totaux
+    const totalsY = lineY + 20
+    doc.setFont('helvetica', 'normal')
+    doc.text('Sous-total HT:', 130, totalsY)
+    doc.text(`${priceHT}€`, 168, totalsY)
+    
+    doc.text('TVA (20%):', 130, totalsY + 7)
+    const tva = (invoice.amount - parseFloat(priceHT)).toFixed(2)
+    doc.text(`${tva}€`, 168, totalsY + 7)
+    
+    // Total TTC
+    doc.setFillColor(primaryColor)
+    doc.setTextColor('#FFFFFF')
+    doc.rect(125, totalsY + 12, 65, 10, 'F')
+    doc.setFont('helvetica', 'bold')
+    doc.text('TOTAL TTC:', 130, totalsY + 19)
+    doc.text(`${invoice.amount}€`, 168, totalsY + 19)
+    
+    // Statut de paiement
+    const statusY = totalsY + 35
+    if (invoice.status === 'paid') {
+      doc.setTextColor('#10B981')
+      doc.setFont('helvetica', 'bold')
+      doc.text('✓ FACTURE ACQUITTÉE', 20, statusY)
+      doc.setFont('helvetica', 'normal')
+      doc.text(`Payée le ${formatDate(invoice.date)}`, 20, statusY + 5)
+    } else {
+      doc.setTextColor('#F59E0B')
+      doc.setFont('helvetica', 'bold')
+      doc.text('EN ATTENTE DE PAIEMENT', 20, statusY)
+    }
+    
+    // Conditions de paiement
+    doc.setTextColor(grayColor)
+    doc.setFontSize(9)
+    doc.setFont('helvetica', 'normal')
+    doc.text('Conditions de paiement:', 20, statusY + 20)
+    doc.text('• Paiement à 30 jours date de facture', 20, statusY + 25)
+    doc.text('• Pas d\'escompte pour paiement anticipé', 20, statusY + 30)
+    doc.text('• Pénalité de retard: 3x le taux d\'intérêt légal', 20, statusY + 35)
+    doc.text('• Indemnité forfaitaire pour frais de recouvrement: 40€', 20, statusY + 40)
+    
+    // Pied de page
+    doc.setDrawColor(200, 200, 200)
+    doc.line(20, 270, 190, 270)
+    doc.setTextColor(grayColor)
+    doc.setFontSize(8)
+    doc.text('FidApp SAS - Capital social: 10 000€ - RCS Paris B 123 456 789', 105, 280, { align: 'center' })
+    doc.text('www.fidapp.fr - contact@fidapp.fr - +33 1 23 45 67 89', 105, 285, { align: 'center' })
+    
+    // Ouvrir le PDF dans un nouvel onglet
+    const pdfBlob = doc.output('blob')
+    const pdfUrl = URL.createObjectURL(pdfBlob)
+    window.open(pdfUrl, '_blank')
+    
+    showSuccessMessage(`Facture ${invoice.number} générée`)
+  } catch (error) {
+    console.error('Erreur génération PDF:', error)
+    showSuccessMessage('Erreur lors de la génération de la facture')
+  }
 }
 
 // Sauvegarder les points d'inscription
