@@ -56,7 +56,7 @@
 
     <div class="max-w-4xl mx-auto px-8 py-12">
       <!-- Titre principal -->
-      <h1 class="text-3xl font-bold text-gray-900 mb-12">Mon programme de fidélité</h1>
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">Mon programme de fidélité</h1>
 
       <!-- Section Points et Récompenses style McDonald's -->
       <div class="mb-12">
