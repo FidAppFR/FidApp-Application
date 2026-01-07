@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-black text-gray-900">Votre Plan</h1>
-      <p class="text-gray-600 mt-2">Gérez votre abonnement et découvrez nos offres</p>
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white">Votre Plan</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Gérez votre abonnement et découvrez nos offres</p>
     </div>
 
     <!-- Plan actuel -->
@@ -43,7 +43,7 @@
         
         <!-- Bouton action -->
         <div>
-          <button class="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">
+          <button class="px-4 py-2 bg-white dark:bg-gray-800/20 hover:bg-white dark:bg-gray-800/30 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">
             Gérer la facturation
           </button>
         </div>
@@ -52,7 +52,7 @@
 
     <!-- Tous les plans -->
     <div class="w-full">
-      <h3 class="text-xl font-bold text-gray-900 mb-4">Choisir un plan</h3>
+      <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Choisir un plan</h3>
       <div class="grid grid-cols-3 gap-3">
         
         <!-- Plan Free -->
@@ -60,7 +60,7 @@
           'relative rounded-xl p-4 transition-all duration-300 flex flex-col',
           currentPlan === 'free' 
             ? 'bg-violet-50 border-2 border-violet-600 shadow-lg' 
-            : 'bg-white border border-gray-200 hover:shadow-lg'
+            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg'
         ]">
           <!-- Badge plan actuel -->
           <div v-if="currentPlan === 'free'" class="absolute -top-3 left-1/2 transform -translate-x-1/2">
@@ -70,30 +70,30 @@
           </div>
 
           <div class="text-center mb-3">
-            <h4 class="text-lg font-bold text-gray-900">Essai Gratuit</h4>
-            <p class="text-gray-600 text-xs">14 jours d'essai</p>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white">Essai Gratuit</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-xs">14 jours d'essai</p>
             <div class="flex items-baseline justify-center mt-2">
-              <span class="text-2xl font-black text-gray-900">0€</span>
-              <span class="text-gray-500 ml-1 text-xs">/14 jours</span>
+              <span class="text-2xl font-black text-gray-900 dark:text-white">0€</span>
+              <span class="text-gray-500 dark:text-gray-400 ml-1 text-xs">/14 jours</span>
             </div>
           </div>
 
           <ul class="space-y-1.5 mb-4 flex-grow">
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">100 clients max</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">100 clients max</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Toutes fonctionnalités</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Toutes fonctionnalités</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Sans engagement</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Sans engagement</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Support par email</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Support par email</span>
             </li>
             <li class="flex items-center space-x-2">
               <X :size="14" class="text-gray-300 flex-shrink-0" />
@@ -105,11 +105,11 @@
             <button 
               v-if="currentPlan !== 'free'"
               @click="selectPlan('free')"
-              class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors text-sm"
+              class="w-full py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl transition-colors text-sm"
             >
               Passer à Free
             </button>
-            <div v-else class="w-full py-2 text-center text-gray-500 font-medium text-sm">
+            <div v-else class="w-full py-2 text-center text-gray-500 dark:text-gray-400 font-medium text-sm">
               Plan actuel
             </div>
           </div>
@@ -120,7 +120,7 @@
           'relative rounded-xl p-4 transition-all duration-300 flex flex-col',
           currentPlan === 'starter' 
             ? 'bg-violet-50 border-2 border-violet-600 shadow-lg' 
-            : 'bg-white border border-gray-200 hover:shadow-lg'
+            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg'
         ]">
           <!-- Badge plan actuel -->
           <div v-if="currentPlan === 'starter'" class="absolute -top-3 left-1/2 transform -translate-x-1/2">
@@ -130,35 +130,35 @@
           </div>
 
           <div class="text-center mb-3">
-            <h4 class="text-lg font-bold text-gray-900">Starter</h4>
-            <p class="text-gray-600 text-xs">Petites entreprises</p>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white">Starter</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-xs">Petites entreprises</p>
             <div class="flex items-baseline justify-center mt-2">
               <span class="text-2xl font-black text-violet-600">19,99€</span>
-              <span class="text-gray-500 ml-1 text-xs">/mois</span>
+              <span class="text-gray-500 dark:text-gray-400 ml-1 text-xs">/mois</span>
             </div>
-            <p class="text-xs text-gray-500">6 mois • 239,88€/an</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">6 mois • 239,88€/an</p>
           </div>
 
           <ul class="space-y-1.5 mb-4 flex-grow">
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Programme fidélité</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Programme fidélité</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">500 comptes clients</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">500 comptes clients</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Notifications auto</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Notifications auto</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Support prioritaire</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Support prioritaire</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Dashboard Analytics</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Dashboard Analytics</span>
             </li>
             <li class="flex items-center space-x-2">
               <X :size="14" class="text-gray-300 flex-shrink-0" />
@@ -174,7 +174,7 @@
             >
               {{ currentPlan === 'free' ? 'Upgrade' : 'Passer à' }} Starter
             </button>
-            <div v-else class="w-full py-2 text-center text-gray-500 font-medium text-sm">
+            <div v-else class="w-full py-2 text-center text-gray-500 dark:text-gray-400 font-medium text-sm">
               Plan actuel
             </div>
           </div>
@@ -199,43 +199,43 @@
           </div>
 
           <div class="text-center mb-3 mt-2">
-            <h4 class="text-lg font-bold text-gray-900">Premium</h4>
-            <p class="text-gray-600 text-xs">Entreprises en croissance</p>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white">Premium</h4>
+            <p class="text-gray-600 dark:text-gray-400 text-xs">Entreprises en croissance</p>
             <div class="flex items-baseline justify-center mt-2">
               <span class="text-2xl font-black bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent">39,99€</span>
-              <span class="text-gray-500 ml-1 text-xs">/mois</span>
+              <span class="text-gray-500 dark:text-gray-400 ml-1 text-xs">/mois</span>
             </div>
-            <p class="text-xs text-gray-600">6 mois • 479,88€/an</p>
+            <p class="text-xs text-gray-600 dark:text-gray-400">6 mois • 479,88€/an</p>
           </div>
 
           <ul class="space-y-1.5 mb-4 flex-grow">
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700 font-semibold">Tout Starter +</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300 font-semibold">Tout Starter +</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Analytics temps réel</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Analytics temps réel</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Stats & exports</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Stats & exports</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Segmentation clients</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Segmentation clients</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">API complète</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">API complète</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Clients illimités</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Clients illimités</span>
             </li>
             <li class="flex items-center space-x-2">
               <Check :size="14" class="text-green-600 flex-shrink-0" />
-              <span class="text-xs text-gray-700">Support VIP</span>
+              <span class="text-xs text-gray-700 dark:text-gray-300">Support VIP</span>
             </li>
           </ul>
 
@@ -247,7 +247,7 @@
             >
               {{ currentPlan === 'admin' ? 'Passer à' : 'Upgrade' }} Premium
             </button>
-            <div v-else class="w-full py-2 text-center text-gray-500 font-medium text-sm">
+            <div v-else class="w-full py-2 text-center text-gray-500 dark:text-gray-400 font-medium text-sm">
               Plan actuel
             </div>
           </div>
@@ -256,27 +256,27 @@
     </div>
 
     <!-- Comparaison des fonctionnalités -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-bold text-gray-900 mb-6">Comparaison détaillée</h3>
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Comparaison détaillée</h3>
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead>
-            <tr class="border-b border-gray-200">
-              <th class="text-left py-3 px-4 font-medium text-gray-700">Fonctionnalité</th>
-              <th class="text-center py-3 px-4 font-medium text-gray-700">Free</th>
-              <th class="text-center py-3 px-4 font-medium text-gray-700">Starter</th>
-              <th class="text-center py-3 px-4 font-medium text-gray-700">Premium</th>
+            <tr class="border-b border-gray-200 dark:border-gray-700">
+              <th class="text-left py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Fonctionnalité</th>
+              <th class="text-center py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Free</th>
+              <th class="text-center py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Starter</th>
+              <th class="text-center py-3 px-4 font-medium text-gray-700 dark:text-gray-300">Premium</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Nombre de clients</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Nombre de clients</td>
               <td class="text-center py-3 px-4">100</td>
               <td class="text-center py-3 px-4">500</td>
               <td class="text-center py-3 px-4">Illimité</td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Programme de fidélité</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Programme de fidélité</td>
               <td class="text-center py-3 px-4">
                 <Check :size="16" class="text-green-600 mx-auto" />
               </td>
@@ -288,7 +288,7 @@
               </td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Notifications automatiques</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Notifications automatiques</td>
               <td class="text-center py-3 px-4">
                 <X :size="16" class="text-red-500 mx-auto" />
               </td>
@@ -300,13 +300,13 @@
               </td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Support</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Support</td>
               <td class="text-center py-3 px-4 text-xs">Email</td>
               <td class="text-center py-3 px-4 text-xs">Email prioritaire</td>
               <td class="text-center py-3 px-4 text-xs">Prioritaire</td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Dashboard Analytics</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Dashboard Analytics</td>
               <td class="text-center py-3 px-4">
                 <X :size="16" class="text-red-500 mx-auto" />
               </td>
@@ -318,7 +318,7 @@
               </td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Statistiques et exports</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Statistiques et exports</td>
               <td class="text-center py-3 px-4">
                 <X :size="16" class="text-red-500 mx-auto" />
               </td>
@@ -330,7 +330,7 @@
               </td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Analytics temps réel</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Analytics temps réel</td>
               <td class="text-center py-3 px-4">
                 <X :size="16" class="text-red-500 mx-auto" />
               </td>
@@ -342,7 +342,7 @@
               </td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Segmentation avancée</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Segmentation avancée</td>
               <td class="text-center py-3 px-4">
                 <X :size="16" class="text-red-500 mx-auto" />
               </td>
@@ -354,7 +354,7 @@
               </td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">API et intégrations</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">API et intégrations</td>
               <td class="text-center py-3 px-4">
                 <X :size="16" class="text-red-500 mx-auto" />
               </td>
@@ -366,7 +366,7 @@
               </td>
             </tr>
             <tr>
-              <td class="py-3 px-4 text-sm text-gray-700">Formation personnalisée</td>
+              <td class="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">Formation personnalisée</td>
               <td class="text-center py-3 px-4">
                 <X :size="16" class="text-red-500 mx-auto" />
               </td>
@@ -397,15 +397,15 @@
         <div class="absolute inset-0 bg-black/50" @click="cancelUpgrade"></div>
         
         <!-- Modal -->
-        <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
           <div class="text-center mb-6">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-violet-600 to-pink-600 rounded-2xl mb-4">
               <Crown :size="32" class="text-white" />
             </div>
-            <h2 class="text-2xl font-black text-gray-900 mb-2">
+            <h2 class="text-2xl font-black text-gray-900 dark:text-white mb-2">
               Confirmer le changement de plan
             </h2>
-            <p class="text-gray-600">
+            <p class="text-gray-600 dark:text-gray-400">
               Vous allez passer au plan <span class="font-bold text-violet-600">{{ planToUpgrade.toUpperCase() }}</span>
             </p>
           </div>
@@ -423,23 +423,23 @@
           <div class="bg-gray-50 rounded-xl p-4 mb-6">
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-600">Plan actuel</span>
-                <span class="font-bold text-gray-900">{{ currentPlan.toUpperCase() }}</span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Plan actuel</span>
+                <span class="font-bold text-gray-900 dark:text-white">{{ currentPlan.toUpperCase() }}</span>
               </div>
-              <div class="border-t border-gray-200"></div>
+              <div class="border-t border-gray-200 dark:border-gray-700"></div>
               <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-600">Nouveau plan</span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Nouveau plan</span>
                 <span class="font-bold text-violet-600">{{ planToUpgrade.toUpperCase() }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-600">Prix mensuel</span>
-                <span class="font-bold text-gray-900">
+                <span class="text-sm text-gray-600 dark:text-gray-400">Prix mensuel</span>
+                <span class="font-bold text-gray-900 dark:text-white">
                   {{ planToUpgrade === 'free' ? '0€' : planToUpgrade === 'starter' ? '19,99€' : '39,99€' }}
                 </span>
               </div>
               <div v-if="planToUpgrade !== 'free'" class="flex items-center justify-between">
-                <span class="text-sm text-gray-600">Engagement</span>
-                <span class="font-bold text-gray-900">6 mois minimum</span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">Engagement</span>
+                <span class="font-bold text-gray-900 dark:text-white">6 mois minimum</span>
               </div>
             </div>
           </div>
@@ -447,7 +447,7 @@
           <div class="flex space-x-4">
             <button
               @click="cancelUpgrade"
-              class="flex-1 py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors"
+              class="flex-1 py-3 px-6 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl transition-colors"
             >
               Annuler
             </button>

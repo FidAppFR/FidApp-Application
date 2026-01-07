@@ -2,8 +2,8 @@
   <div class="space-y-6">
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="text-3xl font-black text-gray-900">Vos Fidèles</h1>
-        <p class="text-gray-600 mt-2">Gérez vos clients fidèles et leurs points</p>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white">Vos Fidèles</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Gérez vos clients fidèles et leurs points</p>
       </div>
       <div class="flex space-x-3">
         <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors flex items-center space-x-2">
@@ -18,7 +18,7 @@
     </div>
 
     <!-- Barre de recherche et filtres -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
       <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
         <div class="flex-1 relative">
           <Search :size="20" class="absolute left-3 top-3 text-gray-400" />
@@ -26,12 +26,12 @@
             v-model="searchQuery"
             type="text"
             placeholder="Rechercher un client..."
-            class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 transition-colors"
+            class="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500 transition-colors"
           />
         </div>
         <select 
           v-model="filter"
-          class="px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500 transition-colors"
+          class="px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500 transition-colors"
         >
           <option value="all">Tous les clients</option>
           <option value="active">Clients actifs</option>
@@ -47,49 +47,49 @@
 
     <!-- Statistiques -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-white rounded-lg p-4 border border-gray-200">
-        <p class="text-sm text-gray-600">Total clients</p>
-        <p class="text-2xl font-bold text-gray-900">{{ stats.totalCustomers }}</p>
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+        <p class="text-sm text-gray-600 dark:text-gray-400">Total clients</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ stats.totalCustomers }}</p>
         <p class="text-xs text-green-600 mt-1" v-if="stats.monthlyGrowth > 0">+{{ stats.monthlyGrowth }}% ce mois</p>
         <p class="text-xs text-red-600 mt-1" v-else-if="stats.monthlyGrowth < 0">{{ stats.monthlyGrowth }}% ce mois</p>
-        <p class="text-xs text-gray-500 mt-1" v-else>Aucune évolution ce mois</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" v-else>Aucune évolution ce mois</p>
       </div>
-      <div class="bg-white rounded-lg p-4 border border-gray-200">
-        <p class="text-sm text-gray-600">Clients actifs</p>
-        <p class="text-2xl font-bold text-gray-900">{{ stats.activeCustomers }}</p>
-        <p class="text-xs text-gray-500 mt-1">{{ stats.totalCustomers > 0 ? Math.round((stats.activeCustomers / stats.totalCustomers) * 100) : 0 }}% du total</p>
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+        <p class="text-sm text-gray-600 dark:text-gray-400">Clients actifs</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ stats.activeCustomers }}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ stats.totalCustomers > 0 ? Math.round((stats.activeCustomers / stats.totalCustomers) * 100) : 0 }}% du total</p>
       </div>
-      <div class="bg-white rounded-lg p-4 border border-gray-200">
-        <p class="text-sm text-gray-600">Points totaux</p>
-        <p class="text-2xl font-bold text-gray-900">{{ stats.totalPoints.toLocaleString() }}</p>
-        <p class="text-xs text-gray-500 mt-1">Moyenne: {{ stats.totalCustomers > 0 ? Math.round(stats.totalPoints / stats.totalCustomers) : 0 }} pts</p>
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+        <p class="text-sm text-gray-600 dark:text-gray-400">Points totaux</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ stats.totalPoints.toLocaleString() }}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Moyenne: {{ stats.totalCustomers > 0 ? Math.round(stats.totalPoints / stats.totalCustomers) : 0 }} pts</p>
       </div>
-      <div class="bg-white rounded-lg p-4 border border-gray-200">
-        <p class="text-sm text-gray-600">Taux de rétention</p>
-        <p class="text-2xl font-bold text-gray-900">{{ stats.retentionRate }}%</p>
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+        <p class="text-sm text-gray-600 dark:text-gray-400">Taux de rétention</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ stats.retentionRate }}%</p>
         <p class="text-xs text-green-600 mt-1">+3% ce mois</p>
       </div>
     </div>
 
     <!-- Table des clients -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
       <div class="overflow-x-auto overflow-y-visible">
         <table class="w-full">
-          <thead class="bg-gray-50 border-b border-gray-200">
+          <thead class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
             <tr>
-              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Client
               </th>
-              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Points
               </th>
-              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Statut
               </th>
-              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Dernière visite
               </th>
-              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="text-left px-6 py-4 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -100,7 +100,7 @@
               <td colspan="5" class="px-6 py-12 text-center">
                 <div class="flex justify-center items-center space-x-2">
                   <div class="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin"></div>
-                  <span class="text-gray-500">Chargement des clients...</span>
+                  <span class="text-gray-500 dark:text-gray-400">Chargement des clients...</span>
                 </div>
               </td>
             </tr>
@@ -108,7 +108,7 @@
             <!-- No customers -->
             <tr v-else-if="paginatedCustomers.length === 0">
               <td colspan="5" class="px-6 py-12 text-center">
-                <p class="text-gray-500">Aucun client trouvé</p>
+                <p class="text-gray-500 dark:text-gray-400">Aucun client trouvé</p>
                 <button class="mt-4 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-bold px-6 py-3 rounded-full hover:scale-105 transition-all duration-300 shadow-lg">
                   <UserPlus :size="20" class="inline mr-2" />
                   Ajouter votre premier client
@@ -124,8 +124,8 @@
                     <span :class="[getInitialsTextColor(index), 'font-bold']">{{ getInitials(customer) }}</span>
                   </div>
                   <div>
-                    <p class="font-medium text-gray-900">{{ customer.first_name }} {{ customer.last_name }}</p>
-                    <p class="text-sm text-gray-500">{{ customer.email }}</p>
+                    <p class="font-medium text-gray-900 dark:text-white">{{ customer.first_name }} {{ customer.last_name }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ customer.email }}</p>
                   </div>
                 </div>
               </td>
@@ -140,7 +140,7 @@
                   {{ getCustomerStatus(customer).label }}
                 </span>
               </td>
-              <td class="px-6 py-4 text-sm text-gray-600">
+              <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                 {{ formatLastVisit(customer.last_visit) }}
               </td>
               <td class="px-6 py-4">
@@ -154,7 +154,7 @@
                   </button>
                   <button 
                     @click="sendEmail(customer)"
-                    class="text-gray-600 hover:text-gray-700 p-1 hover:bg-gray-50 rounded transition-colors"
+                    class="text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 p-1 hover:bg-gray-50 rounded transition-colors"
                     title="Envoyer un email"
                   >
                     <Mail :size="18" />
@@ -163,7 +163,7 @@
                     <button 
                       :ref="el => setButtonRef(customer.id, el as HTMLElement)"
                       @click="toggleDropdown(customer.id)"
-                      class="text-gray-600 hover:text-gray-700 p-1 hover:bg-gray-50 rounded transition-colors"
+                      class="text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 p-1 hover:bg-gray-50 rounded transition-colors"
                       title="Plus d'options"
                     >
                       <MoreVertical :size="18" />
@@ -177,8 +177,8 @@
       </div>
 
       <!-- Pagination -->
-      <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-        <p class="text-sm text-gray-600">
+      <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
           <span v-if="filteredCustomers.length > 0">
             Affichage de {{ (currentPage - 1) * itemsPerPage + 1 }} à 
             {{ Math.min(currentPage * itemsPerPage, filteredCustomers.length) }} sur 
@@ -190,7 +190,7 @@
           <button 
             @click="currentPage = Math.max(1, currentPage - 1)"
             :disabled="currentPage === 1"
-            class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:hover:bg-white"
+            class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:hover:bg-white dark:bg-gray-800"
           >
             Précédent
           </button>
@@ -217,7 +217,7 @@
           <button 
             @click="currentPage = Math.min(totalPages, currentPage + 1)"
             :disabled="currentPage === totalPages"
-            class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:hover:bg-white"
+            class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:hover:bg-white dark:bg-gray-800"
           >
             Suivant
           </button>
@@ -238,16 +238,16 @@
         ></div>
         
         <!-- Modal -->
-        <div class="relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Gérer les points</h2>
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-md w-full">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Gérer les points</h2>
           
           <div v-if="selectedCustomer" class="space-y-4">
             <!-- Info client -->
             <div class="bg-gray-50 rounded-lg p-4">
-              <p class="font-medium text-gray-900">
+              <p class="font-medium text-gray-900 dark:text-white">
                 {{ selectedCustomer.first_name }} {{ selectedCustomer.last_name }}
               </p>
-              <p class="text-sm text-gray-600">{{ selectedCustomer.email }}</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ selectedCustomer.email }}</p>
               <div class="mt-2 flex items-center space-x-2">
                 <Star :size="20" class="text-yellow-500 fill-current" />
                 <span class="font-bold text-lg">{{ selectedCustomer.points }} points</span>
@@ -256,7 +256,7 @@
 
             <!-- Type d'opération -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Type d'opération
               </label>
               <div class="grid grid-cols-3 gap-2">
@@ -266,7 +266,7 @@
                     'py-2 px-3 rounded-lg font-medium transition-colors text-sm',
                     operationType === 'product'
                       ? 'bg-violet-100 text-violet-700 border-2 border-violet-300'
-                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                      : 'bg-gray-50 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700'
                   ]"
                 >
                   <ShoppingCart :size="16" class="inline mr-1" />
@@ -278,7 +278,7 @@
                     'py-2 px-3 rounded-lg font-medium transition-colors text-sm',
                     operationType === 'admin'
                       ? 'bg-blue-100 text-blue-700 border-2 border-blue-300'
-                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                      : 'bg-gray-50 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700'
                   ]"
                 >
                   <Settings :size="16" class="inline mr-1" />
@@ -290,7 +290,7 @@
                     'py-2 px-3 rounded-lg font-medium transition-colors text-sm',
                     operationType === 'bonus'
                       ? 'bg-green-100 text-green-700 border-2 border-green-300'
-                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                      : 'bg-gray-50 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700'
                   ]"
                 >
                   <Gift :size="16" class="inline mr-1" />
@@ -302,16 +302,16 @@
             <!-- Section Achat Produit -->
             <div v-if="operationType === 'product'" class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Sélectionner un produit
                 </label>
                 <div v-if="loadingProducts" class="text-center py-4">
                   <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600 mx-auto"></div>
                 </div>
-                <div v-else-if="availableProducts.length === 0" class="text-center py-4 text-gray-500">
+                <div v-else-if="availableProducts.length === 0" class="text-center py-4 text-gray-500 dark:text-gray-400">
                   Aucun produit disponible
                 </div>
-                <div v-else class="max-h-48 overflow-y-auto border border-gray-200 rounded-lg">
+                <div v-else class="max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg">
                   <button
                     v-for="product in availableProducts"
                     :key="product.id"
@@ -323,12 +323,12 @@
                   >
                     <div class="flex justify-between items-center">
                       <div>
-                        <p class="font-medium text-gray-900">{{ product.name }}</p>
-                        <p class="text-xs text-gray-500">{{ product.description }}</p>
+                        <p class="font-medium text-gray-900 dark:text-white">{{ product.name }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ product.description }}</p>
                       </div>
                       <div class="text-right">
                         <p class="font-bold text-violet-600">{{ product.points }} pts</p>
-                        <p v-if="product.price" class="text-xs text-gray-500">{{ product.price }}€</p>
+                        <p v-if="product.price" class="text-xs text-gray-500 dark:text-gray-400">{{ product.price }}€</p>
                       </div>
                     </div>
                   </button>
@@ -336,16 +336,16 @@
               </div>
               
               <div v-if="selectedProduct">
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Quantité
                 </label>
                 <input
                   v-model.number="productQuantity"
                   type="number"
                   min="1"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                 />
-                <p class="text-sm text-gray-500 mt-1">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                   Total: {{ (selectedProduct.points * productQuantity) }} points
                 </p>
               </div>
@@ -360,7 +360,7 @@
                     'py-2 px-4 rounded-lg font-medium transition-colors',
                     pointsOperation === 'add'
                       ? 'bg-green-100 text-green-700 border-2 border-green-300'
-                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                      : 'bg-gray-50 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700'
                   ]"
                 >
                   <Plus :size="18" class="inline mr-1" />
@@ -372,7 +372,7 @@
                     'py-2 px-4 rounded-lg font-medium transition-colors',
                     pointsOperation === 'remove'
                       ? 'bg-red-100 text-red-700 border-2 border-red-300'
-                      : 'bg-gray-50 text-gray-700 border-2 border-gray-200'
+                      : 'bg-gray-50 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700'
                   ]"
                 >
                   <Minus :size="18" class="inline mr-1" />
@@ -382,7 +382,7 @@
               
               <!-- Nombre de points pour admin -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Nombre de points
                 </label>
                 <input
@@ -390,10 +390,10 @@
                   type="number"
                   min="0"
                   :max="pointsOperation === 'remove' ? selectedCustomer.points : undefined"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                   placeholder="0"
                 />
-                <p v-if="pointsOperation === 'remove'" class="text-xs text-gray-500 mt-1">
+                <p v-if="pointsOperation === 'remove'" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Maximum: {{ selectedCustomer.points }} points
                 </p>
               </div>
@@ -402,12 +402,12 @@
             <!-- Section Bonus -->
             <div v-if="operationType === 'bonus'" class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Type de bonus
                 </label>
                 <select
                   v-model="bonusType"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                  class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                 >
                   <option value="welcome">Bonus de bienvenue (50 pts)</option>
                   <option value="birthday">Bonus anniversaire (100 pts)</option>
@@ -419,13 +419,13 @@
 
             <!-- Raison (optionnel) -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Raison (optionnel)
               </label>
               <textarea
                 v-model="pointsReason"
                 rows="2"
-                class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                class="w-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                 placeholder="Ex: Bonus anniversaire, Ajustement manuel..."
               ></textarea>
             </div>
@@ -444,7 +444,7 @@
             <div class="flex space-x-3">
               <button
                 @click="closePointsModal"
-                class="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+                class="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
               >
                 Annuler
               </button>
@@ -474,19 +474,19 @@
         ></div>
         
         <!-- Modal -->
-        <div class="relative bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Confirmer la suppression</h2>
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-md w-full">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Confirmer la suppression</h2>
           
           <div v-if="selectedCustomer" class="space-y-4">
-            <p class="text-gray-600">
+            <p class="text-gray-600 dark:text-gray-400">
               Êtes-vous sûr de vouloir supprimer ce client ?
             </p>
             
             <div class="bg-red-50 rounded-lg p-4 border border-red-200">
-              <p class="font-medium text-gray-900">
+              <p class="font-medium text-gray-900 dark:text-white">
                 {{ selectedCustomer.first_name }} {{ selectedCustomer.last_name }}
               </p>
-              <p class="text-sm text-gray-600">{{ selectedCustomer.email }}</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ selectedCustomer.email }}</p>
               <p class="text-sm text-red-600 mt-2">
                 ⚠️ Cette action est irréversible
               </p>
@@ -496,7 +496,7 @@
             <div class="flex space-x-3">
               <button
                 @click="showDeleteModal = false"
-                class="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+                class="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
               >
                 Annuler
               </button>
@@ -526,13 +526,13 @@
         ></div>
         
         <!-- Modal -->
-        <div class="relative bg-white rounded-2xl shadow-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
           <!-- Header -->
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-900">Détails du client</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Détails du client</h2>
             <button
               @click="closeDetailModal"
-              class="text-gray-400 hover:text-gray-600 transition-colors"
+              class="text-gray-400 hover:text-gray-600 dark:text-gray-400 transition-colors"
             >
               <X :size="24" />
             </button>
@@ -550,10 +550,10 @@
                   {{ getInitials(customerDetails) }}
                 </div>
                 <div>
-                  <h3 class="text-2xl font-bold text-gray-900">
+                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
                     {{ customerDetails.first_name }} {{ customerDetails.last_name }}
                   </h3>
-                  <p class="text-gray-600">Client depuis {{ formatDate(customerDetails.created_at) }}</p>
+                  <p class="text-gray-600 dark:text-gray-400">Client depuis {{ formatDate(customerDetails.created_at) }}</p>
                   <div class="flex items-center space-x-2 mt-2">
                     <Star :size="20" class="text-yellow-500 fill-current" />
                     <span class="font-bold text-xl">{{ customerDetails.points }} points</span>
@@ -566,8 +566,8 @@
             </div>
 
             <!-- Informations personnelles -->
-            <div class="bg-white border border-gray-200 rounded-xl p-6">
-              <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+              <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
                 <User :size="20" class="text-violet-600" />
                 <span>Informations personnelles</span>
               </h4>
@@ -575,10 +575,10 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Prénom -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Prénom</label>
                   <div class="flex items-center space-x-2">
                     <div v-if="editingField !== 'first_name'" class="flex items-center space-x-2 flex-1">
-                      <p class="text-gray-900">{{ customerDetails.first_name }}</p>
+                      <p class="text-gray-900 dark:text-white">{{ customerDetails.first_name }}</p>
                       <button
                         @click="startEditing('first_name')"
                         class="text-violet-600 hover:text-violet-700"
@@ -590,7 +590,7 @@
                       <input
                         v-model="editValue"
                         type="text"
-                        class="flex-1 px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                       />
                       <button
                         @click="saveDirectEdit('first_name')"
@@ -610,10 +610,10 @@
 
                 <!-- Nom -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nom</label>
                   <div class="flex items-center space-x-2">
                     <div v-if="editingField !== 'last_name'" class="flex items-center space-x-2 flex-1">
-                      <p class="text-gray-900">{{ customerDetails.last_name }}</p>
+                      <p class="text-gray-900 dark:text-white">{{ customerDetails.last_name }}</p>
                       <button
                         @click="startEditing('last_name')"
                         class="text-violet-600 hover:text-violet-700"
@@ -625,7 +625,7 @@
                       <input
                         v-model="editValue"
                         type="text"
-                        class="flex-1 px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                       />
                       <button
                         @click="saveDirectEdit('last_name')"
@@ -645,13 +645,13 @@
 
                 <!-- Email (sécurisé) -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1 flex items-center space-x-1">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center space-x-1">
                     <span>Email</span>
                     <Shield :size="14" class="text-orange-500" title="Modification sécurisée" />
                   </label>
                   <div class="flex items-center space-x-2">
                     <div v-if="editingField !== 'email'" class="flex items-center space-x-2 flex-1">
-                      <p class="text-gray-900">{{ customerDetails.email }}</p>
+                      <p class="text-gray-900 dark:text-white">{{ customerDetails.email }}</p>
                       <button
                         @click="startEditing('email')"
                         class="text-violet-600 hover:text-violet-700"
@@ -663,7 +663,7 @@
                       <input
                         v-model="editValue"
                         type="email"
-                        class="w-full px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="w-full px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                         placeholder="Nouveau email"
                       />
                       <div class="flex items-center space-x-2">
@@ -687,7 +687,7 @@
                           <input
                             :value="generatedLink"
                             readonly
-                            class="flex-1 px-2 py-1 bg-white border border-orange-200 rounded text-xs"
+                            class="flex-1 px-2 py-1 bg-white dark:bg-gray-800 border border-orange-200 rounded text-xs"
                           />
                           <button
                             @click="copyLink"
@@ -706,10 +706,10 @@
 
                 <!-- Téléphone -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Téléphone</label>
                   <div class="flex items-center space-x-2">
                     <div v-if="editingField !== 'phone'" class="flex items-center space-x-2 flex-1">
-                      <p class="text-gray-900">{{ customerDetails.phone || 'Non renseigné' }}</p>
+                      <p class="text-gray-900 dark:text-white">{{ customerDetails.phone || 'Non renseigné' }}</p>
                       <button
                         @click="startEditing('phone')"
                         class="text-violet-600 hover:text-violet-700"
@@ -721,7 +721,7 @@
                       <input
                         v-model="editValue"
                         type="tel"
-                        class="flex-1 px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
+                        class="flex-1 px-3 py-1 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-violet-500"
                       />
                       <button
                         @click="saveDirectEdit('phone')"
@@ -741,67 +741,67 @@
 
                 <!-- Date de naissance -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Date de naissance</label>
-                  <p class="text-gray-900">{{ formatDate(customerDetails.date_of_birth) }}</p>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date de naissance</label>
+                  <p class="text-gray-900 dark:text-white">{{ formatDate(customerDetails.date_of_birth) }}</p>
                 </div>
 
                 <!-- Adresse -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
-                  <p class="text-gray-900">{{ customerDetails.address || 'Non renseignée' }}</p>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Adresse</label>
+                  <p class="text-gray-900 dark:text-white">{{ customerDetails.address || 'Non renseignée' }}</p>
                 </div>
               </div>
             </div>
 
             <!-- Statistiques -->
-            <div class="bg-white border border-gray-200 rounded-xl p-6">
-              <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+              <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
                 <TrendingUp :size="20" class="text-violet-600" />
                 <span>Statistiques</span>
               </h4>
               
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="bg-gray-50 rounded-lg p-4">
-                  <p class="text-sm text-gray-600">Points actuels</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Points actuels</p>
                   <p class="text-2xl font-bold text-violet-600">{{ customerDetails.points }}</p>
                 </div>
                 <div class="bg-gray-50 rounded-lg p-4">
-                  <p class="text-sm text-gray-600">Total gagné</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Total gagné</p>
                   <p class="text-2xl font-bold text-green-600">{{ customerDetails.total_points_earned || 0 }}</p>
                 </div>
                 <div class="bg-gray-50 rounded-lg p-4">
-                  <p class="text-sm text-gray-600">Total dépensé</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Total dépensé</p>
                   <p class="text-2xl font-bold text-red-600">{{ customerDetails.total_points_spent || 0 }}</p>
                 </div>
                 <div class="bg-gray-50 rounded-lg p-4">
-                  <p class="text-sm text-gray-600">Dernière visite</p>
-                  <p class="text-sm font-medium text-gray-900">{{ formatLastVisit(customerDetails.last_visit) }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Dernière visite</p>
+                  <p class="text-sm font-medium text-gray-900 dark:text-white">{{ formatLastVisit(customerDetails.last_visit) }}</p>
                 </div>
               </div>
             </div>
 
             <!-- Préférences -->
-            <div class="bg-white border border-gray-200 rounded-xl p-6">
-              <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+              <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
                 <Settings :size="20" class="text-violet-600" />
                 <span>Préférences de communication</span>
               </h4>
               
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <span class="text-gray-700">Accepte les conditions</span>
+                  <span class="text-gray-700 dark:text-gray-300">Accepte les conditions</span>
                   <span :class="customerDetails.accept_terms ? 'text-green-600' : 'text-gray-400'">
                     {{ customerDetails.accept_terms ? '✓ Oui' : 'Non' }}
                   </span>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-gray-700">Recevoir les offres marketing</span>
+                  <span class="text-gray-700 dark:text-gray-300">Recevoir les offres marketing</span>
                   <span :class="customerDetails.accept_marketing ? 'text-green-600' : 'text-gray-400'">
                     {{ customerDetails.accept_marketing ? '✓ Oui' : 'Non' }}
                   </span>
                 </div>
                 <div class="flex items-center justify-between">
-                  <span class="text-gray-700">Recevoir les offres partenaires</span>
+                  <span class="text-gray-700 dark:text-gray-300">Recevoir les offres partenaires</span>
                   <span :class="customerDetails.accept_partners ? 'text-green-600' : 'text-gray-400'">
                     {{ customerDetails.accept_partners ? '✓ Oui' : 'Non' }}
                   </span>
@@ -813,7 +813,7 @@
             <div class="flex justify-end space-x-3">
               <button
                 @click="closeDetailModal"
-                class="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+                class="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
               >
                 Fermer
               </button>
@@ -827,7 +827,7 @@
     <Teleport to="body">
       <div 
         v-if="activeDropdown && dropdownPosition"
-        class="fixed w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-[9999]"
+        class="fixed w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-[9999]"
         :style="{
           top: `${dropdownPosition.top}px`,
           left: `${dropdownPosition.left}px`
@@ -837,7 +837,7 @@
           @click="openPointsModal(getCustomerById(activeDropdown))"
           class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-sm rounded-t-lg"
         >
-          <Settings :size="16" class="text-gray-500" />
+          <Settings :size="16" class="text-gray-500 dark:text-gray-400" />
           <span>Gérer les points</span>
         </button>
         <button
@@ -1048,7 +1048,7 @@ const totalPages = computed(() =>
 const getCustomerStatus = (customer: Customer) => {
   if (customer.points >= 500) return { label: 'VIP', class: 'bg-green-100 text-green-700' }
   if (customer.points >= 200) return { label: 'Régulier', class: 'bg-blue-100 text-blue-700' }
-  return { label: 'Nouveau', class: 'bg-gray-100 text-gray-700' }
+  return { label: 'Nouveau', class: 'bg-gray-100 text-gray-700 dark:text-gray-300' }
 }
 
 // Obtenir les initiales du client

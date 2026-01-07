@@ -1,14 +1,14 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-black text-gray-900">QR Code de Fidélité</h1>
-      <p class="text-gray-600 mt-2">Générez et téléchargez le QR code pour vos clients</p>
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white">QR Code de Fidélité</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Générez et téléchargez le QR code pour vos clients</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Aperçu du QR Code -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Aperçu du QR Code</h3>
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Aperçu du QR Code</h3>
         
         <div id="qr-container" class="bg-gradient-to-br from-violet-50 to-pink-50 rounded-2xl p-8">
           <!-- Logo et nom de l'entreprise -->
@@ -19,34 +19,34 @@
             <div v-else class="w-20 h-20 mx-auto mb-3 bg-gradient-to-r from-violet-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
               <Building2 :size="40" class="text-white" />
             </div>
-            <h2 class="text-2xl font-black text-gray-900">{{ companyData.name || 'Votre Entreprise' }}</h2>
-            <p class="text-gray-600 mt-1">Programme de fidélité</p>
+            <h2 class="text-2xl font-black text-gray-900 dark:text-white">{{ companyData.name || 'Votre Entreprise' }}</h2>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">Programme de fidélité</p>
           </div>
           
           <!-- QR Code -->
-          <div class="bg-white rounded-xl p-4 shadow-inner flex items-center justify-center">
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-inner flex items-center justify-center">
             <canvas ref="qrCanvas"></canvas>
           </div>
           
           <!-- Instructions -->
           <div class="mt-6 text-center">
-            <p class="text-sm text-gray-700 font-medium">📱 Scannez pour accéder</p>
-            <p class="text-xs text-gray-500 mt-1">à votre espace fidélité</p>
+            <p class="text-sm text-gray-700 dark:text-gray-300 font-medium">📱 Scannez pour accéder</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">à votre espace fidélité</p>
           </div>
         </div>
 
         <!-- Statistiques -->
         <div class="mt-6 grid grid-cols-3 gap-4">
-          <div class="bg-gray-50 rounded-lg p-3">
-            <p class="text-xs text-gray-500 mb-1">Total scans</p>
+          <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Total scans</p>
             <p class="text-xl font-bold text-orange-600">{{ scanStats.totalScans }}</p>
           </div>
-          <div class="bg-gray-50 rounded-lg p-3">
-            <p class="text-xs text-gray-500 mb-1">Clients uniques</p>
+          <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Clients uniques</p>
             <p class="text-xl font-bold text-violet-600">{{ scanStats.totalUniqueClients }}</p>
           </div>
-          <div class="bg-gray-50 rounded-lg p-3">
-            <p class="text-xs text-gray-500 mb-1">Scans aujourd'hui</p>
+          <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Scans aujourd'hui</p>
             <p class="text-xl font-bold text-pink-600">{{ scanStats.scansToday }}</p>
           </div>
         </div>
@@ -55,17 +55,17 @@
       <!-- Options et actions -->
       <div class="space-y-6">
         <!-- Informations du QR Code -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Informations du QR Code</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Informations du QR Code</h3>
           
           <div class="space-y-4">
             <div>
-              <label class="text-sm font-semibold text-gray-700">URL de destination</label>
+              <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">URL de destination</label>
               <div class="mt-1 flex items-center space-x-2">
                 <input 
                   :value="qrUrl" 
                   readonly
-                  class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600"
+                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-600 dark:text-gray-400"
                 />
                 <button 
                   @click="copyUrl"
@@ -77,28 +77,28 @@
             </div>
 
             <div>
-              <label class="text-sm font-semibold text-gray-700">Identifiant unique</label>
+              <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Identifiant unique</label>
               <div class="mt-1 flex items-center space-x-2">
                 <span class="font-mono text-lg text-violet-600 font-bold">{{ qrCodeId || 'Génération...' }}</span>
-                <span class="text-xs text-gray-500">(Permanent)</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">(Permanent)</span>
               </div>
             </div>
 
             <div>
-              <label class="text-sm font-semibold text-gray-700">Type de QR Code</label>
-              <p class="mt-1 text-sm text-gray-600">Redirection vers la page d'authentification client</p>
+              <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Type de QR Code</label>
+              <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Redirection vers la page d'authentification client</p>
             </div>
 
             <div>
-              <label class="text-sm font-semibold text-gray-700">Validité</label>
-              <p class="mt-1 text-sm text-gray-600">Permanent - Aucune expiration</p>
+              <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Validité</label>
+              <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Permanent - Aucune expiration</p>
             </div>
           </div>
         </div>
 
         <!-- Actions -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Actions</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Actions</h3>
           
           <div class="space-y-3">
             <button 
@@ -112,7 +112,7 @@
 
             <button 
               @click="downloadAsImage"
-              class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center space-x-2"
+              class="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center space-x-2"
             >
               <Image :size="20" />
               <span>Télécharger en image</span>
@@ -120,7 +120,7 @@
 
             <button 
               @click="printQR"
-              class="w-full border-2 border-gray-300 text-gray-700 font-bold py-3 px-6 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2"
+              class="w-full border-2 border-gray-300 text-gray-700 dark:text-gray-300 font-bold py-3 px-6 rounded-xl hover:bg-gray-50 dark:bg-gray-900 transition-colors flex items-center justify-center space-x-2"
             >
               <Printer :size="20" />
               <span>Imprimer</span>

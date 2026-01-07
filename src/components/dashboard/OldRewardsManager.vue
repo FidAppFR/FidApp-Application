@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-black text-gray-900">Gestionnaire d'anciennes récompenses</h1>
-      <p class="text-gray-600 mt-2">Visualisez et supprimez vos anciennes récompenses créées</p>
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white">Gestionnaire d'anciennes récompenses</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Visualisez et supprimez vos anciennes récompenses créées</p>
     </div>
 
     <!-- Bouton de rechargement -->
@@ -19,31 +19,31 @@
 
     <!-- Statistiques -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Total récompenses</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ rewards.length }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total récompenses</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ rewards.length }}</p>
           </div>
           <Archive :size="24" class="text-violet-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Actives</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ activeCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Actives</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ activeCount }}</p>
           </div>
           <CheckCircle :size="24" class="text-green-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Inactives</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ inactiveCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Inactives</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ inactiveCount }}</p>
           </div>
           <XCircle :size="24" class="text-red-600" />
         </div>

@@ -2,8 +2,8 @@
   <div class="space-y-6">
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="text-3xl font-black text-gray-900">Objectifs & Milestones</h1>
-        <p class="text-gray-600 mt-2">Définissez et suivez vos objectifs de croissance</p>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white">Objectifs & Milestones</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Définissez et suivez vos objectifs de croissance</p>
       </div>
       <button 
         @click="showCreateModal = true"
@@ -16,41 +16,41 @@
 
     <!-- Statistiques rapides -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Objectifs actifs</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ activeCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Objectifs actifs</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ activeCount }}</p>
           </div>
           <Target :size="24" class="text-violet-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Complétés</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ achievedCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Complétés</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ achievedCount }}</p>
           </div>
           <Trophy :size="24" class="text-green-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">En cours</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ inProgressCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">En cours</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ inProgressCount }}</p>
           </div>
           <TrendingUp :size="24" class="text-blue-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Taux réussite</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ successRate }}%</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Taux réussite</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ successRate }}%</p>
           </div>
           <Award :size="24" class="text-amber-600" />
         </div>
@@ -66,22 +66,22 @@
     <div v-else class="space-y-4">
       <!-- Milestones actifs -->
       <div v-if="activeMilestones.length > 0">
-        <h2 class="text-lg font-bold text-gray-900 mb-3">Objectifs en cours</h2>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Objectifs en cours</h2>
         <div class="grid gap-4">
           <div 
             v-for="milestone in activeMilestones" 
             :key="milestone.id"
-            class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow"
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow"
           >
             <div class="flex items-start justify-between mb-4">
               <div class="flex-1">
-                <h3 class="font-bold text-lg text-gray-900">{{ milestone.name }}</h3>
-                <p class="text-gray-600 text-sm mt-1">{{ milestone.description }}</p>
+                <h3 class="font-bold text-lg text-gray-900 dark:text-white">{{ milestone.name }}</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">{{ milestone.description }}</p>
                 
                 <div class="flex items-center gap-4 mt-3 text-sm">
                   <span class="flex items-center gap-1">
                     <Calendar :size="14" class="text-gray-400" />
-                    <span class="text-gray-500">
+                    <span class="text-gray-500 dark:text-gray-400">
                       Du {{ formatDate(milestone.start_date) }}
                       <template v-if="milestone.end_date">
                         au {{ formatDate(milestone.end_date) }}
@@ -101,7 +101,7 @@
               <div class="flex gap-2">
                 <button 
                   @click="editMilestone(milestone)"
-                  class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                  class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 >
                   <Edit :size="16" />
                 </button>
@@ -117,8 +117,8 @@
             <!-- Barre de progression -->
             <div class="space-y-2">
               <div class="flex items-center justify-between text-sm">
-                <span class="text-gray-600">Progression</span>
-                <span class="font-bold text-gray-900">
+                <span class="text-gray-600 dark:text-gray-400">Progression</span>
+                <span class="font-bold text-gray-900 dark:text-white">
                   {{ milestone.current_value }} / {{ milestone.target_value }}
                 </span>
               </div>
@@ -134,7 +134,7 @@
               </div>
               
               <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-500">
+                <span class="text-xs text-gray-500 dark:text-gray-400">
                   {{ Math.round((milestone.current_value / milestone.target_value) * 100) }}% complété
                 </span>
                 <span v-if="milestone.reward_description" class="text-xs text-violet-600 font-medium">
@@ -148,7 +148,7 @@
 
       <!-- Milestones complétés -->
       <div v-if="achievedMilestones.length > 0">
-        <h2 class="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
           Objectifs atteints
           <Trophy :size="20" class="text-green-600" />
         </h2>
@@ -160,11 +160,11 @@
           >
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                <h3 class="font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <CheckCircle :size="20" class="text-green-600" />
                   {{ milestone.name }}
                 </h3>
-                <p class="text-sm text-gray-600 mt-1">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Atteint le {{ formatDate(milestone.achieved_at) }}
                 </p>
               </div>
@@ -177,9 +177,9 @@
       </div>
 
       <!-- Aucun milestone -->
-      <div v-if="milestones.length === 0" class="text-center py-12 bg-white rounded-xl border-2 border-dashed border-gray-300">
+      <div v-if="milestones.length === 0" class="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border-2 border-dashed border-gray-300">
         <Target :size="48" class="mx-auto text-gray-300 mb-4" />
-        <p class="text-gray-500">Aucun objectif défini</p>
+        <p class="text-gray-500 dark:text-gray-400">Aucun objectif défini</p>
         <button 
           @click="showCreateModal = true"
           class="mt-4 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
@@ -204,12 +204,12 @@
           <div class="absolute inset-0 bg-black/50" @click="closeModal"></div>
           
           <!-- Modal -->
-          <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div class="mb-6">
-              <h2 class="text-2xl font-black text-gray-900">
+              <h2 class="text-2xl font-black text-gray-900 dark:text-white">
                 {{ editingMilestone ? 'Modifier l\'objectif' : 'Nouvel objectif' }}
               </h2>
-              <p class="text-gray-600 mt-1">
+              <p class="text-gray-600 dark:text-gray-400 mt-1">
                 Définissez un objectif mesurable pour votre entreprise
               </p>
             </div>
@@ -217,40 +217,40 @@
             <form @submit.prevent="saveMilestone" class="space-y-6">
               <!-- Nom -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Nom de l'objectif *
                 </label>
                 <input
                   v-model="formData.name"
                   type="text"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder="Ex: Atteindre 100 clients"
                 />
               </div>
 
               <!-- Description -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Description
                 </label>
                 <textarea
                   v-model="formData.description"
                   rows="2"
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder="Décrivez votre objectif..."
                 ></textarea>
               </div>
 
               <!-- Type -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Type d'objectif *
                 </label>
                 <select
                   v-model="formData.type"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                 >
                   <option value="customer_count">Nombre de clients</option>
                   <option value="points_distributed">Points distribués</option>
@@ -265,7 +265,7 @@
               <!-- Valeurs -->
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Valeur cible *
                   </label>
                   <input
@@ -273,19 +273,19 @@
                     type="number"
                     min="1"
                     required
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                     placeholder="100"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Valeur actuelle
                   </label>
                   <input
                     v-model.number="formData.current_value"
                     type="number"
                     min="0"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                     placeholder="0"
                     :disabled="!editingMilestone"
                   />
@@ -295,36 +295,36 @@
               <!-- Dates -->
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Date de début
                   </label>
                   <input
                     v-model="formData.start_date"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Date de fin (optionnel)
                   </label>
                   <input
                     v-model="formData.end_date"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   />
                 </div>
               </div>
 
               <!-- Récompense -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Récompense à l'atteinte (optionnel)
                 </label>
                 <input
                   v-model="formData.reward_description"
                   type="text"
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder="Ex: Bonus de 500€"
                 />
               </div>
@@ -334,7 +334,7 @@
                 <button
                   type="button"
                   @click="closeModal"
-                  class="flex-1 py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors"
+                  class="flex-1 py-3 px-6 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl transition-colors"
                 >
                   Annuler
                 </button>
@@ -579,9 +579,9 @@ const getTypeColor = (type: string) => {
     monthly_revenue: 'bg-amber-100 text-amber-700',
     daily_scans: 'bg-purple-100 text-purple-700',
     weekly_active: 'bg-indigo-100 text-indigo-700',
-    custom: 'bg-gray-100 text-gray-700'
+    custom: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
   }
-  return colors[type] || 'bg-gray-100 text-gray-700'
+  return colors[type] || 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
 }
 
 const getProgressColor = (percentage: number) => {

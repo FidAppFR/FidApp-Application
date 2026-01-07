@@ -1,12 +1,12 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-black text-gray-900">Bonus & Événements</h1>
-      <p class="text-gray-600 mt-2">Gérez les bonus anniversaire, parrainage et événements spéciaux</p>
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white">Bonus & Événements</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Gérez les bonus anniversaire, parrainage et événements spéciaux</p>
     </div>
 
     <!-- Tabs pour les différents types de bonus -->
-    <div class="border-b border-gray-200">
+    <div class="border-b border-gray-200 dark:border-gray-700">
       <nav class="-mb-px flex space-x-8">
         <button
           v-for="tab in tabs"
@@ -16,7 +16,7 @@
             'py-2 px-1 border-b-2 font-medium text-sm transition-colors',
             activeTab === tab.id
               ? 'border-violet-600 text-violet-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:border-gray-300'
           ]"
         >
           {{ tab.label }}
@@ -28,19 +28,19 @@
     
     <!-- Onglet Anniversaire -->
     <div v-if="activeTab === 'birthday'" class="space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-start justify-between mb-6">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center">
               <Cake :size="24" class="text-white" />
             </div>
             <div>
-              <h2 class="text-xl font-bold text-gray-900">Bonus Anniversaire</h2>
-              <p class="text-sm text-gray-600">Offrez des points pour l'anniversaire de vos clients</p>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Bonus Anniversaire</h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Offrez des points pour l'anniversaire de vos clients</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Activé</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Activé</span>
             <button
               @click="toggleBonus('birthday')"
               :class="[
@@ -50,7 +50,7 @@
             >
               <span
                 :class="[
-                  'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
+                  'inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-800 transition-transform',
                   bonusSettings.birthday_enabled ? 'translate-x-6' : 'translate-x-1'
                 ]"
               />
@@ -60,7 +60,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Points offerts
             </label>
             <input
@@ -73,7 +73,7 @@
           </div>
           
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Attribution des points fidélité
             </label>
             <select
@@ -89,7 +89,7 @@
         </div>
 
         <div class="mt-6">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Message d'anniversaire
           </label>
           <textarea
@@ -104,19 +104,19 @@
 
     <!-- Onglet Parrainage -->
     <div v-if="activeTab === 'referral'" class="space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-start justify-between mb-6">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
               <Users :size="24" class="text-white" />
             </div>
             <div>
-              <h2 class="text-xl font-bold text-gray-900">Programme de Parrainage</h2>
-              <p class="text-sm text-gray-600">Récompensez les clients qui recommandent votre entreprise</p>
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white">Programme de Parrainage</h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Récompensez les clients qui recommandent votre entreprise</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Activé</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Activé</span>
             <button
               @click="toggleBonus('referral')"
               :class="[
@@ -126,7 +126,7 @@
             >
               <span
                 :class="[
-                  'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
+                  'inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-800 transition-transform',
                   bonusSettings.referral_enabled ? 'translate-x-6' : 'translate-x-1'
                 ]"
               />
@@ -136,7 +136,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Points pour le parrain
             </label>
             <input
@@ -149,7 +149,7 @@
           </div>
           
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Points pour le filleul
             </label>
             <input
@@ -163,7 +163,7 @@
         </div>
 
         <div class="mt-6">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Conditions de parrainage
           </label>
           <textarea
@@ -193,28 +193,28 @@
         <div
           v-for="event in specialEvents"
           :key="event.id"
-          class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
         >
           <div class="flex items-start justify-between mb-4">
-            <h3 class="font-bold text-gray-900">{{ event.name }}</h3>
+            <h3 class="font-bold text-gray-900 dark:text-white">{{ event.name }}</h3>
             <button
               @click="toggleEvent(event)"
               :class="[
                 'px-2 py-1 rounded text-xs font-medium',
                 event.is_active 
                   ? 'bg-green-100 text-green-700' 
-                  : 'bg-gray-100 text-gray-700'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
               ]"
             >
               {{ event.is_active ? 'Actif' : 'Inactif' }}
             </button>
           </div>
           
-          <p class="text-sm text-gray-600 mb-4">{{ event.description }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ event.description }}</p>
           
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="text-sm text-gray-500">Points</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400">Points</span>
               <div class="flex items-center gap-1">
                 <Star :size="16" class="text-amber-500" />
                 <span class="font-bold">{{ event.points }}</span>
@@ -222,14 +222,14 @@
             </div>
             
             <div v-if="event.start_date || event.end_date" class="flex items-center justify-between">
-              <span class="text-sm text-gray-500">Période</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400">Période</span>
               <span class="text-sm font-medium">
                 {{ formatDateRange(event.start_date, event.end_date) }}
               </span>
             </div>
             
             <div class="flex items-center justify-between">
-              <span class="text-sm text-gray-500">Utilisations</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400">Utilisations</span>
               <span class="text-sm font-medium">{{ event.total_uses }}</span>
             </div>
           </div>
@@ -237,7 +237,7 @@
           <div class="mt-4 flex gap-2">
             <button
               @click="editEvent(event)"
-              class="flex-1 px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 transition-colors"
+              class="flex-1 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-sm hover:bg-gray-200 transition-colors"
             >
               Modifier
             </button>
@@ -269,13 +269,13 @@
       @update:model-value="closeEventModal"
       size="md"
     >
-        <h3 class="text-xl font-bold text-gray-900 mb-4">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
           {{ editingEvent ? 'Modifier l\'événement' : 'Créer un événement' }}
         </h3>
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nom de l'événement</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nom de l'événement</label>
             <input
               v-model="eventForm.name"
               type="text"
@@ -285,7 +285,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
             <textarea
               v-model="eventForm.description"
               rows="2"
@@ -294,7 +294,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Points offerts</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Points offerts</label>
             <input
               v-model.number="eventForm.points"
               type="number"
@@ -305,7 +305,7 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Date début</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date début</label>
               <input
                 v-model="eventForm.start_date"
                 type="date"
@@ -313,7 +313,7 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Date fin</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date fin</label>
               <input
                 v-model="eventForm.end_date"
                 type="date"
@@ -329,7 +329,7 @@
                 type="checkbox"
                 class="rounded text-violet-600 focus:ring-violet-600"
               />
-              <span class="text-sm text-gray-700">Activer immédiatement</span>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Activer immédiatement</span>
             </label>
           </div>
         </div>
@@ -344,7 +344,7 @@
           </button>
           <button
             @click="closeEventModal"
-            class="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+            class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 rounded-lg hover:bg-gray-200 transition-colors"
           >
             Annuler
           </button>

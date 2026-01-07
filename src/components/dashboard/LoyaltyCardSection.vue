@@ -1,16 +1,16 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-black text-gray-900">Personnaliser Votre Carte</h1>
-      <p class="text-gray-600 mt-2">Créez une carte de fidélité unique pour vos clients</p>
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white">Personnaliser Votre Carte</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Créez une carte de fidélité unique pour vos clients</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Aperçu de la carte - Sticky -->
       <div class="lg:order-2">
         <div class="sticky top-24">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Aperçu en temps réel</h3>
-          <div class="bg-gray-100 rounded-xl p-6 flex items-center justify-center min-h-[450px]">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Aperçu en temps réel</h3>
+          <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-6 flex items-center justify-center min-h-[450px]">
             <div 
               :style="cardStyles"
               class="w-full max-w-md transform hover:scale-105 transition-transform duration-300"
@@ -37,7 +37,7 @@
                   </div>
                   <!-- Logo sur la carte -->
                   <div v-if="logoPreview || cardData.logoUrl" 
-                       class="w-12 h-12 bg-white rounded-lg overflow-hidden shadow-lg">
+                       class="w-12 h-12 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                     <img 
                       :src="(logoPreview || cardData.logoUrl) ?? ''" 
                       alt="Logo"
@@ -45,7 +45,7 @@
                     />
                   </div>
                   <div v-else 
-                       class="w-12 h-12 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center">
+                       class="w-12 h-12 bg-white dark:bg-gray-800/20 backdrop-blur rounded-lg flex items-center justify-center">
                     <Building2 :size="24" class="text-white/60" />
                   </div>
                 </div>
@@ -63,7 +63,7 @@
                 
                 <!-- Code de fidélité et info membre -->
                 <div class="space-y-2">
-                  <div class="bg-white/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
+                  <div class="bg-white dark:bg-gray-800/20 backdrop-blur-md rounded-lg px-3 py-2 border border-white/30">
                     <p class="text-xs text-white/90 font-medium mb-1">Code de fidélité</p>
                     <p class="text-sm font-mono font-bold text-white tracking-wider">A1B2 - C3D4 - E5F6 - G7H8</p>
                   </div>
@@ -89,20 +89,20 @@
                 <div class="p-4">
                   <div class="flex flex-col items-center space-y-3">
                     <!-- QR Code -->
-                    <div class="bg-white p-3 rounded-lg shadow-inner">
+                    <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-inner">
                       <div class="w-24 h-24 flex items-center justify-center">
                         <QrCode :size="48" class="text-violet-500" />
                       </div>
                     </div>
                     
                     <!-- Code -->
-                    <div class="w-full bg-white rounded px-3 py-2 text-center shadow-sm">
-                      <p class="text-[10px] text-gray-500 uppercase tracking-wider mb-0.5">Code</p>
-                      <p class="text-xs font-mono font-bold text-gray-900">A1B2-C3D4-E5F6-G7H8</p>
+                    <div class="w-full bg-white dark:bg-gray-800 rounded px-3 py-2 text-center shadow-sm">
+                      <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-0.5">Code</p>
+                      <p class="text-xs font-mono font-bold text-gray-900 dark:text-white">A1B2-C3D4-E5F6-G7H8</p>
                     </div>
                     
                     <!-- Info -->
-                    <p class="text-[10px] text-gray-600">
+                    <p class="text-[10px] text-gray-600 dark:text-gray-400">
                       Scannable en caisse
                     </p>
                   </div>
@@ -116,26 +116,26 @@
 
       <!-- Options de personnalisation -->
       <div class="space-y-6 lg:order-1">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Options de personnalisation</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Options de personnalisation</h3>
           
           <div class="space-y-4">
             <!-- Nom de l'entreprise -->
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Nom sur la carte
               </label>
               <input
                 v-model="cardData.companyName"
                 type="text"
-                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                 placeholder="Nom de votre entreprise"
               />
             </div>
 
             <!-- Thème de la carte -->
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Fond de la carte
               </label>
               
@@ -148,7 +148,7 @@
                     'flex-1 px-3 py-2 rounded-lg font-medium transition-colors border-2',
                     cardData.themeType === 'gradient' 
                       ? 'bg-violet-600 text-white border-violet-600' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 hover:bg-gray-50'
                   ]"
                 >
                   Dégradés
@@ -160,7 +160,7 @@
                     'flex-1 px-3 py-2 rounded-lg font-medium transition-colors border-2',
                     cardData.themeType === 'custom' 
                       ? 'bg-violet-600 text-white border-violet-600' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 hover:bg-gray-50'
                   ]"
                 >
                   Image personnalisée
@@ -215,7 +215,7 @@
               
               <!-- Upload d'image personnalisée -->
               <div v-if="cardData.themeType === 'custom'" class="space-y-3 p-4 bg-violet-50 rounded-lg border border-violet-200">
-                <div class="bg-white border border-amber-200 rounded-lg p-3">
+                <div class="bg-white dark:bg-gray-800 border border-amber-200 rounded-lg p-3">
                   <div class="flex items-start space-x-2">
                     <AlertCircle :size="16" class="text-amber-600 mt-0.5 flex-shrink-0" />
                     <div class="text-sm text-amber-800">
@@ -246,11 +246,11 @@
                 <div 
                   v-else 
                   @click="($refs.backgroundInput as HTMLInputElement)?.click()"
-                  class="border-3 border-dashed border-violet-300 rounded-lg p-8 text-center hover:border-violet-500 hover:bg-violet-50 transition-all cursor-pointer bg-white"
+                  class="border-3 border-dashed border-violet-300 rounded-lg p-8 text-center hover:border-violet-500 hover:bg-violet-50 transition-all cursor-pointer bg-white dark:bg-gray-800"
                 >
                   <Upload :size="40" class="mx-auto text-violet-400 mb-3" />
                   <p class="text-base font-semibold text-gray-800">Cliquez pour choisir une image de fond</p>
-                  <p class="text-sm text-gray-500 mt-1">ou glissez-déposez votre image ici</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">ou glissez-déposez votre image ici</p>
                 </div>
                 
                 <!-- Input file caché pour le fond -->
@@ -277,14 +277,14 @@
 
             <!-- Logo -->
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Logo de l'entreprise
               </label>
               <div class="flex items-center space-x-4">
                 <!-- Aperçu du logo -->
                 <div v-if="logoPreview || cardData.logoUrl" 
                      class="relative group w-20 h-20">
-                  <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-gray-200">
+                  <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700">
                     <img 
                       :src="(logoPreview || cardData.logoUrl) ?? ''" 
                       alt="Logo"
@@ -301,7 +301,7 @@
                   </button>
                 </div>
                 <div v-else 
-                     class="w-20 h-20 bg-gray-100 rounded-xl flex items-center justify-center">
+                     class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
                   <Upload :size="24" class="text-gray-400" />
                 </div>
                 
@@ -334,20 +334,20 @@
 
             <!-- Message personnalisé -->
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Message de bienvenue
               </label>
               <textarea
                 v-model="cardData.welcomeMessage"
                 rows="3"
-                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                 placeholder="Merci de votre fidélité !"
               ></textarea>
             </div>
 
             <!-- Options avancées -->
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-3">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                 Options avancées
               </label>
               <div class="space-y-3">

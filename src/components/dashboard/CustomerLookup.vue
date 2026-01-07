@@ -1,12 +1,12 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-black text-gray-900">Recherche Client</h1>
-      <p class="text-gray-600 mt-2">Recherchez un client par son code de fidélité ou scannez son QR code</p>
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white">Recherche Client</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Recherchez un client par son code de fidélité ou scannez son QR code</p>
     </div>
 
     <!-- Formulaire de recherche -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
       <div class="space-y-4">
         <div>
           <label class="block text-sm font-semibold text-gray-700 mb-2">

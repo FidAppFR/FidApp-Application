@@ -2,8 +2,8 @@
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-black text-gray-900">Récompenses & Offres</h1>
-        <p class="text-gray-600 mt-2">Gérez toutes vos récompenses et offres en un seul endroit</p>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white">Récompenses & Offres</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Gérez toutes vos récompenses et offres en un seul endroit</p>
       </div>
       <div class="flex gap-2">
         <button
@@ -26,41 +26,41 @@
 
     <!-- Statistiques -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Total actif</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ activeCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total actif</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ activeCount }}</p>
           </div>
           <Gift :size="24" class="text-violet-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Anciennes récompenses</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ oldRewardsCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Anciennes récompenses</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ oldRewardsCount }}</p>
           </div>
           <Archive :size="24" class="text-amber-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Nouvelles offres</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ newOffersCount }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Nouvelles offres</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ newOffersCount }}</p>
           </div>
           <Star :size="24" class="text-green-600" />
         </div>
       </div>
       
-      <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-600">Utilisations totales</p>
-            <p class="text-2xl font-bold text-gray-900 mt-1">{{ totalUses }}</p>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Utilisations totales</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ totalUses }}</p>
           </div>
           <TrendingUp :size="24" class="text-blue-600" />
         </div>
@@ -68,7 +68,7 @@
     </div>
 
     <!-- Filtres -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
       <div class="flex flex-col md:flex-row gap-4">
         <div class="flex-1">
           <input
@@ -102,7 +102,7 @@
       <div
         v-for="item in filteredItems"
         :key="item.id"
-        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow"
       >
         <!-- En-tête avec badge de source -->
         <div class="relative h-32 bg-gradient-to-br from-violet-500 to-purple-600 p-4">
@@ -123,14 +123,14 @@
                 'px-2 py-1 rounded text-xs font-medium',
                 item.is_active 
                   ? 'bg-green-100 text-green-700' 
-                  : 'bg-gray-100 text-gray-700'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
               ]"
             >
               {{ item.is_active ? 'Active' : 'Inactive' }}
             </button>
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center overflow-hidden">
+            <div class="w-12 h-12 bg-white dark:bg-gray-800/20 backdrop-blur rounded-xl flex items-center justify-center overflow-hidden">
               <img 
                 v-if="item.image_url" 
                 :src="item.image_url" 
@@ -148,11 +148,11 @@
 
         <!-- Corps -->
         <div class="p-4 space-y-3">
-          <p class="text-gray-600 text-sm line-clamp-2">{{ item.description || 'Pas de description' }}</p>
+          <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">{{ item.description || 'Pas de description' }}</p>
           
           <!-- Points requis -->
           <div class="flex items-center justify-between">
-            <span class="text-sm text-gray-500">Coût en points</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Coût en points</span>
             <div class="flex items-center gap-1">
               <Star :size="16" class="text-violet-500" />
               <span class="font-bold text-violet-600">{{ item.points_cost }}</span>
@@ -161,7 +161,7 @@
 
           <!-- Valeur -->
           <div v-if="item.value" class="flex items-center justify-between">
-            <span class="text-sm text-gray-500">Valeur</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Valeur</span>
             <span class="font-bold">
               {{ item.type === 'discount' ? `-${item.value}%` : item.value_text || `${item.value}€` }}
             </span>
@@ -169,7 +169,7 @@
 
           <!-- Utilisations -->
           <div class="flex items-center justify-between">
-            <span class="text-sm text-gray-500">Utilisations</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Utilisations</span>
             <span class="text-sm font-medium">{{ item.total_uses || 0 }}</span>
           </div>
 
@@ -184,7 +184,7 @@
             </button>
             <button
               @click="editItem(item)"
-              class="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+              class="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-200 transition-colors"
             >
               Modifier
             </button>
@@ -200,9 +200,9 @@
     </div>
 
     <!-- Message si vide -->
-    <div v-if="filteredItems.length === 0" class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+    <div v-if="filteredItems.length === 0" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center">
       <Gift :size="48" class="mx-auto mb-4 text-gray-300" />
-      <p class="text-gray-500">Aucune récompense ou offre trouvée</p>
+      <p class="text-gray-500 dark:text-gray-400">Aucune récompense ou offre trouvée</p>
       <button
         @click="showAddModal = true"
         class="mt-4 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"

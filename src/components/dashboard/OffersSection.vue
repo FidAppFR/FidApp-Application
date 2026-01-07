@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
     <div>
-      <h1 class="text-3xl font-black text-gray-900">Offres & Récompenses</h1>
-      <p class="text-gray-600 mt-2">Créez des offres spéciales et gérez vos récompenses</p>
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white">Offres & Récompenses</h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2">Créez des offres spéciales et gérez vos récompenses</p>
     </div>
 
     <!-- Bouton d'ajout -->
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Filtres et tri -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
       <div class="flex flex-col md:flex-row gap-4">
         <div class="flex-1">
           <input
@@ -54,7 +54,7 @@
       <div
         v-for="offer in filteredOffers"
         :key="offer.id"
-        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow"
       >
         <!-- En-tête de l'offre -->
         <div class="relative h-32 bg-gradient-to-br from-violet-500 to-purple-600 p-4">
@@ -65,14 +65,14 @@
                 'px-2 py-1 rounded text-xs font-medium',
                 offer.is_active 
                   ? 'bg-green-100 text-green-700' 
-                  : 'bg-gray-100 text-gray-700'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
               ]"
             >
               {{ offer.is_active ? 'Active' : 'Inactive' }}
             </button>
           </div>
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center overflow-hidden">
+            <div class="w-12 h-12 bg-white dark:bg-gray-800/20 backdrop-blur rounded-xl flex items-center justify-center overflow-hidden">
               <img 
                 v-if="offer.image_url" 
                 :src="offer.image_url" 
@@ -90,11 +90,11 @@
 
         <!-- Corps de l'offre -->
         <div class="p-4 space-y-3">
-          <p class="text-gray-600 text-sm line-clamp-2">{{ offer.description }}</p>
+          <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">{{ offer.description }}</p>
           
           <!-- Valeur de l'offre -->
           <div class="flex items-center justify-between">
-            <span class="text-sm text-gray-500">Valeur</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Valeur</span>
             <div class="flex items-center gap-1">
               <template v-if="offer.type === 'points'">
                 <Star :size="16" class="text-amber-500" />
@@ -111,7 +111,7 @@
 
           <!-- Points requis -->
           <div class="flex items-center justify-between">
-            <span class="text-sm text-gray-500">Coût en points</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Coût en points</span>
             <div class="flex items-center gap-1">
               <Star :size="16" class="text-violet-500" />
               <span class="font-bold text-violet-600">{{ offer.points_cost }}</span>
@@ -120,7 +120,7 @@
 
           <!-- Validité -->
           <div v-if="offer.start_date || offer.end_date" class="flex items-center justify-between">
-            <span class="text-sm text-gray-500">Validité</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Validité</span>
             <span class="text-sm font-medium">
               {{ formatDateRange(offer.start_date, offer.end_date) }}
             </span>
@@ -128,7 +128,7 @@
 
           <!-- Utilisation -->
           <div class="flex items-center justify-between">
-            <span class="text-sm text-gray-500">Utilisations</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Utilisations</span>
             <span class="text-sm font-medium">
               {{ offer.total_uses }} / {{ offer.max_uses || '∞' }}
             </span>
@@ -138,7 +138,7 @@
           <div class="pt-3 flex gap-2 border-t border-gray-100">
             <button
               @click="editOffer(offer)"
-              class="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+              class="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-gray-200 transition-colors"
             >
               Modifier
             </button>
@@ -160,9 +160,9 @@
     </div>
 
     <!-- Message si aucune offre -->
-    <div v-if="filteredOffers.length === 0" class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+    <div v-if="filteredOffers.length === 0" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center">
       <Gift :size="48" class="mx-auto mb-4 text-gray-300" />
-      <p class="text-gray-500">Aucune offre trouvée</p>
+      <p class="text-gray-500 dark:text-gray-400">Aucune offre trouvée</p>
       <button
         @click="showAddOffer = true"
         class="mt-4 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
@@ -177,14 +177,14 @@
       @update:model-value="closeOfferModal"
       size="lg"
     >
-        <h3 class="text-xl font-bold text-gray-900 mb-6">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">
           {{ editingOffer ? 'Modifier l\'offre' : 'Créer une nouvelle offre' }}
         </h3>
 
         <div class="space-y-4">
           <!-- Type d'offre -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Type d'offre</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Type d'offre</label>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
               <button
                 v-for="type in offerTypes"
@@ -194,11 +194,11 @@
                   'p-3 rounded-lg border-2 transition-all',
                   offerForm.type === type.value
                     ? 'border-violet-600 bg-violet-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                 ]"
               >
                 <component :is="type.icon" :size="24" class="mx-auto mb-1" :class="offerForm.type === type.value ? 'text-violet-600' : 'text-gray-400'" />
-                <span class="text-xs" :class="offerForm.type === type.value ? 'text-violet-600 font-medium' : 'text-gray-600'">
+                <span class="text-xs" :class="offerForm.type === type.value ? 'text-violet-600 font-medium' : 'text-gray-600 dark:text-gray-400'">
                   {{ type.label }}
                 </span>
               </button>
@@ -207,7 +207,7 @@
 
           <!-- Nom de l'offre -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nom de l'offre</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nom de l'offre</label>
             <input
               v-model="offerForm.name"
               type="text"
@@ -218,7 +218,7 @@
 
           <!-- Description -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
             <textarea
               v-model="offerForm.description"
               rows="3"
@@ -229,7 +229,7 @@
 
           <!-- Image de l'offre -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Image de l'offre (optionnel)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image de l'offre (optionnel)</label>
             <div class="flex items-center gap-4">
               <!-- Preview de l'image -->
               <div class="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden bg-gray-50">
@@ -268,7 +268,7 @@
                   <X :size="16" class="inline mr-2" />
                   Supprimer
                 </button>
-                <p class="text-xs text-gray-500 mt-2">JPG, PNG, WebP ou SVG. Max 5MB.</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">JPG, PNG, WebP ou SVG. Max 5MB.</p>
               </div>
             </div>
           </div>
@@ -276,7 +276,7 @@
           <!-- Valeur selon le type -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ getValueLabel(offerForm.type) }}
               </label>
               <input
@@ -296,7 +296,7 @@
             </div>
             
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Coût en points</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Coût en points</label>
               <input
                 v-model.number="offerForm.points_cost"
                 type="number"
@@ -308,7 +308,7 @@
 
           <!-- Conditions -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Conditions d'utilisation</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Conditions d'utilisation</label>
             <textarea
               v-model="offerForm.conditions"
               rows="2"
@@ -320,7 +320,7 @@
           <!-- Période de validité -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Date de début</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date de début</label>
               <input
                 v-model="offerForm.start_date"
                 type="date"
@@ -328,7 +328,7 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Date de fin</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date de fin</label>
               <input
                 v-model="offerForm.end_date"
                 type="date"
@@ -340,7 +340,7 @@
           <!-- Limites -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Nombre d'utilisations max</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre d'utilisations max</label>
               <input
                 v-model.number="offerForm.max_uses"
                 type="number"
@@ -350,7 +350,7 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Max par client</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Max par client</label>
               <input
                 v-model.number="offerForm.max_uses_per_customer"
                 type="number"
@@ -369,7 +369,7 @@
                 type="checkbox"
                 class="rounded text-violet-600 focus:ring-violet-600"
               />
-              <span class="text-sm text-gray-700">Activer immédiatement</span>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Activer immédiatement</span>
             </label>
           </div>
         </div>
@@ -385,7 +385,7 @@
           </button>
           <button
             @click="closeOfferModal"
-            class="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+            class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 rounded-lg hover:bg-gray-200 transition-colors"
           >
             Annuler
           </button>

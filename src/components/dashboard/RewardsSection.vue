@@ -2,13 +2,13 @@
   <div class="space-y-6">
     <div class="flex justify-between items-center">
       <div>
-        <h1 class="text-3xl font-black text-gray-900">Gérer les Récompenses</h1>
-        <p class="text-gray-600 mt-2">Créez et gérez vos récompenses de fidélité</p>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white">Gérer les Récompenses</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Créez et gérez vos récompenses de fidélité</p>
       </div>
       <div class="flex items-center space-x-3">
         <button 
           @click="goToClientView"
-          class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-6 py-3 rounded-full transition-all duration-300 flex items-center space-x-2"
+          class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold px-6 py-3 rounded-full transition-all duration-300 flex items-center space-x-2"
         >
           <Eye :size="20" />
           <span>Vue client</span>
@@ -28,17 +28,17 @@
       <div class="flex items-start justify-between">
         <div class="flex-1">
           <div class="flex items-center space-x-3 mb-3">
-            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+            <div class="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-sm">
               <Gift :size="24" class="text-violet-600" />
             </div>
             <div>
-              <h2 class="text-lg font-bold text-gray-900">Points de bienvenue</h2>
-              <p class="text-sm text-gray-600">Attribués automatiquement aux nouveaux clients</p>
+              <h2 class="text-lg font-bold text-gray-900 dark:text-white">Points de bienvenue</h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Attribués automatiquement aux nouveaux clients</p>
             </div>
           </div>
           
           <div class="flex items-center space-x-3">
-            <div class="flex items-center space-x-2 bg-white rounded-lg px-4 py-2 border-2 border-violet-200">
+            <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-lg px-4 py-2 border-2 border-violet-200">
               <input
                 v-model.number="signupPoints"
                 type="number"
@@ -47,7 +47,7 @@
                 class="w-20 text-center font-bold text-violet-600 outline-none"
                 placeholder="50"
               />
-              <span class="text-gray-600 font-medium">points</span>
+              <span class="text-gray-600 dark:text-gray-400 font-medium">points</span>
             </div>
             <button
               @click="saveSignupPoints"
@@ -57,7 +57,7 @@
               {{ savingPoints ? 'Enregistrement...' : 'Sauvegarder' }}
             </button>
           </div>
-          <p class="text-xs text-gray-500 mt-2">
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
             💡 Conseil : Entre 10 et 100 points pour encourager l'inscription
           </p>
         </div>
@@ -75,47 +75,47 @@
       <div 
         v-for="reward in rewards" 
         :key="reward.id"
-        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow"
       >
         <div class="p-6">
           <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4" 
                :class="getCategoryColor(reward.category)">
             <component :is="getCategoryIcon(reward.category)" :size="24" />
           </div>
-          <h3 class="font-bold text-lg text-gray-900 mb-2">{{ reward.name }}</h3>
-          <p class="text-gray-600 text-sm mb-4">{{ reward.description }}</p>
+          <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">{{ reward.name }}</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">{{ reward.description }}</p>
           
           <div class="flex items-center justify-between mb-4">
-            <span class="text-sm text-gray-500">Points requis</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Points requis</span>
             <span class="font-bold text-violet-600">{{ reward.points_required }} pts</span>
           </div>
           
           <div v-if="reward.discount_percentage" class="flex items-center justify-between mb-4">
-            <span class="text-sm text-gray-500">Réduction</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Réduction</span>
             <span class="font-medium">{{ reward.discount_percentage }}%</span>
           </div>
 
           <div v-if="reward.discount_amount" class="flex items-center justify-between mb-4">
-            <span class="text-sm text-gray-500">Montant</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Montant</span>
             <span class="font-medium">{{ reward.discount_amount }}€</span>
           </div>
 
           <div class="flex items-center justify-between mb-4">
-            <span class="text-sm text-gray-500">Statut</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Statut</span>
             <span :class="reward.is_active ? 'text-green-600' : 'text-gray-400'" class="font-medium">
               {{ reward.is_active ? 'Active' : 'Inactive' }}
             </span>
           </div>
 
           <div class="flex items-center justify-between mb-4">
-            <span class="text-sm text-gray-500">Utilisations</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Utilisations</span>
             <span class="font-medium">{{ reward.total_uses || 0 }}</span>
           </div>
 
           <div class="flex space-x-2">
             <button 
               @click="editReward(reward)"
-              class="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors"
+              class="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors"
             >
               Modifier
             </button>
@@ -142,10 +142,10 @@
         class="border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center min-h-[280px] hover:border-violet-400 transition-colors cursor-pointer group"
       >
         <div class="text-center">
-          <div class="w-12 h-12 bg-gray-100 group-hover:bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-3 transition-colors">
+          <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 group-hover:bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-3 transition-colors">
             <Plus :size="24" class="text-gray-400 group-hover:text-violet-600 transition-colors" />
           </div>
-          <p class="text-gray-500 group-hover:text-violet-600 font-medium transition-colors">Ajouter une récompense</p>
+          <p class="text-gray-500 dark:text-gray-400 group-hover:text-violet-600 font-medium transition-colors">Ajouter une récompense</p>
         </div>
       </div>
     </div>
@@ -165,12 +165,12 @@
           <div class="absolute inset-0 bg-black/50" @click="closeModal"></div>
           
           <!-- Modal -->
-          <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div class="mb-6">
-              <h2 class="text-2xl font-black text-gray-900">
+              <h2 class="text-2xl font-black text-gray-900 dark:text-white">
                 {{ editingReward ? 'Modifier la récompense' : 'Nouvelle récompense' }}
               </h2>
-              <p class="text-gray-600 mt-1">
+              <p class="text-gray-600 dark:text-gray-400 mt-1">
                 {{ editingReward ? 'Modifiez les informations de votre récompense' : 'Créez une nouvelle récompense pour fidéliser vos clients' }}
               </p>
             </div>
@@ -178,40 +178,40 @@
             <form @submit.prevent="saveReward" class="space-y-6">
               <!-- Nom -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Nom de la récompense *
                 </label>
                 <input
                   v-model="formData.name"
                   type="text"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder="Ex: Café gratuit"
                 />
               </div>
 
               <!-- Description -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Description
                 </label>
                 <textarea
                   v-model="formData.description"
                   rows="3"
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder="Ex: Un café offert après 10 achats"
                 ></textarea>
               </div>
 
               <!-- Catégorie -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Catégorie *
                 </label>
                 <select
                   v-model="formData.category"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                 >
                   <option value="product">Produit</option>
                   <option value="discount">Réduction</option>
@@ -224,7 +224,7 @@
 
               <!-- Points requis -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Points requis *
                 </label>
                 <input
@@ -232,7 +232,7 @@
                   type="number"
                   min="0"
                   required
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder="100"
                 />
               </div>
@@ -240,7 +240,7 @@
               <!-- Type de récompense -->
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Réduction en %
                   </label>
                   <input
@@ -248,12 +248,12 @@
                     type="number"
                     min="0"
                     max="100"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                     placeholder="20"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Ou montant fixe (€)
                   </label>
                   <input
@@ -261,7 +261,7 @@
                     type="number"
                     min="0"
                     step="0.01"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                     placeholder="5.00"
                   />
                 </div>
@@ -269,14 +269,14 @@
 
               <!-- Limites -->
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Utilisations max par client (optionnel)
                 </label>
                 <input
                   v-model.number="formData.max_uses_per_customer"
                   type="number"
                   min="0"
-                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                  class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder="Illimité"
                 />
               </div>
@@ -284,23 +284,23 @@
               <!-- Dates de validité -->
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Valide à partir de
                   </label>
                   <input
                     v-model="formData.valid_from"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Valide jusqu'au (optionnel)
                   </label>
                   <input
                     v-model="formData.valid_until"
                     type="date"
-                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
+                    class="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-violet-500 transition-colors"
                   />
                 </div>
               </div>
@@ -313,7 +313,7 @@
                   id="is_active"
                   class="w-5 h-5 text-violet-600 border-2 border-gray-300 rounded focus:ring-violet-500"
                 />
-                <label for="is_active" class="text-sm font-medium text-gray-700">
+                <label for="is_active" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Récompense active
                 </label>
               </div>
@@ -323,7 +323,7 @@
                 <button
                   type="button"
                   @click="closeModal"
-                  class="flex-1 py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors"
+                  class="flex-1 py-3 px-6 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl transition-colors"
                 >
                   Annuler
                 </button>
@@ -650,9 +650,9 @@ const getCategoryColor = (category: string) => {
     service: 'bg-blue-100 text-blue-600',
     gift: 'bg-green-100 text-green-600',
     experience: 'bg-yellow-100 text-yellow-600',
-    general: 'bg-gray-100 text-gray-600'
+    general: 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
   }
-  return colors[category] || 'bg-gray-100 text-gray-600'
+  return colors[category] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
 }
 
 // Sauvegarder les points d'inscription
