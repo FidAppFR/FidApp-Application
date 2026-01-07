@@ -512,13 +512,16 @@ const downloadInvoice = async (invoice: any) => {
     doc.text(clientName, 25, 102)
     
     doc.setFont('helvetica', 'normal')
-    // SIRET si disponible
-    if (userData?.siret) {
-      doc.text(`SIRET: ${userData.siret}`, 25, 107)
-    }
+    // SIRET - toujours affiché (avec "Non défini" si absent)
+    const siretText = userData?.siret || 'Non défini'
+    doc.text(`SIRET: ${siretText}`, 25, 107)
+    
+    // TVA - toujours affiché (avec "Non défini" si absent)
+    const tvaText = userData?.tva_number || 'Non défini'
+    doc.text(`TVA: ${tvaText}`, 25, 112)
     
     // Adresse complète
-    let currentY = userData?.siret ? 112 : 107
+    let currentY = 117
     if (userData?.address) {
       doc.text(userData.address, 25, currentY)
       currentY += 5
@@ -528,17 +531,16 @@ const downloadInvoice = async (invoice: any) => {
       currentY += 5
     }
     if (userData?.country) {
-      doc.text(userData.country, 25, currentY)
+      doc.text(userData.country || 'France', 25, currentY)
       currentY += 5
     }
     
     // Coordonnées de contact
-    if (userData?.email) {
-      doc.text(`Email: ${userData.email}`, 120, 102)
-    }
-    if (userData?.phone) {
-      doc.text(`Tél: ${userData.phone}`, 120, 107)
-    }
+    const emailText = userData?.email || 'Non défini'
+    doc.text(`Email: ${emailText}`, 120, 102)
+    
+    const phoneText = userData?.phone || 'Non défini'
+    doc.text(`Tél: ${phoneText}`, 120, 107)
     
     // Tableau des services
     const startY = 140
