@@ -64,7 +64,7 @@
           
           <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Nom de l'entreprise
               </label>
               <input
@@ -76,7 +76,7 @@
             </div>
             
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Secteur d'activité
               </label>
               <select
@@ -110,10 +110,10 @@
 
         <!-- Coordonnées -->
         <div>
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Coordonnées</h3>
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Coordonnées</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Adresse
               </label>
               <input
@@ -125,7 +125,7 @@
             </div>
             
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Ville
               </label>
               <input
@@ -137,7 +137,7 @@
             </div>
             
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Code postal
               </label>
               <input
@@ -149,7 +149,7 @@
             </div>
             
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Téléphone
               </label>
               <input
@@ -161,7 +161,7 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Email professionnel
               </label>
               <input
@@ -173,7 +173,7 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Site web
               </label>
               <input
@@ -188,17 +188,17 @@
 
         <!-- Horaires -->
         <div>
-          <h3 class="text-lg font-bold text-gray-900 mb-4">Horaires d'ouverture</h3>
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Horaires d'ouverture</h3>
           <div class="space-y-3">
             <div v-for="day in daysOrder" :key="day" class="flex items-center space-x-4">
-              <span class="w-24 text-sm font-medium capitalize">{{ day }}</span>
+              <span class="w-24 text-sm font-medium capitalize text-gray-700 dark:text-gray-300">{{ day }}</span>
               <input
                 v-model="companyData.opening_hours[day].open"
                 type="time"
                 :disabled="companyData.opening_hours[day].closed"
                 class="px-3 py-2 border border-gray-200 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:bg-gray-50 dark:disabled:bg-gray-600 disabled:text-gray-400 dark:disabled:text-gray-500"
               />
-              <span class="text-gray-500">à</span>
+              <span class="text-gray-500 dark:text-gray-400">à</span>
               <input
                 v-model="companyData.opening_hours[day].close"
                 type="time"
@@ -211,7 +211,7 @@
                   type="checkbox" 
                   class="rounded text-violet-600" 
                 />
-                <span>Fermé</span>
+                <span class="text-gray-700 dark:text-gray-300">Fermé</span>
               </label>
             </div>
           </div>
@@ -219,7 +219,7 @@
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">
+          <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
             Description de l'entreprise
           </label>
           <textarea

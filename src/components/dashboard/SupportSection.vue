@@ -69,7 +69,7 @@
 
     <!-- Contact direct -->
     <div class="bg-gradient-to-r from-violet-600 to-pink-600 rounded-2xl p-8 text-white">
-      <h3 class="text-2xl font-bold mb-4">Besoin d'aide supplémentaire ?</h3>
+      <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Besoin d'aide supplémentaire ?</h3>
       <p class="text-white/80 mb-6">Notre équipe est là pour vous aider</p>
       <div class="flex flex-col md:flex-row gap-4">
         <button class="px-6 py-3 bg-white dark:bg-gray-800 text-violet-600 rounded-xl font-bold hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">

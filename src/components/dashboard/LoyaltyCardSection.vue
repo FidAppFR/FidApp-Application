@@ -55,7 +55,7 @@
                   <div v-if="cardData.showPoints" class="space-y-2">
                     <div class="flex items-center space-x-2">
                       <Star :size="20" class="text-yellow-400 fill-current" />
-                      <span class="text-2xl font-bold">250 pts</span>
+                      <span class="text-2xl font-bold text-white">250 pts</span>
                     </div>
                     <p class="text-white/80 text-sm">Jean Dupont</p>
                   </div>
@@ -249,7 +249,7 @@
                   class="border-3 border-dashed border-violet-300 rounded-lg p-8 text-center hover:border-violet-500 hover:bg-violet-50 transition-all cursor-pointer bg-white dark:bg-gray-800"
                 >
                   <Upload :size="40" class="mx-auto text-violet-400 mb-3" />
-                  <p class="text-base font-semibold text-gray-800">Cliquez pour choisir une image de fond</p>
+                  <p class="text-base font-semibold text-gray-800 dark:text-gray-200">Cliquez pour choisir une image de fond</p>
                   <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">ou glissez-déposez votre image ici</p>
                 </div>
                 
@@ -353,11 +353,11 @@
               <div class="space-y-3">
                 <label class="flex items-center space-x-3">
                   <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showPoints" />
-                  <span class="text-sm">Afficher le solde de points</span>
+                  <span class="text-sm text-gray-700 dark:text-gray-300">Afficher le solde de points</span>
                 </label>
                 <label class="flex items-center space-x-3">
                   <input type="checkbox" class="w-4 h-4 text-violet-600 rounded" v-model="cardData.showQRInCard" />
-                  <span class="text-sm">Activer le Pass Mobile (QR Code scannable)</span>
+                  <span class="text-sm text-gray-700 dark:text-gray-300">Activer le Pass Mobile (QR Code scannable)</span>
                 </label>
               </div>
             </div>

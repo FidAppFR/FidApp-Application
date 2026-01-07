@@ -63,7 +63,7 @@
       <div class="bg-gradient-to-r from-violet-600 to-pink-600 p-6 text-white">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-2xl font-bold">{{ customerFound.first_name }} {{ customerFound.last_name }}</h3>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ customerFound.first_name }} {{ customerFound.last_name }}</h3>
             <p class="text-white/80 mt-1">Client fidèle depuis {{ formatDate(customerFound.created_at) }}</p>
           </div>
           <div class="text-right">
