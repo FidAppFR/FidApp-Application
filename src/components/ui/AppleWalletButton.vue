@@ -27,7 +27,7 @@
     <!-- Non disponible sur cet appareil -->
     <div v-if="!isAvailable && !isLoading" class="text-center space-y-2">
       <p class="text-sm text-gray-500">
-        Apple Wallet n'est pas disponible sur cet appareil
+        Ajouter la carte dans votre wallet
       </p>
       <button
         @click="showQRCode = true"
