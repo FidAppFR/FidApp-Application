@@ -71,7 +71,7 @@
             
             <div class="flex items-baseline gap-3">
               <span class="text-5xl font-black text-violet-600">{{ customerPoints }}</span>
-              <span class="text-2xl font-medium text-gray-600">points</span>
+              <span class="text-5xl font-black text-violet-600">points</span>
             </div>
             
             <p v-if="customerPoints > 0" class="text-sm text-gray-500 mt-2">
