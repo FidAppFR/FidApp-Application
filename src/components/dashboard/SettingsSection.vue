@@ -495,7 +495,7 @@ const downloadInvoice = async (invoice: any) => {
     // Rectangle pour les infos client
     doc.setDrawColor(200, 200, 200)
     doc.setFillColor(245, 245, 245)
-    doc.rect(20, 85, 170, 40, 'F')
+    doc.rect(20, 85, 170, 35, 'F')
     
     // Informations du client
     doc.setFontSize(12)
@@ -503,47 +503,62 @@ const downloadInvoice = async (invoice: any) => {
     doc.setFont('helvetica', 'bold')
     doc.text('FACTURÉ À:', 25, 95)
     
-    doc.setFontSize(10)
+    doc.setFontSize(9)
     doc.setFont('helvetica', 'normal')
     
+    // Colonne gauche - Informations professionnelles
     // Nom de la société ou nom du client
     const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
     doc.setFont('helvetica', 'bold')
     doc.text(clientName, 25, 102)
     
     doc.setFont('helvetica', 'normal')
-    // SIRET - toujours affiché (avec "Non défini" si absent)
+    // SIRET
     const siretText = userData?.siret || 'Non défini'
     doc.text(`SIRET: ${siretText}`, 25, 107)
     
-    // TVA - toujours affiché (avec "Non défini" si absent)
+    // TVA
     const tvaText = userData?.tva_number || 'Non défini'
     doc.text(`TVA: ${tvaText}`, 25, 112)
     
-    // Adresse complète
-    let currentY = 117
-    if (userData?.address) {
-      doc.text(userData.address, 25, currentY)
-      currentY += 5
-    }
-    if (userData?.city && userData?.postal_code) {
-      doc.text(`${userData.postal_code} ${userData.city}`, 25, currentY)
-      currentY += 5
-    }
-    if (userData?.country) {
-      doc.text(userData.country || 'France', 25, currentY)
-      currentY += 5
+    // Adresse sur une seule ligne si possible
+    if (userData?.address || userData?.city) {
+      let addressLine = ''
+      if (userData?.address) addressLine += userData.address
+      if (userData?.postal_code && userData?.city) {
+        addressLine += addressLine ? ', ' : ''
+        addressLine += `${userData.postal_code} ${userData.city}`
+      }
+      if (addressLine) {
+        // Tronquer si trop long
+        if (addressLine.length > 35) {
+          addressLine = addressLine.substring(0, 35) + '...'
+        }
+        doc.text(addressLine, 25, 117)
+      }
     }
     
-    // Coordonnées de contact
+    // Colonne droite - Coordonnées de contact
+    // Email
     const emailText = userData?.email || 'Non défini'
-    doc.text(`Email: ${emailText}`, 120, 102)
+    if (emailText.length > 25) {
+      doc.setFontSize(8)
+      doc.text(`Email: ${emailText}`, 115, 102)
+      doc.setFontSize(9)
+    } else {
+      doc.text(`Email: ${emailText}`, 115, 102)
+    }
     
+    // Téléphone
     const phoneText = userData?.phone || 'Non défini'
-    doc.text(`Tél: ${phoneText}`, 120, 107)
+    doc.text(`Tél: ${phoneText}`, 115, 107)
+    
+    // Pays (dans la colonne droite)
+    const countryText = userData?.country || 'France'
+    doc.text(`Pays: ${countryText}`, 115, 112)
     
     // Tableau des services
-    const startY = 140
+    const startY = 135
     
     // En-tête du tableau
     doc.setFillColor(primaryColor)
