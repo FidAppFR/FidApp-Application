@@ -33,7 +33,7 @@
             <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Configuration du programme de fidélité</h3>
             
             <!-- Points de bienvenue -->
-            <div class="p-6 bg-gradient-to-br from-violet-50 to-pink-50 rounded-xl mb-6">
+            <div class="p-6 bg-gradient-to-br from-violet-50 to-pink-50 dark:from-gray-700 dark:to-gray-800 rounded-xl mb-6">
               <div class="flex items-start space-x-4">
                 <div class="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-sm">
                   <Gift :size="24" class="text-violet-600" />
