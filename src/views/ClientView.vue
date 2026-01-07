@@ -54,14 +54,14 @@
       </div>
     </header>
 
-    <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto px-8 py-12">
       <!-- Titre principal -->
-      <h1 class="text-3xl font-bold text-gray-900 mb-8">Mon programme de fidélité</h1>
+      <h1 class="text-3xl font-bold text-gray-900 mb-12">Mon programme de fidélité</h1>
 
       <!-- Section Points et Récompenses style McDonald's -->
-      <div class="mb-8">
+      <div class="mb-12">
         <!-- Carte principale des points -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-4">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6">
           <!-- En-tête avec nom de l'entreprise et points -->
           <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
@@ -140,7 +140,7 @@
         </div>
         
         <!-- Section "Mes avantages" -->
-        <div class="mb-8">
+        <div class="mb-12">
           <!-- Onglets -->
           <div class="flex gap-4 mb-6">
             <button 
