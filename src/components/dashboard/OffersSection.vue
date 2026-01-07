@@ -514,10 +514,22 @@ const loadOffers = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
+    // Récupérer l'ID de l'entreprise depuis la table users
+    const { data: userData } = await supabase
+      .from('users')
+      .select('id')
+      .eq('auth_id', user.id)
+      .single()
+    
+    if (!userData) {
+      console.error('Aucune entreprise trouvée pour cet utilisateur')
+      return
+    }
+
     const { data } = await supabase
       .from('offers')
       .select('*')
-      .eq('company_id', user.id)
+      .eq('company_id', userData.id)
       .order('created_at', { ascending: false })
 
     if (data) {
@@ -593,7 +605,26 @@ const saveOffer = async () => {
   savingOffer.value = true
   try {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
+    if (!user) {
+      console.error('Utilisateur non connecté')
+      alert('Vous devez être connecté pour créer une offre')
+      return
+    }
+
+    // Récupérer l'ID de l'entreprise depuis la table users
+    const { data: userData } = await supabase
+      .from('users')
+      .select('id')
+      .eq('auth_id', user.id)
+      .single()
+    
+    if (!userData) {
+      console.error('Aucune entreprise trouvée pour cet utilisateur')
+      alert('Aucune entreprise trouvée pour votre compte')
+      return
+    }
+
+    console.log('ID entreprise:', userData.id)
 
     // Upload l'image si nécessaire
     let imageUrl = offerForm.value.image_url
@@ -606,34 +637,59 @@ const saveOffer = async () => {
       uploadingImage.value = false
     }
 
+    // Préparer les données de l'offre
     const offerData = {
-      company_id: user.id,
-      ...offerForm.value,
-      image_url: imageUrl
+      company_id: userData.id,
+      name: offerForm.value.name,
+      description: offerForm.value.description || null,
+      type: offerForm.value.type,
+      value: offerForm.value.value || null,
+      value_text: offerForm.value.value_text || null,
+      points_cost: offerForm.value.points_cost || 0,
+      conditions: offerForm.value.conditions || null,
+      start_date: offerForm.value.start_date || null,
+      end_date: offerForm.value.end_date || null,
+      max_uses: offerForm.value.max_uses || null,
+      max_uses_per_customer: offerForm.value.max_uses_per_customer || null,
+      is_active: offerForm.value.is_active,
+      image_url: imageUrl || null
     }
 
+    console.log('Données à sauvegarder:', offerData)
+
     if (editingOffer.value) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('offers')
         .update(offerData)
         .eq('id', editingOffer.value.id)
+        .select()
 
-      if (!error) {
+      if (error) {
+        console.error('Erreur mise à jour offre:', error)
+        alert(`Erreur lors de la mise à jour: ${error.message}`)
+      } else {
+        console.log('Offre mise à jour:', data)
         await loadOffers()
         closeOfferModal()
       }
     } else {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('offers')
-        .insert(offerData)
+        .insert([offerData])
+        .select()
 
-      if (!error) {
+      if (error) {
+        console.error('Erreur création offre:', error)
+        alert(`Erreur lors de la création: ${error.message}`)
+      } else {
+        console.log('Offre créée:', data)
         await loadOffers()
         closeOfferModal()
       }
     }
   } catch (error) {
     console.error('Erreur sauvegarde offre:', error)
+    alert('Une erreur inattendue s\'est produite')
   } finally {
     savingOffer.value = false
   }
