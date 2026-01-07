@@ -179,7 +179,7 @@
           <!-- Boutons d'action -->
           <div class="grid grid-cols-2 gap-3">
             <button 
-              @click="showProfileModal = true"
+              @click="openProfileModal"
               class="px-4 py-3 bg-gray-50 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 font-medium"
             >
               <User :size="18" />
@@ -359,6 +359,19 @@
               {{ profileMessage }}
             </div>
             
+            <!-- Section Code fidélité et QR Code -->
+            <div class="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4 mb-6">
+              <div class="flex items-center justify-between">
+                <div class="flex-1">
+                  <p class="text-xs text-gray-600 font-medium mb-1">Code de fidélité</p>
+                  <p class="text-lg font-mono font-bold text-violet-900">{{ formattedLoyaltyCode }}</p>
+                </div>
+                <div class="w-20 h-20 bg-white rounded-lg p-1">
+                  <canvas ref="qrCanvasProfile" id="qr-canvas-profile"></canvas>
+                </div>
+              </div>
+            </div>
+            
             <!-- Formulaire de profil -->
             <form @submit.prevent="updateProfile" class="space-y-4">
               <!-- Prénom -->
@@ -505,9 +518,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone, Tag, Award, Percent, ArrowUp, Lock } from 'lucide-vue-next'
+import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone, Tag, Award, Percent, ArrowUp, Lock, QrCode } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { recordScan } from '@/api/scanEndpoint'
+import QRCode from 'qrcode'
 
 const router = useRouter()
 
@@ -568,6 +582,7 @@ const showProfileModal = ref(false)
 const savingProfile = ref(false)
 const profileMessage = ref('')
 const profileMessageType = ref<'success' | 'error'>('success')
+const qrCanvasProfile = ref<HTMLCanvasElement | null>(null)
 
 // Données du client
 const customerData = ref<any>(null)
@@ -1347,6 +1362,42 @@ const handleAddToWallet = () => {
   setTimeout(() => {
     notification.remove()
   }, 3000)
+}
+
+// Générer le QR code pour le profil
+const generateProfileQRCode = async () => {
+  if (!qrCanvasProfile.value || !customerLoyaltyCode.value) return
+  
+  try {
+    // Données à encoder dans le QR code
+    const qrData = JSON.stringify({
+      type: 'fidapp_customer',
+      company_id: companyId.value,
+      customer_id: customerId.value,
+      loyalty_code: customerLoyaltyCode.value,
+      timestamp: Date.now()
+    })
+    
+    await QRCode.toCanvas(qrCanvasProfile.value, qrData, {
+      width: 80,
+      margin: 1,
+      color: {
+        dark: '#7C3AED',
+        light: '#FFFFFF'
+      },
+      errorCorrectionLevel: 'M'
+    })
+  } catch (error) {
+    console.error('Erreur génération QR code:', error)
+  }
+}
+
+// Ouvrir le modal du profil
+const openProfileModal = async () => {
+  showProfileModal.value = true
+  // Attendre que le DOM soit mis à jour
+  await new Promise(resolve => setTimeout(resolve, 100))
+  generateProfileQRCode()
 }
 
 onMounted(async () => {
