@@ -340,10 +340,10 @@
         <div v-if="showProfileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div class="absolute inset-0 bg-black/50" @click="showProfileModal = false"></div>
           
-          <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div class="relative bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full">
             <!-- Header du modal -->
             <div class="flex items-center justify-between mb-6">
-              <h3 class="text-2xl font-bold text-gray-900">Mon profil</h3>
+              <h3 class="text-xl font-bold text-gray-900">Mon identifiant</h3>
               <button 
                 @click="showProfileModal = false"
                 class="text-gray-400 hover:text-gray-600 transition-colors"
@@ -352,162 +352,22 @@
               </button>
             </div>
             
-            <!-- Message de succès/erreur -->
-            <div v-if="profileMessage" 
-                 :class="profileMessageType === 'success' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'"
-                 class="p-3 rounded-lg border mb-4 text-sm">
-              {{ profileMessage }}
+            <!-- QR Code centré -->
+            <div class="flex flex-col items-center space-y-4">
+              <div class="bg-white p-4 rounded-xl shadow-inner border border-gray-200">
+                <canvas ref="qrCanvasProfile" id="qr-canvas-profile"></canvas>
+              </div>
+              
+              <!-- Code de fidélité -->
+              <div class="w-full bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4">
+                <p class="text-xs text-gray-600 font-medium mb-2 text-center">Code de fidélité</p>
+                <p class="text-xl font-mono font-bold text-violet-900 text-center">{{ formattedLoyaltyCode }}</p>
+              </div>
+              
+              <p class="text-sm text-gray-500 text-center">
+                Présentez ce code au commerçant
+              </p>
             </div>
-            
-            <!-- Section Code fidélité et QR Code -->
-            <div class="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4 mb-6">
-              <div class="flex items-center justify-between">
-                <div class="flex-1">
-                  <p class="text-xs text-gray-600 font-medium mb-1">Code de fidélité</p>
-                  <p class="text-lg font-mono font-bold text-violet-900">{{ formattedLoyaltyCode }}</p>
-                </div>
-                <div class="w-20 h-20 bg-white rounded-lg p-1">
-                  <canvas ref="qrCanvasProfile" id="qr-canvas-profile"></canvas>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Formulaire de profil -->
-            <form @submit.prevent="updateProfile" class="space-y-4">
-              <!-- Prénom -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Prénom</label>
-                <input
-                  v-model="profileData.first_name"
-                  type="text"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
-                  required
-                />
-              </div>
-              
-              <!-- Nom -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nom</label>
-                <input
-                  v-model="profileData.last_name"
-                  type="text"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
-                  required
-                />
-              </div>
-              
-              <!-- Email -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-                <input
-                  v-model="profileData.email"
-                  type="email"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
-                  required
-                />
-              </div>
-              
-              <!-- Téléphone -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Téléphone</label>
-                <input
-                  v-model="profileData.phone"
-                  type="tel"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
-                  placeholder="06 12 34 56 78"
-                />
-              </div>
-              
-              <!-- Date de naissance -->
-              <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Date de naissance</label>
-                <input
-                  v-model="profileData.date_of_birth"
-                  type="date"
-                  class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-violet-500"
-                />
-              </div>
-              
-              <!-- Préférences de communication -->
-              <div class="pt-4 border-t border-gray-200">
-                <h4 class="font-semibold text-gray-700 mb-3">Préférences de communication</h4>
-                <div class="space-y-3">
-                  <label class="flex items-start space-x-3 cursor-pointer">
-                    <input
-                      v-model="profileData.accept_marketing"
-                      type="checkbox"
-                      class="w-5 h-5 mt-0.5 text-violet-600 border-2 border-gray-300 rounded focus:ring-violet-500 focus:ring-2"
-                    />
-                    <div>
-                      <span class="text-sm font-medium text-gray-700">
-                        Recevoir les offres et actualités
-                      </span>
-                      <p class="text-xs text-gray-500 mt-1">
-                        Restez informé des nouvelles récompenses et promotions exclusives
-                      </p>
-                    </div>
-                  </label>
-                  
-                  <label class="flex items-start space-x-3 cursor-pointer">
-                    <input
-                      v-model="profileData.accept_partners"
-                      type="checkbox"
-                      class="w-5 h-5 mt-0.5 text-violet-600 border-2 border-gray-300 rounded focus:ring-violet-500 focus:ring-2"
-                    />
-                    <div>
-                      <span class="text-sm font-medium text-gray-700">
-                        Offres partenaires
-                      </span>
-                      <p class="text-xs text-gray-500 mt-1">
-                        Recevoir des offres sélectionnées de nos partenaires
-                      </p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-              
-              <!-- Informations de fidélité (lecture seule) -->
-              <div class="pt-4 border-t border-gray-200">
-                <h4 class="font-semibold text-gray-700 mb-3">Informations de fidélité</h4>
-                <div class="space-y-2 text-sm">
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Points actuels</span>
-                    <span class="font-bold text-violet-600">{{ customerPoints }} pts</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Total gagné</span>
-                    <span class="font-medium">{{ profileData.total_points_earned || 0 }} pts</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Total dépensé</span>
-                    <span class="font-medium">{{ profileData.total_points_spent || 0 }} pts</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-gray-600">Membre depuis</span>
-                    <span class="font-medium">{{ memberSince }}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Boutons -->
-              <div class="flex space-x-3 pt-4">
-                <button
-                  type="button"
-                  @click="showProfileModal = false"
-                  class="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition-colors"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  :disabled="savingProfile"
-                  class="flex-1 py-2 px-4 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-semibold rounded-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                >
-                  <Save :size="18" />
-                  <span>{{ savingProfile ? 'Enregistrement...' : 'Enregistrer' }}</span>
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       </Transition>
@@ -1379,8 +1239,8 @@ const generateProfileQRCode = async () => {
     })
     
     await QRCode.toCanvas(qrCanvasProfile.value, qrData, {
-      width: 80,
-      margin: 1,
+      width: 200,
+      margin: 2,
       color: {
         dark: '#7C3AED',
         light: '#FFFFFF'
