@@ -126,9 +126,28 @@
         <!-- Barre de contrôles avec aide -->
         <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
           <!-- Barre principale -->
-          <div class="p-3 flex items-center justify-between">
+          <div class="p-3 flex items-center justify-between gap-3">
+            <!-- Flèche gauche pour aide -->
+            <button
+              @click="showWalletHelp = !showWalletHelp"
+              class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-all"
+              :class="{ 'bg-gray-50 text-gray-600': showWalletHelp }"
+              title="Comment ajouter à Apple Wallet"
+            >
+              <svg 
+                class="w-5 h-5 transition-transform duration-200"
+                :class="{ 'rotate-180': showWalletHelp }"
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            <!-- Conteneur central avec les boutons -->
             <div class="flex items-center justify-center gap-3 flex-1">
-              <!-- Bouton QR Code avec texte -->
+              <!-- Bouton QR Code centré -->
               <button
                 v-if="customerLoyaltyCode && customerId"
                 @click="showQRModal = !showQRModal"
@@ -154,10 +173,10 @@
               />
             </div>
             
-            <!-- Bouton aide/info -->
+            <!-- Flèche droite pour aide (symétrique) -->
             <button
               @click="showWalletHelp = !showWalletHelp"
-              class="ml-3 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-all"
+              class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-all"
               :class="{ 'bg-gray-50 text-gray-600': showWalletHelp }"
               title="Comment ajouter à Apple Wallet"
             >
