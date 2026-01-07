@@ -123,32 +123,93 @@
 
       <!-- Section combinée QR Code + Apple Wallet -->
       <div v-if="isLoggedIn && !isOwner" class="mb-6">
-        <!-- Barre de contrôles simplifiée -->
-        <div class="bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-center gap-3">
-          <!-- Bouton QR Code avec texte -->
-          <button
-            v-if="customerLoyaltyCode && customerId"
-            @click="showQRModal = !showQRModal"
-            class="relative px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-100 hover:border-gray-300 transition-all flex items-center gap-2 font-medium"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2a2 2 0 002-2v-2m-2 0h2v-2a2 2 0 00-2-2h-2m2-4h.01M8 12h.01M4 12h.01M4 16h.01M4 8h.01M8 4h.01M4 20h2m0-2H4v2a2 2 0 002 2m2-6H4m4-8H6a2 2 0 00-2 2v2h2"/>
-            </svg>
-            QR Code
-            <!-- Indicateur actif -->
-            <div v-if="showQRModal" class="absolute bottom-0 left-0 right-0 h-0.5 bg-violet-600 rounded-b-lg"></div>
-          </button>
+        <!-- Barre de contrôles avec aide -->
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <!-- Barre principale -->
+          <div class="p-3 flex items-center justify-between">
+            <div class="flex items-center justify-center gap-3 flex-1">
+              <!-- Bouton QR Code avec texte -->
+              <button
+                v-if="customerLoyaltyCode && customerId"
+                @click="showQRModal = !showQRModal"
+                class="relative px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-100 hover:border-gray-300 transition-all flex items-center gap-2 font-medium"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2a2 2 0 002-2v-2m-2 0h2v-2a2 2 0 00-2-2h-2m2-4h.01M8 12h.01M4 12h.01M4 16h.01M4 8h.01M8 4h.01M4 20h2m0-2H4v2a2 2 0 002 2m2-6H4m4-8H6a2 2 0 00-2 2v2h2"/>
+                </svg>
+                QR Code
+                <!-- Indicateur actif -->
+                <div v-if="showQRModal" class="absolute bottom-0 left-0 right-0 h-0.5 bg-violet-600 rounded-b-lg"></div>
+              </button>
+                
+              <!-- Bouton Apple Wallet -->
+              <AppleWalletButton
+                v-if="customerId && companyId"
+                :customer-id="customerId"
+                :company-id="companyId"
+                :qr-code-value="qrCodeValue"
+                :show-instructions="false"
+                @added="handleWalletAdded"
+                @error="handleWalletError"
+              />
+            </div>
             
-          <!-- Bouton Apple Wallet -->
-          <AppleWalletButton
-            v-if="customerId && companyId"
-            :customer-id="customerId"
-            :company-id="companyId"
-            :qr-code-value="qrCodeValue"
-            :show-instructions="false"
-            @added="handleWalletAdded"
-            @error="handleWalletError"
-          />
+            <!-- Bouton aide/info -->
+            <button
+              @click="showWalletHelp = !showWalletHelp"
+              class="ml-3 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-all"
+              :class="{ 'bg-gray-50 text-gray-600': showWalletHelp }"
+              title="Comment ajouter à Apple Wallet"
+            >
+              <svg 
+                class="w-5 h-5 transition-transform duration-200"
+                :class="{ 'rotate-180': showWalletHelp }"
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Section d'aide développable -->
+          <Transition
+            enter-active-class="transition-all duration-300 ease-out"
+            enter-from-class="opacity-0 max-h-0"
+            enter-to-class="opacity-100 max-h-96"
+            leave-active-class="transition-all duration-200 ease-in"
+            leave-from-class="opacity-100 max-h-96"
+            leave-to-class="opacity-0 max-h-0"
+          >
+            <div v-if="showWalletHelp" class="border-t border-gray-100 bg-gray-50 overflow-hidden">
+              <div class="p-4 space-y-3">
+                <h4 class="font-semibold text-gray-900 text-sm flex items-center gap-2">
+                  <Smartphone :size="16" class="text-violet-600" />
+                  Comment ajouter votre carte à Apple Wallet
+                </h4>
+                <ol class="space-y-2 text-sm text-gray-600">
+                  <li class="flex items-start gap-2">
+                    <span class="flex-shrink-0 w-6 h-6 bg-violet-100 text-violet-600 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                    <span>Cliquez sur le bouton "Ajouter à Apple Wallet" ci-dessus</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="flex-shrink-0 w-6 h-6 bg-violet-100 text-violet-600 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                    <span>Suivez les instructions sur votre iPhone pour ajouter la carte</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="flex-shrink-0 w-6 h-6 bg-violet-100 text-violet-600 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                    <span>Votre carte sera automatiquement mise à jour avec vos points</span>
+                  </li>
+                </ol>
+                <div class="pt-2 border-t border-gray-200">
+                  <p class="text-xs text-gray-500 italic">
+                    💡 Astuce : Activez les notifications pour recevoir des alertes lors de changements de points
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Transition>
         </div>
         
         <!-- Modal QR Code (caché par défaut) -->
@@ -881,6 +942,7 @@ const showRedeemModal = ref(false)
 const selectedReward = ref<Reward | null>(null)
 const showProfileModal = ref(false)
 const showQRModal = ref(false)
+const showWalletHelp = ref(false)
 const savingProfile = ref(false)
 const profileMessage = ref('')
 const profileMessageType = ref<'success' | 'error'>('success')
