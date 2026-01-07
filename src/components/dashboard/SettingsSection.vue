@@ -427,7 +427,7 @@ const downloadInvoice = async (invoice: any) => {
 
     const { data: userData } = await supabase
       .from('users')
-      .select('company, email, first_name, last_name, address, city, postal_code, country, phone')
+      .select('company, email, first_name, last_name, address, city, postal_code, country, phone, siret, logo_url')
       .eq('auth_id', user.id)
       .single()
 
@@ -438,11 +438,28 @@ const downloadInvoice = async (invoice: any) => {
     const primaryColor = '#7C3AED'
     const grayColor = '#666666'
     
-    // Logo et en-tête de l'entreprise (FidApp)
-    doc.setFontSize(24)
-    doc.setTextColor(primaryColor)
-    doc.setFont('helvetica', 'bold')
-    doc.text('FidApp', 20, 20)
+    // Logo de l'entreprise (FidApp)
+    try {
+      // Ajouter le logo depuis l'URL publique
+      const logoUrl = '/Logo_unique.png' // Logo FidApp dans le dossier public
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      
+      await new Promise((resolve, reject) => {
+        img.onload = resolve
+        img.onerror = reject
+        img.src = logoUrl
+      })
+      
+      // Dessiner le logo (hauteur 15mm pour correspondre à la taille du texte précédent)
+      doc.addImage(img, 'PNG', 20, 10, 40, 15)
+    } catch (error) {
+      // Si le logo ne charge pas, afficher le texte
+      doc.setFontSize(24)
+      doc.setTextColor(primaryColor)
+      doc.setFont('helvetica', 'bold')
+      doc.text('FidApp', 20, 20)
+    }
     
     // Informations de FidApp (émetteur de la facture)
     doc.setFontSize(10)
@@ -482,13 +499,40 @@ const downloadInvoice = async (invoice: any) => {
     
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
+    
+    // Nom de la société ou nom du client
     const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
+    doc.setFont('helvetica', 'bold')
     doc.text(clientName, 25, 92)
-    if (userData?.address) doc.text(userData.address, 25, 97)
-    if (userData?.city && userData?.postal_code) {
-      doc.text(`${userData.postal_code} ${userData.city}`, 25, 102)
+    
+    doc.setFont('helvetica', 'normal')
+    // SIRET si disponible
+    if (userData?.siret) {
+      doc.text(`SIRET: ${userData.siret}`, 25, 97)
     }
-    if (userData?.email) doc.text(`Email: ${userData.email}`, 25, 107)
+    
+    // Adresse complète
+    let currentY = userData?.siret ? 102 : 97
+    if (userData?.address) {
+      doc.text(userData.address, 25, currentY)
+      currentY += 5
+    }
+    if (userData?.city && userData?.postal_code) {
+      doc.text(`${userData.postal_code} ${userData.city}`, 25, currentY)
+      currentY += 5
+    }
+    if (userData?.country) {
+      doc.text(userData.country, 25, currentY)
+      currentY += 5
+    }
+    
+    // Coordonnées de contact
+    if (userData?.email) {
+      doc.text(`Email: ${userData.email}`, 120, 92)
+    }
+    if (userData?.phone) {
+      doc.text(`Tél: ${userData.phone}`, 120, 97)
+    }
     
     // Tableau des services
     const startY = 125
