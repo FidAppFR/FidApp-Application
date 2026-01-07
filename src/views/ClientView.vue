@@ -121,11 +121,11 @@
         </div>
       </div>
 
-      <!-- Section combinée QR Code + Apple Wallet -->
-      <div v-if="isLoggedIn && !isOwner" class="mb-6">
-        <!-- Barre de contrôles avec aide -->
+      <!-- Section Apple Wallet et QR Code -->
+      <div v-if="isLoggedIn && !isOwner" class="mb-6 space-y-3">
+        <!-- Barre Apple Wallet avec aide déroulante -->
         <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <!-- Barre principale -->
+          <!-- Barre principale Apple Wallet -->
           <div class="p-3 flex items-center justify-between gap-3">
             <!-- Flèche gauche pour aide -->
             <button
@@ -145,23 +145,8 @@
               </svg>
             </button>
             
-            <!-- Conteneur central avec les boutons -->
-            <div class="flex items-center justify-center gap-3 flex-1">
-              <!-- Bouton QR Code centré -->
-              <button
-                v-if="customerLoyaltyCode && customerId"
-                @click="showQRModal = !showQRModal"
-                class="relative px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-100 hover:border-gray-300 transition-all flex items-center gap-2 font-medium"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2a2 2 0 002-2v-2m-2 0h2v-2a2 2 0 00-2-2h-2m2-4h.01M8 12h.01M4 12h.01M4 16h.01M4 8h.01M8 4h.01M4 20h2m0-2H4v2a2 2 0 002 2m2-6H4m4-8H6a2 2 0 00-2 2v2h2"/>
-                </svg>
-                QR Code
-                <!-- Indicateur actif -->
-                <div v-if="showQRModal" class="absolute bottom-0 left-0 right-0 h-0.5 bg-violet-600 rounded-b-lg"></div>
-              </button>
-                
-              <!-- Bouton Apple Wallet -->
+            <!-- Bouton Apple Wallet centré -->
+            <div class="flex items-center justify-center flex-1">
               <AppleWalletButton
                 v-if="customerId && companyId"
                 :customer-id="customerId"
@@ -229,6 +214,20 @@
               </div>
             </div>
           </Transition>
+        </div>
+        
+        <!-- Bouton QR Code -->
+        <div class="flex justify-center">
+          <button
+            v-if="customerLoyaltyCode && customerId"
+            @click="showQRModal = !showQRModal"
+            class="relative px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-medium"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2a2 2 0 002-2v-2m-2 0h2v-2a2 2 0 00-2-2h-2m2-4h.01M8 12h.01M4 12h.01M4 16h.01M4 8h.01M8 4h.01M4 20h2m0-2H4v2a2 2 0 002 2m2-6H4m4-8H6a2 2 0 00-2 2v2h2"/>
+            </svg>
+            <span>Afficher le QR Code</span>
+          </button>
         </div>
         
         <!-- Modal QR Code (caché par défaut) -->
