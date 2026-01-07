@@ -495,7 +495,7 @@ const downloadInvoice = async (invoice: any) => {
     // Rectangle pour les infos client
     doc.setDrawColor(200, 200, 200)
     doc.setFillColor(245, 245, 245)
-    doc.rect(20, 85, 170, 35, 'F')
+    doc.rect(20, 85, 170, 45, 'F')
     
     // Informations du client
     doc.setFontSize(12)
@@ -503,62 +503,55 @@ const downloadInvoice = async (invoice: any) => {
     doc.setFont('helvetica', 'bold')
     doc.text('FACTURÉ À:', 25, 95)
     
-    doc.setFontSize(9)
+    doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
     
-    // Colonne gauche - Informations professionnelles
+    // Colonne gauche - Informations professionnelles et adresse
     // Nom de la société ou nom du client
     const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
     doc.setFont('helvetica', 'bold')
-    doc.text(clientName, 25, 102)
+    doc.text(clientName, 25, 103)
     
     doc.setFont('helvetica', 'normal')
     // SIRET
     const siretText = userData?.siret || 'Non défini'
-    doc.text(`SIRET: ${siretText}`, 25, 107)
+    doc.text(`SIRET: ${siretText}`, 25, 109)
     
     // TVA
     const tvaText = userData?.tva_number || 'Non défini'
-    doc.text(`TVA: ${tvaText}`, 25, 112)
+    doc.text(`TVA: ${tvaText}`, 25, 115)
     
-    // Adresse sur une seule ligne si possible
-    if (userData?.address || userData?.city) {
-      let addressLine = ''
-      if (userData?.address) addressLine += userData.address
-      if (userData?.postal_code && userData?.city) {
-        addressLine += addressLine ? ', ' : ''
-        addressLine += `${userData.postal_code} ${userData.city}`
-      }
-      if (addressLine) {
-        // Tronquer si trop long
-        if (addressLine.length > 35) {
-          addressLine = addressLine.substring(0, 35) + '...'
-        }
-        doc.text(addressLine, 25, 117)
-      }
+    // Adresse complète en bloc
+    let currentY = 121
+    if (userData?.address) {
+      doc.text(userData.address, 25, currentY)
+      currentY += 5
+    }
+    if (userData?.city && userData?.postal_code) {
+      doc.text(`${userData.postal_code} ${userData.city}`, 25, currentY)
+      currentY += 5
+    }
+    if (userData?.country) {
+      doc.text(userData.country || 'France', 25, currentY)
     }
     
     // Colonne droite - Coordonnées de contact
     // Email
     const emailText = userData?.email || 'Non défini'
-    if (emailText.length > 25) {
-      doc.setFontSize(8)
-      doc.text(`Email: ${emailText}`, 115, 102)
+    if (emailText.length > 30) {
       doc.setFontSize(9)
+      doc.text(`Email: ${emailText}`, 115, 103)
+      doc.setFontSize(10)
     } else {
-      doc.text(`Email: ${emailText}`, 115, 102)
+      doc.text(`Email: ${emailText}`, 115, 103)
     }
     
     // Téléphone
     const phoneText = userData?.phone || 'Non défini'
-    doc.text(`Tél: ${phoneText}`, 115, 107)
-    
-    // Pays (dans la colonne droite)
-    const countryText = userData?.country || 'France'
-    doc.text(`Pays: ${countryText}`, 115, 112)
+    doc.text(`Tél: ${phoneText}`, 115, 109)
     
     // Tableau des services
-    const startY = 135
+    const startY = 145
     
     // En-tête du tableau
     doc.setFillColor(primaryColor)
