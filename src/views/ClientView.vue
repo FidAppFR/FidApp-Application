@@ -152,124 +152,209 @@
         />
       </div>
 
-      <!-- Section Offres et Récompenses disponibles -->
-      <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
-        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
-          <Gift :size="24" class="text-violet-600" />
-          <span>Offres & Récompenses</span>
-        </h3>
-        
-        <div v-if="loading" class="flex justify-center py-8">
-          <Loader2 :size="32" class="text-violet-600 animate-spin" />
+      <!-- Section Offres et Récompenses disponibles - Design amélioré -->
+      <div class="mb-8">
+        <!-- En-tête de section avec gradient -->
+        <div class="bg-gradient-to-r from-violet-600 to-pink-600 rounded-t-2xl p-6 text-white">
+          <h3 class="text-2xl font-black flex items-center gap-3">
+            <div class="p-2 bg-white/20 backdrop-blur rounded-lg">
+              <Gift :size="28" />
+            </div>
+            Catalogue des récompenses
+          </h3>
+          <p class="mt-2 text-white/90">Échangez vos points contre des avantages exclusifs</p>
         </div>
         
-        <div v-else-if="rewards.length === 0 && offers.length === 0" class="text-center py-8">
-          <Gift :size="48" class="mx-auto text-gray-300 mb-3" />
-          <p class="text-gray-500">Aucune offre disponible pour le moment</p>
-        </div>
-        
-        <div v-else class="space-y-6">
-          <!-- Offres spéciales -->
-          <div v-if="offers.length > 0">
-            <h4 class="text-lg font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-              <Tag :size="20" class="text-violet-500" />
-              <span>Offres spéciales</span>
-            </h4>
-            <div class="grid gap-4">
-              <div 
-                v-for="offer in offers" 
-                :key="offer.id"
-                class="border border-violet-200 rounded-xl p-4 hover:shadow-md transition-shadow bg-gradient-to-r from-violet-50 to-pink-50"
-                :class="{ 'opacity-50': customerPoints < offer.points_cost }"
-              >
-                <div class="flex items-start justify-between">
-                  <div class="flex-1">
-                    <div class="flex items-center space-x-2 mb-2">
-                      <span class="px-2 py-1 bg-violet-100 text-violet-700 text-xs font-medium rounded-full">
-                        {{ getOfferTypeLabel(offer.type) }}
+        <!-- Contenu avec fond blanc -->
+        <div class="bg-white rounded-b-2xl shadow-xl p-6">
+          <div v-if="loading" class="flex justify-center py-12">
+            <Loader2 :size="40" class="text-violet-600 animate-spin" />
+          </div>
+          
+          <div v-else-if="rewards.length === 0 && offers.length === 0" class="text-center py-12">
+            <div class="w-24 h-24 bg-gradient-to-br from-violet-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Gift :size="40" class="text-violet-400" />
+            </div>
+            <p class="text-gray-500 text-lg">Aucune offre disponible pour le moment</p>
+            <p class="text-gray-400 text-sm mt-2">Revenez bientôt pour découvrir nos nouvelles récompenses !</p>
+          </div>
+          
+          <div v-else>
+            <!-- Offres spéciales en cartes visuelles -->
+            <div v-if="offers.length > 0" class="mb-8">
+              <div class="flex items-center gap-2 mb-4">
+                <div class="w-2 h-8 bg-gradient-to-b from-violet-600 to-pink-600 rounded-full"></div>
+                <h4 class="text-xl font-bold text-gray-800">Offres exclusives</h4>
+                <span class="ml-2 px-3 py-1 bg-gradient-to-r from-violet-100 to-pink-100 text-violet-700 text-xs font-bold rounded-full animate-pulse">
+                  LIMITÉES
+                </span>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div 
+                  v-for="offer in offers" 
+                  :key="offer.id"
+                  class="group relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  :class="{ 'grayscale opacity-75': customerPoints < offer.points_cost }"
+                >
+                  <!-- Image ou gradient d'en-tête -->
+                  <div class="relative h-32 overflow-hidden">
+                    <div 
+                      v-if="offer.image_url"
+                      class="absolute inset-0"
+                    >
+                      <img 
+                        :src="offer.image_url" 
+                        alt="" 
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    </div>
+                    <div 
+                      v-else
+                      :class="getOfferGradient(offer.type)"
+                      class="absolute inset-0 bg-gradient-to-br"
+                    >
+                      <div class="absolute inset-0 bg-black/20"></div>
+                    </div>
+                    
+                    <!-- Badge type d'offre -->
+                    <div class="absolute top-3 left-3">
+                      <span :class="getOfferBadgeClass(offer.type)" class="px-3 py-1 text-xs font-bold rounded-full backdrop-blur shadow-lg">
+                        {{ getOfferTypeLabel(offer.type).toUpperCase() }}
                       </span>
                     </div>
-                    <h4 class="font-bold text-gray-900">{{ offer.name }}</h4>
-                    <p class="text-sm text-gray-600 mt-1">{{ offer.description }}</p>
                     
-                    <div class="flex items-center space-x-4 mt-3">
-                      <div class="flex items-center space-x-1">
-                        <Star :size="16" class="text-yellow-500 fill-current" />
-                        <span class="text-sm font-bold text-violet-600">{{ offer.points_cost }} pts</span>
-                      </div>
-                      
-                      <div v-if="offer.value && offer.type === 'discount'" class="text-sm text-green-600 font-medium">
+                    <!-- Valeur de l'offre en grand -->
+                    <div class="absolute bottom-3 right-3">
+                      <div v-if="offer.type === 'discount' && offer.value" class="text-3xl font-black text-white drop-shadow-lg">
                         -{{ offer.value }}%
                       </div>
-                      
-                      <div v-else-if="offer.value_text" class="text-sm text-gray-600">
-                        {{ offer.value_text }}
+                      <div v-else-if="offer.type === 'points' && offer.value" class="flex items-center gap-1">
+                        <Star class="w-6 h-6 text-yellow-400 fill-current drop-shadow" />
+                        <span class="text-2xl font-black text-white drop-shadow-lg">+{{ offer.value }}</span>
                       </div>
-                    </div>
-                    
-                    <div v-if="offer.conditions" class="text-xs text-gray-500 mt-2 italic">
-                      {{ offer.conditions }}
                     </div>
                   </div>
                   
-                  <button 
-                    v-if="customerPoints >= offer.points_cost"
-                    class="ml-4 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-medium rounded-lg hover:scale-105 transition-transform text-sm"
-                    @click="redeemOffer(offer)"
-                  >
-                    Échanger
-                  </button>
-                  <div v-else class="ml-4 px-4 py-2 bg-gray-100 text-gray-400 font-medium rounded-lg text-sm">
-                    {{ offer.points_cost - customerPoints }} pts manquants
+                  <!-- Contenu de la carte -->
+                  <div class="p-5">
+                    <h4 class="font-black text-lg text-gray-900 mb-2 line-clamp-1">{{ offer.name }}</h4>
+                    <p class="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[40px]">{{ offer.description || 'Offre spéciale à durée limitée' }}</p>
+                    
+                    <!-- Points requis avec indicateur visuel -->
+                    <div class="mb-4">
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-gray-500 font-medium">Points requis</span>
+                        <div class="flex items-center gap-1">
+                          <Star :size="14" class="text-violet-500 fill-current" />
+                          <span class="font-black text-violet-600">{{ offer.points_cost }}</span>
+                        </div>
+                      </div>
+                      <!-- Barre de progression -->
+                      <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div 
+                          class="h-full bg-gradient-to-r from-violet-500 to-pink-500 rounded-full transition-all duration-500"
+                          :style="`width: ${Math.min((customerPoints / offer.points_cost) * 100, 100)}%`"
+                        ></div>
+                      </div>
+                      <div v-if="customerPoints < offer.points_cost" class="text-xs text-gray-500 mt-1">
+                        Il vous manque {{ offer.points_cost - customerPoints }} points
+                      </div>
+                    </div>
+                    
+                    <!-- Bouton d'échange -->
+                    <button 
+                      v-if="customerPoints >= offer.points_cost"
+                      @click="redeemOffer(offer)"
+                      class="w-full py-3 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
+                    >
+                      <span>Échanger maintenant</span>
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </button>
+                    <button 
+                      v-else
+                      disabled
+                      class="w-full py-3 bg-gray-100 text-gray-400 font-bold rounded-xl cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                      <span>Points insuffisants</span>
+                    </button>
+                    
+                    <!-- Conditions si présentes -->
+                    <div v-if="offer.conditions" class="mt-3 pt-3 border-t border-gray-100">
+                      <p class="text-xs text-gray-500 italic">{{ offer.conditions }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          <!-- Récompenses classiques -->
-          <div v-if="filteredRewards.length > 0">
-            <h4 class="text-lg font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-              <Award :size="20" class="text-yellow-500" />
-              <span>Récompenses classiques</span>
-            </h4>
-            <div class="grid gap-4">
-              <div 
-                v-for="reward in filteredRewards" 
-                :key="reward.id"
-                class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
-                :class="{ 'opacity-50': customerPoints < reward.points_required }"
-              >
-                <div class="flex items-start justify-between">
-                  <div class="flex-1">
-                    <h4 class="font-bold text-gray-900">{{ reward.name }}</h4>
-                    <p class="text-sm text-gray-600 mt-1">{{ reward.description }}</p>
-                    
-                    <div class="flex items-center space-x-4 mt-3">
-                      <div class="flex items-center space-x-1">
-                        <Star :size="16" class="text-yellow-500 fill-current" />
-                        <span class="text-sm font-bold text-violet-600">{{ reward.points_required }} pts</span>
-                      </div>
-                      
-                      <div v-if="reward.discount_percentage" class="text-sm text-gray-600">
-                        -{{ reward.discount_percentage }}%
-                      </div>
-                      
-                      <div v-if="reward.discount_amount" class="text-sm text-gray-600">
-                        -{{ reward.discount_amount }}€
+            
+            <!-- Récompenses classiques avec nouveau design -->
+            <div v-if="filteredRewards.length > 0">
+              <div class="flex items-center gap-2 mb-4">
+                <div class="w-2 h-8 bg-gradient-to-b from-yellow-500 to-orange-500 rounded-full"></div>
+                <h4 class="text-xl font-bold text-gray-800">Récompenses fidélité</h4>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div 
+                  v-for="reward in filteredRewards" 
+                  :key="reward.id"
+                  class="group bg-white border-2 border-gray-100 rounded-xl p-5 hover:border-violet-200 hover:shadow-lg transition-all duration-300"
+                  :class="{ 'opacity-60 grayscale': customerPoints < reward.points_required }"
+                >
+                  <div class="flex items-start gap-4">
+                    <!-- Icône de récompense -->
+                    <div class="flex-shrink-0">
+                      <div class="w-14 h-14 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Award :size="24" class="text-orange-500" />
                       </div>
                     </div>
-                  </div>
-                  
-                  <button 
-                    v-if="customerPoints >= reward.points_required"
-                    class="ml-4 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-medium rounded-lg hover:scale-105 transition-transform text-sm"
-                    @click="redeemReward(reward)"
-                  >
-                    Échanger
-                  </button>
-                  <div v-else class="ml-4 px-4 py-2 bg-gray-100 text-gray-400 font-medium rounded-lg text-sm">
-                    {{ reward.points_required - customerPoints }} pts manquants
+                    
+                    <!-- Contenu -->
+                    <div class="flex-1">
+                      <h5 class="font-bold text-gray-900 mb-1">{{ reward.name }}</h5>
+                      <p class="text-sm text-gray-600 mb-3">{{ reward.description }}</p>
+                      
+                      <!-- Points et valeur -->
+                      <div class="flex items-center gap-3 mb-3">
+                        <div class="flex items-center gap-1">
+                          <Star :size="14" class="text-yellow-500 fill-current" />
+                          <span class="font-bold text-sm text-gray-700">{{ reward.points_required }} pts</span>
+                        </div>
+                        
+                        <div v-if="reward.discount_percentage" class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded">
+                          -{{ reward.discount_percentage }}%
+                        </div>
+                        
+                        <div v-if="reward.discount_amount" class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded">
+                          -{{ reward.discount_amount }}€
+                        </div>
+                      </div>
+                      
+                      <!-- Bouton d'action -->
+                      <button 
+                        v-if="customerPoints >= reward.points_required"
+                        @click="redeemReward(reward)"
+                        class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-sm font-bold rounded-lg hover:shadow-md transform hover:scale-105 transition-all"
+                      >
+                        Obtenir
+                      </button>
+                      <div 
+                        v-else 
+                        class="inline-flex items-center gap-1 text-xs text-gray-500"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <span>{{ reward.points_required - customerPoints }} pts manquants</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -772,6 +857,38 @@ const getOfferTypeLabel = (type: string) => {
     case 'points': return 'Points bonus'
     case 'upgrade': return 'Surclassement'
     default: return 'Offre'
+  }
+}
+
+// Obtenir le gradient pour le type d'offre
+const getOfferGradient = (type: string) => {
+  switch (type) {
+    case 'discount': 
+      return 'from-emerald-400 to-green-600'
+    case 'gift': 
+      return 'from-pink-400 to-rose-600'
+    case 'points': 
+      return 'from-amber-400 to-yellow-600'
+    case 'upgrade': 
+      return 'from-purple-400 to-indigo-600'
+    default: 
+      return 'from-violet-400 to-purple-600'
+  }
+}
+
+// Obtenir la classe du badge pour le type d'offre
+const getOfferBadgeClass = (type: string) => {
+  switch (type) {
+    case 'discount': 
+      return 'bg-green-500/90 text-white'
+    case 'gift': 
+      return 'bg-rose-500/90 text-white'
+    case 'points': 
+      return 'bg-amber-500/90 text-white'
+    case 'upgrade': 
+      return 'bg-indigo-500/90 text-white'
+    default: 
+      return 'bg-violet-500/90 text-white'
   }
 }
 
