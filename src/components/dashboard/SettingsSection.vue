@@ -537,14 +537,13 @@ const downloadInvoice = async (invoice: any) => {
       currentY += 5
     }
     
-    // Ligne 2: département ville, pays
+    // Ligne 2: code postal ville, pays
     if (userData?.postal_code || userData?.city || userData?.country) {
       let line2 = ''
       
-      // Extraire le département du code postal (2 premiers chiffres)
+      // Code postal complet
       if (userData?.postal_code) {
-        const dept = userData.postal_code.substring(0, 2)
-        line2 = dept
+        line2 = userData.postal_code
       }
       
       // Ajouter la ville
