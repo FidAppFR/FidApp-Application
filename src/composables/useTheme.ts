@@ -1,17 +1,68 @@
 import { ref, watch, onMounted } from 'vue'
+import { supabase } from '@/services/supabase'
 
 const isDark = ref(false)
+const themePreference = ref<'light' | 'dark' | 'system'>('system')
 
 export function useTheme() {
-  // Initialiser le thème depuis le localStorage
-  const initTheme = () => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      isDark.value = savedTheme === 'dark'
-    } else {
-      // Détecter la préférence système
-      isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+  // Charger la préférence depuis la base de données
+  const loadThemeFromDB = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return null
+      
+      const { data } = await supabase
+        .from('users')
+        .select('theme_preference')
+        .eq('auth_id', user.id)
+        .single()
+      
+      return data?.theme_preference || null
+    } catch (error) {
+      console.error('Erreur chargement thème depuis DB:', error)
+      return null
     }
+  }
+
+  // Sauvegarder la préférence dans la base de données
+  const saveThemeToDB = async (theme: 'light' | 'dark' | 'system') => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      
+      await supabase
+        .from('users')
+        .update({ 
+          theme_preference: theme,
+          updated_at: new Date().toISOString()
+        })
+        .eq('auth_id', user.id)
+    } catch (error) {
+      console.error('Erreur sauvegarde thème dans DB:', error)
+    }
+  }
+
+  // Initialiser le thème depuis la DB, localStorage ou préférence système
+  const initTheme = async () => {
+    // 1. Essayer de charger depuis la DB
+    const dbTheme = await loadThemeFromDB()
+    
+    if (dbTheme && dbTheme !== 'system') {
+      themePreference.value = dbTheme
+      isDark.value = dbTheme === 'dark'
+    } else {
+      // 2. Sinon, essayer le localStorage
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme) {
+        themePreference.value = savedTheme as 'light' | 'dark'
+        isDark.value = savedTheme === 'dark'
+      } else {
+        // 3. Sinon, utiliser la préférence système
+        themePreference.value = 'system'
+        isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+      }
+    }
+    
     updateTheme()
   }
 
@@ -25,9 +76,17 @@ export function useTheme() {
   }
 
   // Basculer le thème
-  const toggleTheme = () => {
+  const toggleTheme = async () => {
     isDark.value = !isDark.value
-    localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+    const newTheme = isDark.value ? 'dark' : 'light'
+    themePreference.value = newTheme
+    
+    // Sauvegarder dans localStorage (pour un accès immédiat)
+    localStorage.setItem('theme', newTheme)
+    
+    // Sauvegarder dans la DB (pour la persistance entre sessions/appareils)
+    await saveThemeToDB(newTheme)
+    
     updateTheme()
   }
 
@@ -43,6 +102,7 @@ export function useTheme() {
 
   return {
     isDark,
+    themePreference,
     toggleTheme,
     initTheme
   }
