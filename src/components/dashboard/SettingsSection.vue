@@ -506,7 +506,7 @@ const downloadInvoice = async (invoice: any) => {
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
     
-    // Colonne gauche - Informations professionnelles et adresse
+    // Colonne gauche - Informations professionnelles
     // Nom de la société ou nom du client
     const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
     doc.setFont('helvetica', 'bold')
@@ -521,34 +521,35 @@ const downloadInvoice = async (invoice: any) => {
     const tvaText = userData?.tva_number || 'Non défini'
     doc.text(`TVA: ${tvaText}`, 25, 115)
     
+    // Colonne droite - Adresse et contact
     // Adresse complète en bloc
-    let currentY = 121
+    let currentY = 103
     if (userData?.address) {
-      doc.text(userData.address, 25, currentY)
+      doc.text(userData.address, 115, currentY)
       currentY += 5
     }
     if (userData?.city && userData?.postal_code) {
-      doc.text(`${userData.postal_code} ${userData.city}`, 25, currentY)
+      doc.text(`${userData.postal_code} ${userData.city}`, 115, currentY)
       currentY += 5
     }
     if (userData?.country) {
-      doc.text(userData.country || 'France', 25, currentY)
+      doc.text(userData.country || 'France', 115, currentY)
+      currentY += 5
     }
     
-    // Colonne droite - Coordonnées de contact
     // Email
     const emailText = userData?.email || 'Non défini'
     if (emailText.length > 30) {
       doc.setFontSize(9)
-      doc.text(`Email: ${emailText}`, 115, 103)
+      doc.text(`Email: ${emailText}`, 25, 121)
       doc.setFontSize(10)
     } else {
-      doc.text(`Email: ${emailText}`, 115, 103)
+      doc.text(`Email: ${emailText}`, 25, 121)
     }
     
     // Téléphone
     const phoneText = userData?.phone || 'Non défini'
-    doc.text(`Tél: ${phoneText}`, 115, 109)
+    doc.text(`Tél: ${phoneText}`, 25, 127)
     
     // Tableau des services
     const startY = 145
