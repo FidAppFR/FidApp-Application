@@ -528,8 +528,8 @@ const downloadInvoice = async (invoice: any) => {
       // Essayer de séparer le numéro et la rue
       const addressParts = userData.address.match(/^(\d+[a-zA-Z]?\s*(?:bis|ter)?)\s+(.+)$/)
       if (addressParts) {
-        // Format: numéro - rue
-        doc.text(`${addressParts[1]} - ${addressParts[2]}`, 115, currentY)
+        // Format: numéro rue (avec espace)
+        doc.text(`${addressParts[1]} ${addressParts[2]}`, 115, currentY)
       } else {
         // Si pas de numéro détecté, afficher tel quel
         doc.text(userData.address, 115, currentY)
@@ -537,7 +537,7 @@ const downloadInvoice = async (invoice: any) => {
       currentY += 5
     }
     
-    // Ligne 2: département - ville, pays
+    // Ligne 2: département ville, pays
     if (userData?.postal_code || userData?.city || userData?.country) {
       let line2 = ''
       
@@ -549,7 +549,7 @@ const downloadInvoice = async (invoice: any) => {
       
       // Ajouter la ville
       if (userData?.city) {
-        line2 += line2 ? ' - ' : ''
+        line2 += line2 ? ' ' : ''
         line2 += userData.city
       }
       
