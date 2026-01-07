@@ -152,59 +152,126 @@
         />
       </div>
 
-      <!-- Section Récompenses disponibles -->
+      <!-- Section Offres et Récompenses disponibles -->
       <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
         <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
           <Gift :size="24" class="text-violet-600" />
-          <span>Récompenses disponibles</span>
+          <span>Offres & Récompenses</span>
         </h3>
         
         <div v-if="loading" class="flex justify-center py-8">
           <Loader2 :size="32" class="text-violet-600 animate-spin" />
         </div>
         
-        <div v-else-if="rewards.length === 0" class="text-center py-8">
+        <div v-else-if="rewards.length === 0 && offers.length === 0" class="text-center py-8">
           <Gift :size="48" class="mx-auto text-gray-300 mb-3" />
-          <p class="text-gray-500">Aucune récompense disponible pour le moment</p>
+          <p class="text-gray-500">Aucune offre disponible pour le moment</p>
         </div>
         
-        <div v-else class="grid gap-4">
-          <div 
-            v-for="reward in filteredRewards" 
-            :key="reward.id"
-            class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
-            :class="{ 'opacity-50': customerPoints < reward.points_required }"
-          >
-            <div class="flex items-start justify-between">
-              <div class="flex-1">
-                <h4 class="font-bold text-gray-900">{{ reward.name }}</h4>
-                <p class="text-sm text-gray-600 mt-1">{{ reward.description }}</p>
-                
-                <div class="flex items-center space-x-4 mt-3">
-                  <div class="flex items-center space-x-1">
-                    <Star :size="16" class="text-yellow-500 fill-current" />
-                    <span class="text-sm font-bold text-violet-600">{{ reward.points_required }} pts</span>
+        <div v-else class="space-y-6">
+          <!-- Offres spéciales -->
+          <div v-if="offers.length > 0">
+            <h4 class="text-lg font-semibold text-gray-800 mb-3 flex items-center space-x-2">
+              <Tag :size="20" class="text-violet-500" />
+              <span>Offres spéciales</span>
+            </h4>
+            <div class="grid gap-4">
+              <div 
+                v-for="offer in offers" 
+                :key="offer.id"
+                class="border border-violet-200 rounded-xl p-4 hover:shadow-md transition-shadow bg-gradient-to-r from-violet-50 to-pink-50"
+                :class="{ 'opacity-50': customerPoints < offer.points_cost }"
+              >
+                <div class="flex items-start justify-between">
+                  <div class="flex-1">
+                    <div class="flex items-center space-x-2 mb-2">
+                      <span class="px-2 py-1 bg-violet-100 text-violet-700 text-xs font-medium rounded-full">
+                        {{ getOfferTypeLabel(offer.type) }}
+                      </span>
+                    </div>
+                    <h4 class="font-bold text-gray-900">{{ offer.name }}</h4>
+                    <p class="text-sm text-gray-600 mt-1">{{ offer.description }}</p>
+                    
+                    <div class="flex items-center space-x-4 mt-3">
+                      <div class="flex items-center space-x-1">
+                        <Star :size="16" class="text-yellow-500 fill-current" />
+                        <span class="text-sm font-bold text-violet-600">{{ offer.points_cost }} pts</span>
+                      </div>
+                      
+                      <div v-if="offer.value && offer.type === 'discount'" class="text-sm text-green-600 font-medium">
+                        -{{ offer.value }}%
+                      </div>
+                      
+                      <div v-else-if="offer.value_text" class="text-sm text-gray-600">
+                        {{ offer.value_text }}
+                      </div>
+                    </div>
+                    
+                    <div v-if="offer.conditions" class="text-xs text-gray-500 mt-2 italic">
+                      {{ offer.conditions }}
+                    </div>
                   </div>
                   
-                  <div v-if="reward.discount_percentage" class="text-sm text-gray-600">
-                    -{{ reward.discount_percentage }}%
-                  </div>
-                  
-                  <div v-if="reward.discount_amount" class="text-sm text-gray-600">
-                    -{{ reward.discount_amount }}€
+                  <button 
+                    v-if="customerPoints >= offer.points_cost"
+                    class="ml-4 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-medium rounded-lg hover:scale-105 transition-transform text-sm"
+                    @click="redeemOffer(offer)"
+                  >
+                    Échanger
+                  </button>
+                  <div v-else class="ml-4 px-4 py-2 bg-gray-100 text-gray-400 font-medium rounded-lg text-sm">
+                    {{ offer.points_cost - customerPoints }} pts manquants
                   </div>
                 </div>
               </div>
-              
-              <button 
-                v-if="customerPoints >= reward.points_required"
-                class="ml-4 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-medium rounded-lg hover:scale-105 transition-transform text-sm"
-                @click="redeemReward(reward)"
+            </div>
+          </div>
+          
+          <!-- Récompenses classiques -->
+          <div v-if="filteredRewards.length > 0">
+            <h4 class="text-lg font-semibold text-gray-800 mb-3 flex items-center space-x-2">
+              <Award :size="20" class="text-yellow-500" />
+              <span>Récompenses classiques</span>
+            </h4>
+            <div class="grid gap-4">
+              <div 
+                v-for="reward in filteredRewards" 
+                :key="reward.id"
+                class="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
+                :class="{ 'opacity-50': customerPoints < reward.points_required }"
               >
-                Échanger
-              </button>
-              <div v-else class="ml-4 px-4 py-2 bg-gray-100 text-gray-400 font-medium rounded-lg text-sm">
-                {{ reward.points_required - customerPoints }} pts manquants
+                <div class="flex items-start justify-between">
+                  <div class="flex-1">
+                    <h4 class="font-bold text-gray-900">{{ reward.name }}</h4>
+                    <p class="text-sm text-gray-600 mt-1">{{ reward.description }}</p>
+                    
+                    <div class="flex items-center space-x-4 mt-3">
+                      <div class="flex items-center space-x-1">
+                        <Star :size="16" class="text-yellow-500 fill-current" />
+                        <span class="text-sm font-bold text-violet-600">{{ reward.points_required }} pts</span>
+                      </div>
+                      
+                      <div v-if="reward.discount_percentage" class="text-sm text-gray-600">
+                        -{{ reward.discount_percentage }}%
+                      </div>
+                      
+                      <div v-if="reward.discount_amount" class="text-sm text-gray-600">
+                        -{{ reward.discount_amount }}€
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    v-if="customerPoints >= reward.points_required"
+                    class="ml-4 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white font-medium rounded-lg hover:scale-105 transition-transform text-sm"
+                    @click="redeemReward(reward)"
+                  >
+                    Échanger
+                  </button>
+                  <div v-else class="ml-4 px-4 py-2 bg-gray-100 text-gray-400 font-medium rounded-lg text-sm">
+                    {{ reward.points_required - customerPoints }} pts manquants
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -472,7 +539,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone } from 'lucide-vue-next'
+import { Building2, Star, Gift, Clock, Plus, Minus, TrendingUp, UserPlus, Settings, ArrowLeft, Loader2, CheckCircle, User, LogOut, X, Save, Smartphone, Tag, Award } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import { recordScan } from '@/api/scanEndpoint'
 import AppleWalletButton from '@/components/ui/AppleWalletButton.vue'
@@ -512,6 +579,7 @@ interface PointsHistory {
 }
 
 const rewards = ref<Reward[]>([])
+const offers = ref<any[]>([])
 const companyData = ref<CompanyData>({
   name: '',
   logo_url: null,
@@ -676,11 +744,118 @@ const loadData = async () => {
       if (rewardsData) {
         rewards.value = rewardsData
       }
+      
+      // Charger les offres
+      const { data: offersData } = await supabase
+        .from('offers')
+        .select('*')
+        .eq('company_id', localCompanyId)
+        .eq('is_active', true)
+        .order('points_cost', { ascending: true })
+      
+      if (offersData) {
+        offers.value = offersData
+      }
     }
   } catch (error) {
     console.error('Erreur lors du chargement:', error)
   } finally {
     loading.value = false
+  }
+}
+
+// Obtenir le label du type d'offre
+const getOfferTypeLabel = (type: string) => {
+  switch (type) {
+    case 'discount': return 'Réduction'
+    case 'gift': return 'Cadeau'
+    case 'points': return 'Points bonus'
+    case 'upgrade': return 'Surclassement'
+    default: return 'Offre'
+  }
+}
+
+// Échanger une offre
+const redeemOffer = async (offer: any) => {
+  selectedReward.value = {
+    id: offer.id,
+    name: offer.name,
+    description: offer.description,
+    points_required: offer.points_cost,
+    is_active: offer.is_active,
+    category: offer.type
+  }
+  showRedeemModal.value = true
+  
+  try {
+    // Récupérer l'ID de l'entreprise depuis l'URL
+    const companyParam = router.currentRoute.value.query.company as string
+    const companyId = companyParam || ''
+    
+    if (!customerData.value || !companyId) {
+      console.error('Données client ou entreprise manquantes')
+      return
+    }
+    
+    const oldPoints = customerPoints.value
+    const newPoints = oldPoints - offer.points_cost
+    
+    // Mettre à jour les points du client
+    const { error: updateError } = await supabase
+      .from('customers')
+      .update({ points: newPoints })
+      .eq('id', customerData.value.id)
+    
+    if (updateError) {
+      console.error('Erreur lors de la mise à jour des points:', updateError)
+      showRedeemModal.value = false
+      return
+    }
+    
+    // Créer l'enregistrement dans offer_redemptions (si la table existe)
+    const { error: redemptionError } = await supabase
+      .from('offer_redemptions')
+      .insert({
+        offer_id: offer.id,
+        customer_id: customerData.value.id,
+        company_id: companyId,
+        points_used: offer.points_cost,
+        status: 'completed'
+      })
+    
+    if (redemptionError && !redemptionError.message.includes('offer_redemptions')) {
+      console.error('Erreur lors de l\'enregistrement de l\'échange:', redemptionError)
+    }
+    
+    // Créer l'enregistrement dans l'historique
+    const { error: historyError } = await supabase
+      .from('points_history')
+      .insert({
+        customer_id: customerData.value.id,
+        company_id: companyId,
+        points_amount: -offer.points_cost,
+        points_before: oldPoints,
+        points_after: newPoints,
+        transaction_type: 'spent',
+        description: `Offre échangée: ${offer.name}`,
+        offer_id: offer.id
+      })
+    
+    if (historyError) {
+      console.error('Erreur lors de l\'enregistrement de l\'historique:', historyError)
+    }
+    
+    // Mettre à jour l'affichage local
+    customerPoints.value = newPoints
+    
+    // Rafraîchir l'historique
+    if (customerData.value && companyId) {
+      loadPointsHistory(customerData.value.id, companyId)
+    }
+    
+  } catch (error) {
+    console.error('Erreur lors de l\'échange:', error)
+    showRedeemModal.value = false
   }
 }
 
