@@ -453,8 +453,11 @@ const downloadInvoice = async (invoice: any) => {
         reader.readAsDataURL(blob)
       })
       
-      // Ajouter le logo au PDF (largeur 45mm, hauteur proportionnelle)
-      doc.addImage(base64Logo, 'PNG', 20, 10, 45, 18)
+      // Ajouter le logo au PDF avec ratio préservé
+      // Logo original a un ratio d'environ 2.5:1 (largeur:hauteur)
+      const logoWidth = 35  // largeur en mm
+      const logoHeight = 14  // hauteur proportionnelle
+      doc.addImage(base64Logo, 'PNG', 20, 15, logoWidth, logoHeight)
     } catch (error) {
       console.error('Erreur chargement logo:', error)
       // Si le logo ne charge pas, afficher le texte
@@ -468,13 +471,13 @@ const downloadInvoice = async (invoice: any) => {
     doc.setFontSize(10)
     doc.setTextColor(grayColor)
     doc.setFont('helvetica', 'normal')
-    doc.text('FidApp SAS', 20, 35)
-    doc.text('123 Avenue des Champs-Élysées', 20, 40)
-    doc.text('75008 Paris, France', 20, 45)
-    doc.text('SIRET: 123 456 789 00012', 20, 50)
-    doc.text('TVA: FR 12 123456789', 20, 55)
-    doc.text('Email: facturation@fidapp.fr', 20, 60)
-    doc.text('Tél: +33 1 23 45 67 89', 20, 65)
+    doc.text('FidApp SAS', 20, 38)
+    doc.text('123 Avenue des Champs-Élysées', 20, 43)
+    doc.text('75008 Paris, France', 20, 48)
+    doc.text('SIRET: 123 456 789 00012', 20, 53)
+    doc.text('TVA: FR 12 123456789', 20, 58)
+    doc.text('Email: facturation@fidapp.fr', 20, 63)
+    doc.text('Tél: +33 1 23 45 67 89', 20, 68)
     
     // Titre FACTURE
     doc.setFontSize(28)
@@ -492,13 +495,13 @@ const downloadInvoice = async (invoice: any) => {
     // Rectangle pour les infos client
     doc.setDrawColor(200, 200, 200)
     doc.setFillColor(245, 245, 245)
-    doc.rect(20, 80, 170, 40, 'F')
+    doc.rect(20, 85, 170, 40, 'F')
     
     // Informations du client
     doc.setFontSize(12)
     doc.setTextColor('#000000')
     doc.setFont('helvetica', 'bold')
-    doc.text('FACTURÉ À:', 25, 90)
+    doc.text('FACTURÉ À:', 25, 95)
     
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
@@ -506,16 +509,16 @@ const downloadInvoice = async (invoice: any) => {
     // Nom de la société ou nom du client
     const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
     doc.setFont('helvetica', 'bold')
-    doc.text(clientName, 25, 97)
+    doc.text(clientName, 25, 102)
     
     doc.setFont('helvetica', 'normal')
     // SIRET si disponible
     if (userData?.siret) {
-      doc.text(`SIRET: ${userData.siret}`, 25, 102)
+      doc.text(`SIRET: ${userData.siret}`, 25, 107)
     }
     
     // Adresse complète
-    let currentY = userData?.siret ? 107 : 102
+    let currentY = userData?.siret ? 112 : 107
     if (userData?.address) {
       doc.text(userData.address, 25, currentY)
       currentY += 5
@@ -531,14 +534,14 @@ const downloadInvoice = async (invoice: any) => {
     
     // Coordonnées de contact
     if (userData?.email) {
-      doc.text(`Email: ${userData.email}`, 120, 97)
+      doc.text(`Email: ${userData.email}`, 120, 102)
     }
     if (userData?.phone) {
-      doc.text(`Tél: ${userData.phone}`, 120, 102)
+      doc.text(`Tél: ${userData.phone}`, 120, 107)
     }
     
     // Tableau des services
-    const startY = 135
+    const startY = 140
     
     // En-tête du tableau
     doc.setFillColor(primaryColor)
