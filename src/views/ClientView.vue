@@ -121,37 +121,64 @@
         </div>
       </div>
 
-      <!-- Section QR Code de fidélité - Visible uniquement si l'option est activée -->
-      <div v-if="isLoggedIn && !isOwner && customerLoyaltyCode && customerId && showQRInCard" class="mb-8">
-        <CustomerQRCode
-          :loyalty-code="customerLoyaltyCode"
-          :customer-id="customerId"
-          :company-id="companyId || ''"
-          :customer-name="customerName"
-          :company-name="companyData.name"
-        />
-      </div>
-
-      <!-- Section Apple Wallet compacte -->
-      <div v-if="isLoggedIn && !isOwner" class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 mb-6 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="p-2 bg-white rounded-lg shadow-sm">
-            <Smartphone :size="18" class="text-gray-700" />
+      <!-- Section combinée QR Code + Apple Wallet -->
+      <div v-if="isLoggedIn && !isOwner" class="mb-6">
+        <!-- Barre de contrôles compacte -->
+        <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-white rounded-lg shadow-sm">
+              <Smartphone :size="18" class="text-gray-700" />
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Carte digitale</p>
+              <p class="text-xs text-gray-500">Accès rapide et QR code</p>
+            </div>
           </div>
-          <div>
-            <p class="text-sm font-medium text-gray-900">Carte digitale</p>
-            <p class="text-xs text-gray-500">Accès rapide sur iPhone</p>
+          <div class="flex items-center gap-2">
+            <!-- Bouton QR Code -->
+            <button
+              v-if="customerLoyaltyCode && customerId"
+              @click="showQRModal = !showQRModal"
+              class="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm font-medium"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2a2 2 0 002-2v-2m-2 0h2v-2a2 2 0 00-2-2h-2m2-4h.01M8 12h.01M4 12h.01M4 16h.01M4 8h.01M8 4h.01M4 20h2m0-2H4v2a2 2 0 002 2m2-6H4m4-8H6a2 2 0 00-2 2v2h2"/>
+              </svg>
+              QR Code
+            </button>
+            
+            <!-- Bouton Apple Wallet -->
+            <AppleWalletButton
+              v-if="customerId && companyId"
+              :customer-id="customerId"
+              :company-id="companyId"
+              :qr-code-value="qrCodeValue"
+              :show-instructions="false"
+              @added="handleWalletAdded"
+              @error="handleWalletError"
+            />
           </div>
         </div>
-        <AppleWalletButton
-          v-if="customerId && companyId"
-          :customer-id="customerId"
-          :company-id="companyId"
-          :qr-code-value="qrCodeValue"
-          :show-instructions="false"
-          @added="handleWalletAdded"
-          @error="handleWalletError"
-        />
+        
+        <!-- Modal QR Code (caché par défaut) -->
+        <Transition
+          enter-active-class="transition-all duration-300 ease-out"
+          enter-from-class="opacity-0 transform translate-y-4"
+          enter-to-class="opacity-100 transform translate-y-0"
+          leave-active-class="transition-all duration-200 ease-in"
+          leave-from-class="opacity-100 transform translate-y-0"
+          leave-to-class="opacity-0 transform translate-y-4"
+        >
+          <div v-if="showQRModal" class="mt-4">
+            <CustomerQRCode
+              :loyalty-code="customerLoyaltyCode"
+              :customer-id="customerId"
+              :company-id="companyId || ''"
+              :customer-name="customerName"
+              :company-name="companyData.name"
+            />
+          </div>
+        </Transition>
       </div>
 
       <!-- Section récompenses moderne et épurée -->
@@ -862,6 +889,7 @@ const isLoggedIn = ref(false)
 const showRedeemModal = ref(false)
 const selectedReward = ref<Reward | null>(null)
 const showProfileModal = ref(false)
+const showQRModal = ref(false)
 const savingProfile = ref(false)
 const profileMessage = ref('')
 const profileMessageType = ref<'success' | 'error'>('success')
