@@ -732,6 +732,8 @@ const loadData = async () => {
       if (freshCustomer) {
         customerPoints.value = freshCustomer.points
         customerLoyaltyCode.value = freshCustomer.loyalty_code || ''
+        // Stocker created_at dans customerData pour le calcul de l'expiration
+        customerData.value.created_at = freshCustomer.created_at
         const createdDate = new Date(freshCustomer.created_at)
         memberSince.value = createdDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
       }
@@ -810,11 +812,19 @@ const getNextRewardThreshold = () => {
   return allPoints[0] || getMaxRewardPoints()
 }
 
-// Obtenir la date d'expiration des points (30 jours dans le futur par défaut)
+// Obtenir la date d'expiration des points (1 an après l'inscription)
 const getExpirationDate = () => {
-  const date = new Date()
-  date.setDate(date.getDate() + 30)
-  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+  if (!customerData.value || !customerData.value.created_at) {
+    // Si pas de date d'inscription, retourner une date par défaut
+    const date = new Date()
+    date.setFullYear(date.getFullYear() + 1)
+    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+  }
+  
+  // Calculer 1 an après la date d'inscription
+  const inscriptionDate = new Date(customerData.value.created_at)
+  inscriptionDate.setFullYear(inscriptionDate.getFullYear() + 1)
+  return inscriptionDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 // Obtenir les seuils de progression pour la barre
@@ -1171,6 +1181,11 @@ const loadCustomerDetails = async (customerId: string) => {
       customerPoints.value = data.points || 0
       customerName.value = `${data.first_name} ${data.last_name}`
       customerLoyaltyCode.value = data.loyalty_code || ''
+      
+      // Stocker created_at pour le calcul de l'expiration
+      if (customerData.value) {
+        customerData.value.created_at = data.created_at
+      }
       
       // S'assurer que companyId est défini
       if (!companyId.value && data.company_id) {
