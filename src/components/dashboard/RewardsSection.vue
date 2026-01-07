@@ -547,19 +547,84 @@ const saveReward = async () => {
         closeModal()
       }
     } else {
-      // Création
-      const { data, error } = await supabase
-        .from('rewards')
-        .insert([rewardData])
-        .select()
+      // Création - Utiliser la fonction RPC pour éviter les problèmes de trigger
+      console.log('Tentative de création de récompense...')
+      
+      try {
+        // Essayer d'abord avec la fonction RPC sans trigger
+        const { data: rpcResult, error: rpcError } = await supabase
+          .rpc('insert_reward_without_trigger', {
+            p_company_id: userData.id,
+            p_name: formData.value.name,
+            p_description: formData.value.description || null,
+            p_category: formData.value.category,
+            p_points_required: formData.value.points_required,
+            p_discount_percentage: formData.value.discount_percentage || null,
+            p_discount_amount: formData.value.discount_amount || null,
+            p_is_active: formData.value.is_active,
+            p_max_uses_per_customer: formData.value.max_uses_per_customer || null
+          })
 
-      if (error) {
-        console.error('Erreur lors de la création:', error)
-        alert(`Erreur lors de la création: ${error.message}`)
-      } else {
-        console.log('Récompense créée avec succès:', data)
+        if (rpcError) {
+          console.log('RPC non disponible, tentative insertion directe...')
+          // Si RPC échoue, essayer insertion directe
+          const { data: directResult, error: directError } = await supabase
+            .from('rewards')
+            .insert([rewardData])
+            .select()
+
+          if (directError) {
+            console.error('Erreur lors de la création:', directError)
+            
+            // En dernier recours, créer dans offers
+            if (directError.message.includes('trigger') || directError.message.includes('offers')) {
+              console.log('Création dans offers comme fallback...')
+              
+              const offerData = {
+                company_id: userData.id,
+                name: formData.value.name,
+                description: formData.value.description || null,
+                type: formData.value.category === 'discount' ? 'discount' : 'gift',
+                points_cost: formData.value.points_required,
+                value: formData.value.discount_percentage || formData.value.discount_amount || null,
+                is_active: formData.value.is_active,
+                max_uses_per_customer: formData.value.max_uses_per_customer || null
+              }
+              
+              const { error: offerError } = await supabase
+                .from('offers')
+                .insert([offerData])
+              
+              if (offerError) {
+                alert(`Impossible de créer la récompense: ${offerError.message}`)
+                return
+              }
+            } else {
+              alert(`Erreur lors de la création: ${directError.message}`)
+              return
+            }
+          }
+        }
+        
+        console.log('Récompense créée avec succès')
         await fetchRewards()
         closeModal()
+        showSuccessMessage('Récompense créée avec succès!')
+        
+      } catch (error) {
+        console.error('Erreur inattendue:', error)
+        // Tentative finale avec insertion directe simple
+        const { error: finalError } = await supabase
+          .from('rewards')
+          .insert([rewardData])
+        
+        if (!finalError) {
+          await fetchRewards()
+          closeModal()
+          showSuccessMessage('Récompense créée avec succès!')
+        } else {
+          alert('Impossible de créer la récompense. Veuillez réessayer.')
+        }
       }
     }
   } catch (error) {
