@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
     <!-- Header avec logo et notifications -->
-    <header class="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-40 h-16">
+    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 fixed top-0 left-0 right-0 z-40 h-16">
       <div class="h-full px-6 flex items-center justify-between">
         <router-link to="/" class="flex items-center">
           <img 
@@ -11,15 +11,27 @@
           />
         </router-link>
         
-        <!-- Centre de notifications -->
-        <NotificationCenter />
+        <div class="flex items-center space-x-3">
+          <!-- Bouton Dark/Light Mode -->
+          <button
+            @click="toggleTheme"
+            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            :title="isDark ? 'Mode clair' : 'Mode sombre'"
+          >
+            <Sun v-if="isDark" :size="20" class="text-gray-600 dark:text-gray-400" />
+            <Moon v-else :size="20" class="text-gray-600 dark:text-gray-400" />
+          </button>
+          
+          <!-- Centre de notifications -->
+          <NotificationCenter />
+        </div>
       </div>
     </header>
 
     <!-- Layout avec sidebar -->
     <div class="flex pt-16">
       <!-- Sidebar -->
-      <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-gray-200 overflow-y-auto">
+      <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
         <nav class="p-3 space-y-1">
           <!-- Menu Dashboard -->
           <button
@@ -28,7 +40,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'dashboard' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <LayoutDashboard :size="16" />
@@ -42,7 +54,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'company' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <Building2 :size="16" />
@@ -57,7 +69,7 @@
                 'w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-200 text-sm',
                 ['customers', 'customer-lookup'].includes(activeSection)
                   ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                  : 'hover:bg-gray-100 text-gray-700'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
               ]"
             >
               <div class="flex items-center space-x-2">
@@ -114,7 +126,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'products' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <Package :size="16" />
@@ -129,7 +141,7 @@
                 'w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-200 text-sm',
                 ['rewards', 'welcome-points', 'offers', 'bonus'].includes(activeSection)
                   ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                  : 'hover:bg-gray-100 text-gray-700'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
               ]"
             >
               <div class="flex items-center space-x-2">
@@ -207,7 +219,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'card' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <CreditCard :size="16" />
@@ -221,7 +233,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'milestones' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <Trophy :size="16" />
@@ -235,7 +247,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'qrcode' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <QrCode :size="16" />
@@ -254,7 +266,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'plan' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <Crown :size="16" />
@@ -268,7 +280,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'settings' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <Settings :size="16" />
@@ -282,7 +294,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'support' 
                 ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <HelpCircle :size="16" />
@@ -301,7 +313,7 @@
               'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm',
               activeSection === 'old-rewards' 
                 ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg' 
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
             ]"
           >
             <Archive :size="16" />
@@ -319,16 +331,16 @@
         </nav>
 
         <!-- Info compte en bas -->
-        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-200 bg-gray-50">
+        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
           <div class="flex items-center space-x-2">
             <div class="w-8 h-8 rounded-full bg-gradient-to-r from-violet-600 to-pink-600 flex items-center justify-center text-white text-xs font-bold">
               {{ userInitials }}
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-xs font-semibold text-gray-900 truncate">
+              <p class="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate">
                 {{ userData.company }}
               </p>
-              <p class="text-xs text-gray-500 truncate">
+              <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
                 {{ userData.email }}
               </p>
               <p class="text-xs font-medium text-violet-600">
@@ -344,8 +356,8 @@
         <!-- Section Dashboard -->
         <div v-if="activeSection === 'dashboard'" class="space-y-6">
           <div>
-            <h1 class="text-3xl font-black text-gray-900">Tableau de bord</h1>
-            <p class="text-gray-600 mt-2">Bienvenue sur votre espace de gestion FidApp</p>
+            <h1 class="text-3xl font-black text-gray-900 dark:text-white">Tableau de bord</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">Bienvenue sur votre espace de gestion FidApp</p>
           </div>
 
           <!-- Scan Stats Cards -->
@@ -353,11 +365,11 @@
 
           <!-- Stats cards -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-sm font-medium text-gray-600">Clients fidèles</p>
-                  <p class="text-2xl font-bold text-gray-900 mt-2">{{ dashboardStats.totalCustomers }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Clients fidèles</p>
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ dashboardStats.totalCustomers }}</p>
                   <p class="text-xs text-green-600 mt-2" v-if="dashboardStats.monthlyGrowth > 0">+{{ dashboardStats.monthlyGrowth }}% ce mois</p>
                   <p class="text-xs text-gray-500 mt-2" v-else>{{ dashboardStats.monthlyGrowth }}% ce mois</p>
                 </div>
@@ -367,11 +379,11 @@
               </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-sm font-medium text-gray-600">Points distribués</p>
-                  <p class="text-2xl font-bold text-gray-900 mt-2">{{ dashboardStats.totalPointsDistributed.toLocaleString() }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Points distribués</p>
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ dashboardStats.totalPointsDistributed.toLocaleString() }}</p>
                   <p v-if="dashboardStats.pointsGrowth > 0" class="text-xs text-green-600 mt-2">+{{ dashboardStats.pointsGrowth }}% ce mois</p>
                   <p v-else-if="dashboardStats.pointsGrowth < 0" class="text-xs text-red-600 mt-2">{{ dashboardStats.pointsGrowth }}% ce mois</p>
                   <p v-else class="text-xs text-gray-500 mt-2">{{ dashboardStats.pointsGrowth }}% ce mois</p>
@@ -382,11 +394,11 @@
               </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-sm font-medium text-gray-600">Récompenses actives</p>
-                  <p class="text-2xl font-bold text-gray-900 mt-2">{{ dashboardStats.activeRewards }}</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Récompenses actives</p>
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ dashboardStats.activeRewards }}</p>
                   <p class="text-xs text-gray-500 mt-2">Dans votre programme</p>
                 </div>
                 <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
@@ -395,11 +407,11 @@
               </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
               <div class="flex items-center justify-between">
                 <div>
-                  <p class="text-sm font-medium text-gray-600">Taux d'engagement</p>
-                  <p class="text-2xl font-bold text-gray-900 mt-2">{{ dashboardStats.engagementRate }}%</p>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Taux d'engagement</p>
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ dashboardStats.engagementRate }}%</p>
                   <p class="text-xs text-gray-500 mt-2">Clients actifs</p>
                 </div>
                 <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -412,7 +424,7 @@
           <!-- Section Objectifs en cours -->
           <div class="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-6 border border-violet-200">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 <Trophy :size="20" class="text-violet-600" />
                 Objectifs en cours
               </h3>
@@ -443,10 +455,10 @@
               <div 
                 v-for="milestone in activeMilestones.slice(0, 3)" 
                 :key="milestone.id"
-                class="bg-white rounded-lg p-4 border border-gray-200"
+                class="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
               >
                 <div class="flex items-center justify-between mb-2">
-                  <h4 class="font-semibold text-gray-900">{{ milestone.name }}</h4>
+                  <h4 class="font-semibold text-gray-900 dark:text-white">{{ milestone.name }}</h4>
                   <span :class="[
                     'px-2 py-0.5 rounded-full text-xs font-medium',
                     getMilestoneTypeColor(milestone.type)
@@ -492,8 +504,8 @@
             <ScanChart />
             <!-- Remplacer l'ancien graphique placeholder -->
 
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-              <h3 class="text-lg font-bold text-gray-900 mb-4">Récompenses populaires</h3>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Récompenses populaires</h3>
               <div class="space-y-4">
                 <div v-if="popularRewards.length === 0" class="text-center py-4 text-gray-500">
                   Aucune récompense disponible
@@ -606,8 +618,9 @@ import { useRouter, useRoute } from 'vue-router'
 import { 
   LayoutDashboard, Gift, Building2, CreditCard, Users, Crown,
   Settings, HelpCircle, LogOut, Star, TrendingUp, Coffee, Percent, Bell, QrCode, Package, ShoppingBag,
-  ChevronDown, UserPlus, Tag, Sparkles, Archive, Trophy, Target, Search
+  ChevronDown, UserPlus, Tag, Sparkles, Archive, Trophy, Target, Search, Sun, Moon
 } from 'lucide-vue-next'
+import { useTheme } from '@/composables/useTheme'
 import { supabase } from '@/services/supabase'
 import { logoutOverlay } from '@/services/logoutOverlay'
 import ProductsSection from '@/components/dashboard/ProductsSection.vue'
@@ -636,6 +649,9 @@ const activeSection = ref('dashboard')
 const selectedPlan = ref('')
 const showRewardsDropdown = ref(false)
 const showCustomersDropdown = ref(false)
+
+// Dark mode setup
+const { isDark, toggleTheme } = useTheme()
 
 // Interface pour les récompenses populaires
 interface PopularReward {

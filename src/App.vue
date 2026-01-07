@@ -78,14 +78,21 @@
 </template>
 
 <script setup lang="ts">
-import { watch, computed } from 'vue'
+import { watch, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import ScrollToTop from '@/components/ui/ScrollToTop.vue'
 import { Loader2 } from 'lucide-vue-next'
 import { logoutOverlay } from '@/services/logoutOverlay'
 import { pageLoader } from '@/services/pageLoader'
+import { useTheme } from '@/composables/useTheme'
 
 const route = useRoute()
+const { initTheme } = useTheme()
+
+// Initialiser le thème au démarrage
+onMounted(() => {
+  initTheme()
+})
 
 // Utiliser des computed pour la réactivité
 const isLogoutVisible = computed(() => logoutOverlay.isVisible.value)
