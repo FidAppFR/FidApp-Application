@@ -440,20 +440,23 @@ const downloadInvoice = async (invoice: any) => {
     
     // Logo de l'entreprise (FidApp)
     try {
-      // Ajouter le logo depuis l'URL publique
-      const logoUrl = '/Logo_unique.png' // Logo FidApp dans le dossier public
-      const img = new Image()
-      img.crossOrigin = 'anonymous'
+      // Charger et convertir le logo en base64
+      const logoUrl = '/Logo_Trans_unique.png' // Logo FidApp transparent
+      const response = await fetch(logoUrl)
+      const blob = await response.blob()
       
-      await new Promise((resolve, reject) => {
-        img.onload = resolve
-        img.onerror = reject
-        img.src = logoUrl
+      // Convertir le blob en base64
+      const reader = new FileReader()
+      const base64Logo = await new Promise<string>((resolve, reject) => {
+        reader.onloadend = () => resolve(reader.result as string)
+        reader.onerror = reject
+        reader.readAsDataURL(blob)
       })
       
-      // Dessiner le logo (hauteur 15mm pour correspondre à la taille du texte précédent)
-      doc.addImage(img, 'PNG', 20, 10, 40, 15)
+      // Ajouter le logo au PDF (largeur 45mm, hauteur proportionnelle)
+      doc.addImage(base64Logo, 'PNG', 20, 10, 45, 18)
     } catch (error) {
+      console.error('Erreur chargement logo:', error)
       // Si le logo ne charge pas, afficher le texte
       doc.setFontSize(24)
       doc.setTextColor(primaryColor)
@@ -465,13 +468,13 @@ const downloadInvoice = async (invoice: any) => {
     doc.setFontSize(10)
     doc.setTextColor(grayColor)
     doc.setFont('helvetica', 'normal')
-    doc.text('FidApp SAS', 20, 30)
-    doc.text('123 Avenue des Champs-Élysées', 20, 35)
-    doc.text('75008 Paris, France', 20, 40)
-    doc.text('SIRET: 123 456 789 00012', 20, 45)
-    doc.text('TVA: FR 12 123456789', 20, 50)
-    doc.text('Email: facturation@fidapp.fr', 20, 55)
-    doc.text('Tél: +33 1 23 45 67 89', 20, 60)
+    doc.text('FidApp SAS', 20, 35)
+    doc.text('123 Avenue des Champs-Élysées', 20, 40)
+    doc.text('75008 Paris, France', 20, 45)
+    doc.text('SIRET: 123 456 789 00012', 20, 50)
+    doc.text('TVA: FR 12 123456789', 20, 55)
+    doc.text('Email: facturation@fidapp.fr', 20, 60)
+    doc.text('Tél: +33 1 23 45 67 89', 20, 65)
     
     // Titre FACTURE
     doc.setFontSize(28)
@@ -489,13 +492,13 @@ const downloadInvoice = async (invoice: any) => {
     // Rectangle pour les infos client
     doc.setDrawColor(200, 200, 200)
     doc.setFillColor(245, 245, 245)
-    doc.rect(20, 75, 170, 35, 'F')
+    doc.rect(20, 80, 170, 40, 'F')
     
     // Informations du client
     doc.setFontSize(12)
     doc.setTextColor('#000000')
     doc.setFont('helvetica', 'bold')
-    doc.text('FACTURÉ À:', 25, 85)
+    doc.text('FACTURÉ À:', 25, 90)
     
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
@@ -503,16 +506,16 @@ const downloadInvoice = async (invoice: any) => {
     // Nom de la société ou nom du client
     const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
     doc.setFont('helvetica', 'bold')
-    doc.text(clientName, 25, 92)
+    doc.text(clientName, 25, 97)
     
     doc.setFont('helvetica', 'normal')
     // SIRET si disponible
     if (userData?.siret) {
-      doc.text(`SIRET: ${userData.siret}`, 25, 97)
+      doc.text(`SIRET: ${userData.siret}`, 25, 102)
     }
     
     // Adresse complète
-    let currentY = userData?.siret ? 102 : 97
+    let currentY = userData?.siret ? 107 : 102
     if (userData?.address) {
       doc.text(userData.address, 25, currentY)
       currentY += 5
@@ -528,14 +531,14 @@ const downloadInvoice = async (invoice: any) => {
     
     // Coordonnées de contact
     if (userData?.email) {
-      doc.text(`Email: ${userData.email}`, 120, 92)
+      doc.text(`Email: ${userData.email}`, 120, 97)
     }
     if (userData?.phone) {
-      doc.text(`Tél: ${userData.phone}`, 120, 97)
+      doc.text(`Tél: ${userData.phone}`, 120, 102)
     }
     
     // Tableau des services
-    const startY = 125
+    const startY = 135
     
     // En-tête du tableau
     doc.setFillColor(primaryColor)
