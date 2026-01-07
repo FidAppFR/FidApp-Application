@@ -156,13 +156,39 @@
       <div class="mb-8">
         <!-- En-tête de section avec gradient -->
         <div class="bg-gradient-to-r from-violet-600 to-pink-600 rounded-t-2xl p-6 text-white">
-          <h3 class="text-2xl font-black flex items-center gap-3">
-            <div class="p-2 bg-white/20 backdrop-blur rounded-lg">
-              <Gift :size="28" />
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h3 class="text-2xl font-black flex items-center gap-3">
+                <div class="p-2 bg-white/20 backdrop-blur rounded-lg">
+                  <Gift :size="28" />
+                </div>
+                Catalogue des récompenses
+              </h3>
+              <p class="mt-2 text-white/90">Échangez vos points contre des avantages exclusifs</p>
             </div>
-            Catalogue des récompenses
-          </h3>
-          <p class="mt-2 text-white/90">Échangez vos points contre des avantages exclusifs</p>
+            
+            <!-- Jauge de points actuelle -->
+            <div class="bg-white/10 backdrop-blur rounded-xl p-4 min-w-[200px]">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-white/80">Vos points</span>
+                <div class="flex items-center gap-1">
+                  <Star :size="16" class="text-yellow-400 fill-current" />
+                  <span class="font-black text-white text-lg">{{ customerPoints }}</span>
+                </div>
+              </div>
+              <div class="relative h-2 bg-white/20 rounded-full overflow-hidden">
+                <div 
+                  class="h-full bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full relative overflow-hidden animate-pulse"
+                  :style="`width: ${Math.min((customerPoints / getMaxRewardPoints()) * 100, 100)}%`"
+                >
+                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer"></div>
+                </div>
+              </div>
+              <p class="text-[10px] text-white/70 mt-1">
+                {{ customerPoints >= getMaxRewardPoints() ? '🎉 Toutes les récompenses disponibles!' : `Prochain palier à ${getNextRewardThreshold()} pts` }}
+              </p>
+            </div>
+          </div>
         </div>
         
         <!-- Contenu avec fond blanc -->
@@ -242,24 +268,51 @@
                     <h4 class="font-black text-lg text-gray-900 mb-2 line-clamp-1">{{ offer.name }}</h4>
                     <p class="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[40px]">{{ offer.description || 'Offre spéciale à durée limitée' }}</p>
                     
-                    <!-- Points requis avec indicateur visuel -->
+                    <!-- Points requis avec jauge animée -->
                     <div class="mb-4">
                       <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-gray-500 font-medium">Points requis</span>
-                        <div class="flex items-center gap-1">
-                          <Star :size="14" class="text-violet-500 fill-current" />
-                          <span class="font-black text-violet-600">{{ offer.points_cost }}</span>
+                        <span class="text-xs text-gray-500 font-medium">Progression</span>
+                        <div class="flex items-center gap-2">
+                          <span class="text-xs font-bold text-gray-700">{{ customerPoints }}</span>
+                          <span class="text-xs text-gray-400">/</span>
+                          <span class="text-xs font-bold text-violet-600">{{ offer.points_cost }} pts</span>
                         </div>
                       </div>
-                      <!-- Barre de progression -->
-                      <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div 
-                          class="h-full bg-gradient-to-r from-violet-500 to-pink-500 rounded-full transition-all duration-500"
-                          :style="`width: ${Math.min((customerPoints / offer.points_cost) * 100, 100)}%`"
-                        ></div>
+                      <!-- Jauge de progression animée -->
+                      <div class="relative">
+                        <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                          <div 
+                            class="h-full rounded-full relative overflow-hidden transition-all duration-1000 ease-out"
+                            :class="customerPoints >= offer.points_cost ? 'bg-gradient-to-r from-green-400 to-emerald-500' : 'bg-gradient-to-r from-violet-400 via-purple-500 to-pink-500'"
+                            :style="`width: ${Math.min((customerPoints / offer.points_cost) * 100, 100)}%`"
+                          >
+                            <!-- Animation de brillance -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                          </div>
+                        </div>
+                        <!-- Pourcentage au centre -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                          <span class="text-[10px] font-black text-gray-700 drop-shadow-sm">
+                            {{ Math.round((customerPoints / offer.points_cost) * 100) }}%
+                          </span>
+                        </div>
                       </div>
-                      <div v-if="customerPoints < offer.points_cost" class="text-xs text-gray-500 mt-1">
-                        Il vous manque {{ offer.points_cost - customerPoints }} points
+                      <div class="flex items-center justify-between mt-2">
+                        <div v-if="customerPoints < offer.points_cost" class="flex items-center gap-1">
+                          <svg class="w-3 h-3 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                          </svg>
+                          <span class="text-xs text-gray-600">
+                            Encore <span class="font-bold text-orange-600">{{ offer.points_cost - customerPoints }}</span> points
+                          </span>
+                        </div>
+                        <div v-else class="flex items-center gap-1">
+                          <svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                          </svg>
+                          <span class="text-xs text-green-600 font-medium">Disponible !</span>
+                        </div>
+                        <Star :size="12" class="text-yellow-500 fill-current" />
                       </div>
                     </div>
                     
@@ -322,7 +375,7 @@
                       <p class="text-sm text-gray-600 mb-3">{{ reward.description }}</p>
                       
                       <!-- Points et valeur -->
-                      <div class="flex items-center gap-3 mb-3">
+                      <div class="flex items-center gap-3 mb-2">
                         <div class="flex items-center gap-1">
                           <Star :size="14" class="text-yellow-500 fill-current" />
                           <span class="font-bold text-sm text-gray-700">{{ reward.points_required }} pts</span>
@@ -334,6 +387,23 @@
                         
                         <div v-if="reward.discount_amount" class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded">
                           -{{ reward.discount_amount }}€
+                        </div>
+                      </div>
+                      
+                      <!-- Mini jauge de progression -->
+                      <div class="mb-3">
+                        <div class="relative h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                          <div 
+                            class="h-full rounded-full relative overflow-hidden transition-all duration-700 ease-out"
+                            :class="customerPoints >= reward.points_required ? 'bg-gradient-to-r from-green-400 to-emerald-500' : 'bg-gradient-to-r from-yellow-400 to-orange-500'"
+                            :style="`width: ${Math.min((customerPoints / reward.points_required) * 100, 100)}%`"
+                          >
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
+                          </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-1">
+                          <span class="text-[10px] text-gray-500">{{ Math.round((customerPoints / reward.points_required) * 100) }}%</span>
+                          <span v-if="customerPoints >= reward.points_required" class="text-[10px] text-green-600 font-medium">✓ Disponible</span>
                         </div>
                       </div>
                       
@@ -847,6 +917,25 @@ const loadData = async () => {
   } finally {
     loading.value = false
   }
+}
+
+// Obtenir le nombre de points maximum nécessaire
+const getMaxRewardPoints = () => {
+  const allPoints = [
+    ...offers.value.map(o => o.points_cost),
+    ...rewards.value.map(r => r.points_required)
+  ]
+  return Math.max(...allPoints, 100) // Au minimum 100 points
+}
+
+// Obtenir le prochain seuil de récompense
+const getNextRewardThreshold = () => {
+  const allPoints = [
+    ...offers.value.map(o => o.points_cost),
+    ...rewards.value.map(r => r.points_required)
+  ].filter(p => p > customerPoints.value).sort((a, b) => a - b)
+  
+  return allPoints[0] || getMaxRewardPoints()
 }
 
 // Obtenir le label du type d'offre
@@ -1398,3 +1487,18 @@ const refreshCustomerPoints = async () => {
   }
 }
 </script>
+
+<style scoped>
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+</style>
