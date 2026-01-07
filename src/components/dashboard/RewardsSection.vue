@@ -24,7 +24,7 @@
     </div>
 
     <!-- Section Points de bienvenue -->
-    <div class="bg-gradient-to-br from-violet-50 to-pink-50 rounded-xl p-6 border border-violet-200">
+    <div class="bg-gradient-to-br from-violet-50 to-pink-50 dark:from-gray-700 dark:to-gray-800 rounded-xl p-6 border border-violet-200 dark:border-gray-600">
       <div class="flex items-start justify-between">
         <div class="flex-1">
           <div class="flex items-center space-x-3 mb-3">
@@ -38,13 +38,13 @@
           </div>
           
           <div class="flex items-center space-x-3">
-            <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 rounded-lg px-4 py-2 border-2 border-violet-200">
+            <div class="flex items-center space-x-2 bg-white dark:bg-gray-700 rounded-lg px-4 py-2 border-2 border-violet-200 dark:border-gray-600">
               <input
                 v-model.number="signupPoints"
                 type="number"
                 min="0"
                 max="1000"
-                class="w-20 text-center font-bold text-violet-600 outline-none"
+                class="w-20 text-center font-bold text-violet-600 dark:text-violet-400 bg-transparent outline-none"
                 placeholder="50"
               />
               <span class="text-gray-600 dark:text-gray-400 font-medium">points</span>
@@ -139,13 +139,13 @@
       <!-- Bouton ajouter -->
       <div 
         @click="showCreateModal = true"
-        class="border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center min-h-[280px] hover:border-violet-400 transition-colors cursor-pointer group"
+        class="border-2 border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-xl flex items-center justify-center min-h-[280px] hover:border-violet-400 dark:hover:border-violet-500 transition-colors cursor-pointer group"
       >
         <div class="text-center">
-          <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 group-hover:bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-3 transition-colors">
-            <Plus :size="24" class="text-gray-400 group-hover:text-violet-600 transition-colors" />
+          <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 group-hover:bg-violet-100 dark:group-hover:bg-violet-900/30 rounded-full flex items-center justify-center mx-auto mb-3 transition-colors">
+            <Plus :size="24" class="text-gray-400 dark:text-gray-500 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors" />
           </div>
-          <p class="text-gray-500 dark:text-gray-400 group-hover:text-violet-600 font-medium transition-colors">Ajouter une récompense</p>
+          <p class="text-gray-500 dark:text-gray-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 font-medium transition-colors">Ajouter une récompense</p>
         </div>
       </div>
     </div>
