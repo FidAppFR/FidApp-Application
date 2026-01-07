@@ -132,21 +132,23 @@
         />
       </div>
 
-      <!-- Section Apple Wallet -->
-      <div v-if="isLoggedIn && !isOwner" class="bg-white rounded-2xl shadow-lg p-6 mb-8">
-        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
-          <Smartphone :size="24" class="text-violet-600" />
-          <span>Ajouter à Apple Wallet</span>
-        </h3>
-        <p class="text-gray-600 mb-4">
-          Ajoutez votre carte de fidélité à Apple Wallet pour un accès rapide et recevoir des notifications de mise à jour de vos points.
-        </p>
+      <!-- Section Apple Wallet compacte -->
+      <div v-if="isLoggedIn && !isOwner" class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 mb-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-white rounded-lg shadow-sm">
+            <Smartphone :size="18" class="text-gray-700" />
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-900">Carte digitale</p>
+            <p class="text-xs text-gray-500">Accès rapide sur iPhone</p>
+          </div>
+        </div>
         <AppleWalletButton
           v-if="customerId && companyId"
           :customer-id="customerId"
           :company-id="companyId"
           :qr-code-value="qrCodeValue"
-          :show-instructions="true"
+          :show-instructions="false"
           @added="handleWalletAdded"
           @error="handleWalletError"
         />
