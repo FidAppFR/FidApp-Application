@@ -214,11 +214,11 @@
               </div>
               
               <!-- Upload d'image personnalisée -->
-              <div v-if="cardData.themeType === 'custom'" class="space-y-3 p-4 bg-violet-50 rounded-lg border border-violet-200">
-                <div class="bg-white dark:bg-gray-800 border border-amber-200 rounded-lg p-3">
+              <div v-if="cardData.themeType === 'custom'" class="space-y-3 p-4 bg-violet-50 dark:bg-gray-700 rounded-lg border border-violet-200 dark:border-gray-600">
+                <div class="bg-white dark:bg-gray-800 border border-amber-200 dark:border-amber-700 rounded-lg p-3">
                   <div class="flex items-start space-x-2">
                     <AlertCircle :size="16" class="text-amber-600 mt-0.5 flex-shrink-0" />
-                    <div class="text-sm text-amber-800">
+                    <div class="text-sm text-amber-800 dark:text-amber-300">
                       <p class="font-semibold">Dimensions recommandées :</p>
                       <p>800 x 450 pixels (format 16:9)</p>
                       <p class="text-xs mt-1">Formats acceptés : JPG, PNG, WebP (max 10MB)</p>
@@ -246,7 +246,7 @@
                 <div 
                   v-else 
                   @click="($refs.backgroundInput as HTMLInputElement)?.click()"
-                  class="border-3 border-dashed border-violet-300 rounded-lg p-8 text-center hover:border-violet-500 hover:bg-violet-50 transition-all cursor-pointer bg-white dark:bg-gray-800"
+                  class="border-3 border-dashed border-violet-300 dark:border-violet-600 rounded-lg p-8 text-center hover:border-violet-500 dark:hover:border-violet-400 hover:bg-violet-50 dark:hover:bg-gray-700 transition-all cursor-pointer bg-white dark:bg-gray-800"
                 >
                   <Upload :size="40" class="mx-auto text-violet-400 mb-3" />
                   <p class="text-base font-semibold text-gray-800 dark:text-gray-200">Cliquez pour choisir une image de fond</p>
