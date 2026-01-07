@@ -510,7 +510,7 @@ const downloadInvoice = async (invoice: any) => {
     // Nom de la société ou nom du client
     const clientName = userData?.company || `${userData?.first_name || ''} ${userData?.last_name || ''}`.trim() || 'Client'
     doc.setFont('helvetica', 'bold')
-    doc.text(clientName, 25, 103)
+    doc.text(`Société: ${clientName}`, 25, 103)
     
     doc.setFont('helvetica', 'normal')
     // SIRET
