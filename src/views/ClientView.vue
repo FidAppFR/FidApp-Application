@@ -288,53 +288,6 @@
         <p class="text-gray-400 mt-2">De nouvelles surprises arrivent bientôt !</p>
       </div>
       
-      <!-- Section Historique -->
-      <div class="bg-white rounded-2xl shadow-lg p-6">
-        <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center space-x-2">
-          <Clock :size="24" class="text-violet-600" />
-          <span>Historique des points</span>
-        </h3>
-        
-        <div v-if="loadingHistory" class="flex justify-center py-8">
-          <Loader2 :size="32" class="text-violet-600 animate-spin" />
-        </div>
-        
-        <div v-else-if="pointsHistory.length === 0" class="text-center py-8">
-          <Clock :size="48" class="mx-auto text-gray-300 mb-3" />
-          <p class="text-gray-500">Aucun historique disponible</p>
-        </div>
-        
-        <div v-else class="space-y-3">
-          <div 
-            v-for="transaction in pointsHistory" 
-            :key="transaction.id"
-            class="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
-          >
-            <div class="flex items-center space-x-3">
-              <div 
-                class="w-10 h-10 rounded-full flex items-center justify-center"
-                :class="getTransactionColor(transaction.transaction_type)"
-              >
-                <component :is="getTransactionIcon(transaction.transaction_type)" :size="20" />
-              </div>
-              <div>
-                <p class="font-medium text-gray-900">{{ getTransactionLabel(transaction.transaction_type) }}</p>
-                <p class="text-sm text-gray-500">{{ formatTransactionDate(transaction.created_at) }}</p>
-                <p v-if="transaction.description" class="text-xs text-gray-400 mt-1">{{ transaction.description }}</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <span 
-                class="font-bold"
-                :class="transaction.points_amount > 0 ? 'text-green-600' : 'text-red-600'"
-              >
-                {{ transaction.points_amount > 0 ? '+' : '' }}{{ transaction.points_amount }} pts
-              </span>
-              <p class="text-xs text-gray-400 mt-1">Solde: {{ transaction.points_after }} pts</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Modal de confirmation d'échange -->
