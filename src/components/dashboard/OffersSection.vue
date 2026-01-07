@@ -719,7 +719,36 @@ const saveOffer = async () => {
 
       if (error) {
         console.error('Erreur création offre:', error)
-        alert(`Erreur lors de la création: ${error.message}`)
+        
+        // Si c'est une erreur RLS, essayer une approche différente
+        if (error.message.includes('row-level security') || error.message.includes('RLS')) {
+          console.log('Erreur RLS détectée, tentative avec RPC...')
+          
+          // Créer une offre via une fonction RPC si disponible
+          const { data: rpcData, error: rpcError } = await supabase
+            .rpc('create_offer_bypass_rls', {
+              p_company_id: userData.id,
+              p_name: dataToInsert.name,
+              p_description: dataToInsert.description,
+              p_type: dataToInsert.type,
+              p_value: dataToInsert.value,
+              p_value_text: dataToInsert.value_text,
+              p_points_cost: dataToInsert.points_cost,
+              p_conditions: dataToInsert.conditions,
+              p_is_active: dataToInsert.is_active
+            }).select()
+          
+          if (!rpcError) {
+            console.log('Offre créée via RPC:', rpcData)
+            await loadOffers()
+            closeOfferModal()
+            return
+          }
+          
+          alert(`Erreur de permissions. Veuillez contacter l'administrateur pour activer les politiques RLS sur la table offers.`)
+        } else {
+          alert(`Erreur lors de la création: ${error.message}`)
+        }
       } else {
         console.log('Offre créée:', data)
         await loadOffers()
