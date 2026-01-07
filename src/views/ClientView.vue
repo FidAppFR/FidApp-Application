@@ -367,6 +367,7 @@
                 :key="'reward-' + reward.id"
                 class="group relative bg-white rounded-2xl border-2 transition-all duration-300"
                 :class="customerPoints >= reward.points_required ? 'border-yellow-200 hover:border-yellow-400 hover:shadow-xl' : 'border-gray-100 opacity-75'"
+              >
                 <div class="flex flex-col md:flex-row">
                   <!-- Zone visuelle -->
                   <div class="relative w-full md:w-48 h-48 md:h-auto">
