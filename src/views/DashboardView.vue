@@ -525,8 +525,6 @@
             </div>
           </div>
           
-          <!-- Historique des scans récents -->
-          <ScanHistory :limit="10" />
         </div>
 
         <!-- Section Nos Produits -->
@@ -630,7 +628,6 @@ import LoyaltyCardSection from '@/components/dashboard/LoyaltyCardSection.vue'
 import CustomersSection from '@/components/dashboard/CustomersSection.vue'
 import ScanStatsCard from '@/components/ScanStatsCard.vue'
 import ScanChart from '@/components/ScanChart.vue'
-import ScanHistory from '@/components/ScanHistory.vue'
 import PlanSection from '@/components/dashboard/PlanSection.vue'
 import SettingsSection from '@/components/dashboard/SettingsSection.vue'
 import SupportSection from '@/components/dashboard/SupportSection.vue'
