@@ -422,27 +422,27 @@
           </div>
 
           <!-- Section Objectifs en cours -->
-          <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+          <div class="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-gray-900 dark:to-gray-900 rounded-xl p-6 border border-violet-200 dark:border-gray-700">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <Trophy :size="20" class="text-violet-400" />
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <Trophy :size="20" class="text-violet-600 dark:text-violet-400" />
                 Objectifs en cours
               </h3>
               <button
                 @click="navigateToSection('milestones')"
-                class="text-sm text-violet-400 hover:text-violet-300 font-medium"
+                class="text-sm text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 font-medium"
               >
                 Voir tous →
               </button>
             </div>
-            
+
             <div v-if="loadingMilestones" class="text-center py-4">
-              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-400 mx-auto"></div>
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600 dark:border-violet-400 mx-auto"></div>
             </div>
-            
+
             <div v-else-if="activeMilestones.length === 0" class="text-center py-8">
-              <Target :size="32" class="mx-auto text-gray-500 mb-3" />
-              <p class="text-sm text-gray-400">Aucun objectif défini</p>
+              <Target :size="32" class="mx-auto text-gray-300 dark:text-gray-500 mb-3" />
+              <p class="text-sm text-gray-500 dark:text-gray-400">Aucun objectif défini</p>
               <button
                 @click="navigateToSection('milestones')"
                 class="mt-3 px-4 py-2 bg-violet-600 text-white text-sm rounded-lg hover:bg-violet-700 transition-colors"
@@ -450,15 +450,15 @@
                 Créer un objectif
               </button>
             </div>
-            
+
             <div v-else class="space-y-3">
               <div
                 v-for="milestone in activeMilestones.slice(0, 3)"
                 :key="milestone.id"
-                class="bg-gray-800 rounded-lg p-4 border border-gray-700"
+                class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700"
               >
                 <div class="flex items-center justify-between mb-2">
-                  <h4 class="font-semibold text-white">{{ milestone.name }}</h4>
+                  <h4 class="font-semibold text-gray-900 dark:text-white">{{ milestone.name }}</h4>
                   <span :class="[
                     'px-2 py-0.5 rounded-full text-xs font-medium',
                     getMilestoneTypeColor(milestone.type)
@@ -466,16 +466,16 @@
                     {{ getMilestoneTypeLabel(milestone.type) }}
                   </span>
                 </div>
-                
+
                 <div class="space-y-2">
                   <div class="flex items-center justify-between text-sm">
-                    <span class="text-gray-400">Progression</span>
-                    <span class="font-bold text-white">
+                    <span class="text-gray-600 dark:text-gray-400">Progression</span>
+                    <span class="font-bold text-gray-900 dark:text-white">
                       {{ milestone.current_value }} / {{ milestone.target_value }}
                     </span>
                   </div>
 
-                  <div class="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                  <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
                     <div
                       :class="[
                         'h-full transition-all duration-500',
@@ -486,10 +486,10 @@
                   </div>
 
                   <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-400">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
                       {{ Math.round((milestone.current_value / milestone.target_value) * 100) }}% complété
                     </span>
-                    <span v-if="milestone.reward_description" class="text-xs text-violet-400 font-medium">
+                    <span v-if="milestone.reward_description" class="text-xs text-violet-600 dark:text-violet-400 font-medium">
                       {{ milestone.reward_description }}
                     </span>
                   </div>
