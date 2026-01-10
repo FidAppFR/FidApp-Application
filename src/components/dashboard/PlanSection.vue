@@ -58,8 +58,8 @@
         <!-- Plan Free -->
         <div :class="[
           'relative rounded-xl p-4 transition-all duration-300 flex flex-col',
-          currentPlan === 'free' 
-            ? 'bg-violet-50 border-2 border-violet-600 shadow-lg' 
+          currentPlan === 'free'
+            ? 'bg-violet-50 dark:bg-violet-900/30 border-2 border-violet-600 dark:border-violet-500 shadow-lg'
             : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg'
         ]">
           <!-- Badge plan actuel -->
@@ -118,8 +118,8 @@
         <!-- Plan Starter -->
         <div :class="[
           'relative rounded-xl p-4 transition-all duration-300 flex flex-col',
-          currentPlan === 'starter' 
-            ? 'bg-violet-50 border-2 border-violet-600 shadow-lg' 
+          currentPlan === 'starter'
+            ? 'bg-violet-50 dark:bg-violet-900/30 border-2 border-violet-600 dark:border-violet-500 shadow-lg'
             : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg'
         ]">
           <!-- Badge plan actuel -->
@@ -183,9 +183,9 @@
         <!-- Plan Premium -->
         <div :class="[
           'relative rounded-xl p-4 transition-all duration-300 flex flex-col',
-          currentPlan === 'premium' 
-            ? 'bg-gradient-to-br from-violet-50 to-pink-50 border-2 border-violet-600 shadow-lg' 
-            : 'bg-gradient-to-br from-violet-50 to-pink-50 border-2 border-violet-300 hover:shadow-lg'
+          currentPlan === 'premium'
+            ? 'bg-gradient-to-br from-violet-50 to-pink-50 dark:from-violet-900/30 dark:to-pink-900/30 border-2 border-violet-600 dark:border-violet-500 shadow-lg'
+            : 'bg-gradient-to-br from-violet-50 to-pink-50 dark:from-violet-900/20 dark:to-pink-900/20 border-2 border-violet-300 dark:border-violet-700 hover:shadow-lg'
         ]">
           <!-- Badge plan actuel ou populaire -->
           <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
