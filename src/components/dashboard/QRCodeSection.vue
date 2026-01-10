@@ -120,7 +120,7 @@
 
             <button 
               @click="printQR"
-              class="w-full border-2 border-gray-300 text-gray-700 dark:text-gray-300 font-bold py-3 px-6 rounded-xl hover:bg-gray-50 dark:bg-gray-900 transition-colors flex items-center justify-center space-x-2"
+              class="w-full border-2 border-gray-300 text-gray-700 dark:text-gray-300 font-bold py-3 px-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors flex items-center justify-center space-x-2"
             >
               <Printer :size="20" />
               <span>Imprimer</span>

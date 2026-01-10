@@ -148,7 +148,7 @@
                     'flex-1 px-3 py-2 rounded-lg font-medium transition-colors border-2',
                     cardData.themeType === 'gradient' 
                       ? 'bg-violet-600 text-white border-violet-600' 
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                   ]"
                 >
                   Dégradés
@@ -160,7 +160,7 @@
                     'flex-1 px-3 py-2 rounded-lg font-medium transition-colors border-2',
                     cardData.themeType === 'custom' 
                       ? 'bg-violet-600 text-white border-violet-600' 
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                   ]"
                 >
                   Image personnalisée

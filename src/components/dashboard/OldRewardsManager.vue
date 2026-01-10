@@ -93,7 +93,7 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="reward in rewards" :key="reward.id" class="hover:bg-gray-50">
+            <tr v-for="reward in rewards" :key="reward.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-900">{{ reward.name }}</div>
               </td>

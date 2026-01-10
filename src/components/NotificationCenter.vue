@@ -80,7 +80,7 @@
             v-for="notification in filteredNotifications"
             :key="notification.id"
             @click="handleNotificationClick(notification)"
-            class="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 relative"
+            class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 last:border-b-0 relative"
             :class="{ 'bg-blue-50': !notification.is_read }"
           >
             <!-- Indicateur non lu -->

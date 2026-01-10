@@ -48,19 +48,19 @@
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Articles populaires</h3>
       <div class="space-y-3">
-        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <span class="text-gray-700 dark:text-gray-300">Comment créer ma première récompense ?</span>
           <ChevronRight :size="18" class="text-gray-400 dark:text-gray-500" />
         </a>
-        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <span class="text-gray-700 dark:text-gray-300">Gérer les points de fidélité</span>
           <ChevronRight :size="18" class="text-gray-400 dark:text-gray-500" />
         </a>
-        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <span class="text-gray-700 dark:text-gray-300">Personnaliser ma carte de fidélité</span>
           <ChevronRight :size="18" class="text-gray-400 dark:text-gray-500" />
         </a>
-        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        <a href="#" class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <span class="text-gray-700 dark:text-gray-300">Analyser mes statistiques</span>
           <ChevronRight :size="18" class="text-gray-400 dark:text-gray-500" />
         </a>

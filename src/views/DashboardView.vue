@@ -93,7 +93,7 @@
                     'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
                     activeSection === 'customers'
                       ? 'bg-violet-100 text-violet-700 translate-x-1' 
-                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:translate-x-1'
                   ]"
                   :style="{ '--item-index': 0 }"
                 >
@@ -108,7 +108,7 @@
                     'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 transform',
                     activeSection === 'customer-lookup'
                       ? 'bg-violet-100 text-violet-700 translate-x-1' 
-                      : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:translate-x-1'
                   ]"
                   :style="{ '--item-index': 1 }"
                 >
@@ -173,7 +173,7 @@
                   'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm transform',
                   activeSection === 'welcome-points' 
                     ? 'bg-violet-100 text-violet-700 font-medium' 
-                    : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:translate-x-1'
                 ]"
                 :style="{ '--item-index': 0 }"
               >
@@ -187,7 +187,7 @@
                   'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm transform',
                   activeSection === 'offers' 
                     ? 'bg-violet-100 text-violet-700 font-medium' 
-                    : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:translate-x-1'
                 ]"
                 :style="{ '--item-index': 1 }"
               >
@@ -201,7 +201,7 @@
                   'w-full flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm transform',
                   activeSection === 'bonus' 
                     ? 'bg-violet-100 text-violet-700 font-medium' 
-                    : 'hover:bg-gray-100 text-gray-600 hover:translate-x-1'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:translate-x-1'
                 ]"
                 :style="{ '--item-index': 2 }"
               >

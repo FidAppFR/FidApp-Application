@@ -51,7 +51,7 @@
           <tr 
             v-for="scan in scanHistory" 
             :key="scan.id"
-            class="hover:bg-gray-50 transition-colors"
+            class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
             <td class="px-6 py-4 text-sm text-gray-900">
               {{ formatDate(scan.scannedAt) }}

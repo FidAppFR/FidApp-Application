@@ -156,7 +156,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
-            <tr v-for="bonus in recentBonuses" :key="bonus.id" class="hover:bg-gray-50 dark:bg-gray-900">
+            <tr v-for="bonus in recentBonuses" :key="bonus.id" class="hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2">
                   <div class="w-8 h-8 bg-gradient-to-br from-violet-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">

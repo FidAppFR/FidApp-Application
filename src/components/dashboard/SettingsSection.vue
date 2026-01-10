@@ -196,7 +196,7 @@
                 
                 <!-- Liste des factures -->
                 <div v-else v-for="invoice in billingHistory" :key="invoice.id" 
-                     class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                     class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 dark:hover:bg-gray-700/50 transition-colors">
                   <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                       <div class="w-10 h-10 bg-violet-100 dark:bg-violet-900/30 rounded-full flex items-center justify-center">

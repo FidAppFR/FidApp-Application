@@ -6,7 +6,7 @@
         <p class="text-gray-600 dark:text-gray-400 mt-2">Gérez vos clients fidèles et leurs points</p>
       </div>
       <div class="flex space-x-3">
-        <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors flex items-center space-x-2">
+        <button class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors flex items-center space-x-2">
           <Download :size="18" />
           <span>Exporter</span>
         </button>
@@ -38,7 +38,7 @@
           <option value="inactive">Clients inactifs</option>
           <option value="vip">VIP (500+ pts)</option>
         </select>
-        <button class="px-4 py-3 bg-violet-100 text-violet-600 rounded-lg font-medium hover:bg-violet-200 transition-colors flex items-center space-x-2">
+        <button class="px-4 py-3 bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 rounded-lg font-medium hover:bg-violet-200 dark:hover:bg-violet-900/50 transition-colors flex items-center space-x-2">
           <Filter :size="18" />
           <span>Filtres</span>
         </button>
@@ -94,7 +94,7 @@
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
             <!-- Loading state -->
             <tr v-if="loading">
               <td colspan="5" class="px-6 py-12 text-center">
@@ -117,7 +117,7 @@
             </tr>
             
             <!-- Customer rows -->
-            <tr v-else v-for="(customer, index) in paginatedCustomers" :key="customer.id" class="hover:bg-gray-50 transition-colors">
+            <tr v-else v-for="(customer, index) in paginatedCustomers" :key="customer.id" class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
               <td class="px-6 py-4">
                 <div class="flex items-center space-x-3">
                   <div :class="[getInitialsColor(index), 'w-10 h-10 rounded-full flex items-center justify-center']">
@@ -145,25 +145,25 @@
               </td>
               <td class="px-6 py-4">
                 <div class="flex space-x-2">
-                  <button 
+                  <button
                     @click="viewCustomer(customer)"
-                    class="text-violet-600 hover:text-violet-700 p-1 hover:bg-violet-50 rounded transition-colors"
+                    class="text-violet-600 hover:text-violet-700 p-1 hover:bg-violet-50 dark:hover:bg-violet-900/30 rounded transition-colors"
                     title="Voir le profil"
                   >
                     <Eye :size="18" />
                   </button>
-                  <button 
+                  <button
                     @click="sendEmail(customer)"
-                    class="text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 p-1 hover:bg-gray-50 rounded transition-colors"
+                    class="text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 p-1 hover:bg-gray-50 dark:hover:bg-gray-700 rounded transition-colors"
                     title="Envoyer un email"
                   >
                     <Mail :size="18" />
                   </button>
                   <div class="relative">
-                    <button 
+                    <button
                       :ref="el => setButtonRef(customer.id, el as HTMLElement)"
                       @click="toggleDropdown(customer.id)"
-                      class="text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 p-1 hover:bg-gray-50 rounded transition-colors"
+                      class="text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 p-1 hover:bg-gray-50 dark:hover:bg-gray-700 rounded transition-colors"
                       title="Plus d'options"
                     >
                       <MoreVertical :size="18" />
@@ -187,22 +187,22 @@
           <span v-else>Aucun client</span>
         </p>
         <div class="flex space-x-2" v-if="totalPages > 1">
-          <button 
+          <button
             @click="currentPage = Math.max(1, currentPage - 1)"
             :disabled="currentPage === 1"
-            class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:hover:bg-white dark:bg-gray-800"
+            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:hover:bg-white dark:disabled:hover:bg-gray-800 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
           >
             Précédent
           </button>
           <template v-for="page in totalPages" :key="page">
-            <button 
+            <button
               v-if="page <= 3 || page > totalPages - 3 || Math.abs(page - currentPage) <= 1"
               @click="currentPage = page"
               :class="[
                 'px-3 py-1 rounded-lg transition-colors',
-                page === currentPage 
-                  ? 'bg-violet-600 text-white' 
-                  : 'border border-gray-300 hover:bg-gray-50'
+                page === currentPage
+                  ? 'bg-violet-600 text-white'
+                  : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
               ]"
             >
               {{ page }}
@@ -214,10 +214,10 @@
               ...
             </span>
           </template>
-          <button 
+          <button
             @click="currentPage = Math.min(totalPages, currentPage + 1)"
             :disabled="currentPage === totalPages"
-            class="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:hover:bg-white dark:bg-gray-800"
+            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:hover:bg-white dark:disabled:hover:bg-gray-800 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
           >
             Suivant
           </button>
@@ -243,7 +243,7 @@
           
           <div v-if="selectedCustomer" class="space-y-4">
             <!-- Info client -->
-            <div class="bg-gray-50 rounded-lg p-4">
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
               <p class="font-medium text-gray-900 dark:text-white">
                 {{ selectedCustomer.first_name }} {{ selectedCustomer.last_name }}
               </p>
@@ -317,8 +317,8 @@
                     :key="product.id"
                     @click="selectProduct(product)"
                     :class="[
-                      'w-full text-left px-3 py-2 hover:bg-violet-50 transition-colors border-b last:border-b-0',
-                      selectedProduct?.id === product.id ? 'bg-violet-50' : ''
+                      'w-full text-left px-3 py-2 hover:bg-violet-50 dark:hover:bg-violet-900/30 transition-colors border-b dark:border-gray-600 last:border-b-0',
+                      selectedProduct?.id === product.id ? 'bg-violet-50 dark:bg-violet-900/30' : ''
                     ]"
                   >
                     <div class="flex justify-between items-center">
@@ -431,8 +431,8 @@
             </div>
 
             <!-- Aperçu -->
-            <div class="bg-violet-50 rounded-lg p-4">
-              <p class="text-sm text-violet-700">
+            <div class="bg-violet-50 dark:bg-violet-900/30 rounded-lg p-4">
+              <p class="text-sm text-violet-700 dark:text-violet-300">
                 <span class="font-medium">Nouveau solde:</span>
                 <span class="font-bold ml-2">
                   {{ calculateNewBalance() }} points
@@ -444,7 +444,7 @@
             <div class="flex space-x-3">
               <button
                 @click="closePointsModal"
-                class="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
+                class="flex-1 py-2 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
               >
                 Annuler
               </button>
@@ -482,7 +482,7 @@
               Êtes-vous sûr de vouloir supprimer ce client ?
             </p>
             
-            <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border border-red-200 dark:border-red-800">
               <p class="font-medium text-gray-900 dark:text-white">
                 {{ selectedCustomer.first_name }} {{ selectedCustomer.last_name }}
               </p>
@@ -496,7 +496,7 @@
             <div class="flex space-x-3">
               <button
                 @click="showDeleteModal = false"
-                class="flex-1 py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
+                class="flex-1 py-2 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
               >
                 Annuler
               </button>
@@ -544,7 +544,7 @@
           
           <div v-else-if="customerDetails" class="space-y-6">
             <!-- En-tête du profil -->
-            <div class="flex items-start justify-between bg-gradient-to-r from-violet-50 to-pink-50 rounded-xl p-6">
+            <div class="flex items-start justify-between bg-gradient-to-r from-violet-50 to-pink-50 dark:from-violet-900/30 dark:to-pink-900/30 rounded-xl p-6">
               <div class="flex items-center space-x-4">
                 <div class="w-20 h-20 bg-gradient-to-r from-violet-600 to-pink-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                   {{ getInitials(customerDetails) }}
@@ -761,19 +761,19 @@
               </h4>
               
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-gray-50 rounded-lg p-4">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <p class="text-sm text-gray-600 dark:text-gray-400">Points actuels</p>
                   <p class="text-2xl font-bold text-violet-600">{{ customerDetails.points }}</p>
                 </div>
-                <div class="bg-gray-50 rounded-lg p-4">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <p class="text-sm text-gray-600 dark:text-gray-400">Total gagné</p>
                   <p class="text-2xl font-bold text-green-600">{{ customerDetails.total_points_earned || 0 }}</p>
                 </div>
-                <div class="bg-gray-50 rounded-lg p-4">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <p class="text-sm text-gray-600 dark:text-gray-400">Total dépensé</p>
                   <p class="text-2xl font-bold text-red-600">{{ customerDetails.total_points_spent || 0 }}</p>
                 </div>
-                <div class="bg-gray-50 rounded-lg p-4">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <p class="text-sm text-gray-600 dark:text-gray-400">Dernière visite</p>
                   <p class="text-sm font-medium text-gray-900 dark:text-white">{{ formatLastVisit(customerDetails.last_visit) }}</p>
                 </div>
@@ -813,7 +813,7 @@
             <div class="flex justify-end space-x-3">
               <button
                 @click="closeDetailModal"
-                class="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
+                class="px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors"
               >
                 Fermer
               </button>
@@ -835,14 +835,14 @@
       >
         <button
           @click="openPointsModal(getCustomerById(activeDropdown))"
-          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-sm rounded-t-lg"
+          class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300 rounded-t-lg"
         >
           <Settings :size="16" class="text-gray-500 dark:text-gray-400" />
           <span>Gérer les points</span>
         </button>
         <button
           @click="confirmDelete(getCustomerById(activeDropdown))"
-          class="w-full text-left px-4 py-2 hover:bg-red-50 flex items-center space-x-2 text-sm text-red-600 rounded-b-lg"
+          class="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/30 flex items-center space-x-2 text-sm text-red-600 dark:text-red-400 rounded-b-lg"
         >
           <Trash2 :size="16" />
           <span>Supprimer le fidèle</span>
