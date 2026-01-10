@@ -2,7 +2,7 @@ import { ref, watch, onMounted } from 'vue'
 import { supabase } from '@/services/supabase'
 
 const isDark = ref(false)
-const themePreference = ref<'light' | 'dark' | 'system'>('system')
+const themePreference = ref<'light' | 'dark'>('light')
 
 export function useTheme() {
   // Charger la préférence depuis la base de données
@@ -10,13 +10,13 @@ export function useTheme() {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return null
-      
+
       const { data } = await supabase
         .from('users')
         .select('theme_preference')
         .eq('auth_id', user.id)
         .single()
-      
+
       return data?.theme_preference || null
     } catch (error) {
       console.error('Erreur chargement thème depuis DB:', error)
@@ -25,14 +25,14 @@ export function useTheme() {
   }
 
   // Sauvegarder la préférence dans la base de données
-  const saveThemeToDB = async (theme: 'light' | 'dark' | 'system') => {
+  const saveThemeToDB = async (theme: 'light' | 'dark') => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
-      
+
       await supabase
         .from('users')
-        .update({ 
+        .update({
           theme_preference: theme,
           updated_at: new Date().toISOString()
         })
@@ -42,27 +42,27 @@ export function useTheme() {
     }
   }
 
-  // Initialiser le thème depuis la DB, localStorage ou préférence système
+  // Initialiser le thème depuis la DB ou localStorage (défaut: light)
   const initTheme = async () => {
     // 1. Essayer de charger depuis la DB
     const dbTheme = await loadThemeFromDB()
-    
-    if (dbTheme && dbTheme !== 'system') {
+
+    if (dbTheme && (dbTheme === 'light' || dbTheme === 'dark')) {
       themePreference.value = dbTheme
       isDark.value = dbTheme === 'dark'
     } else {
       // 2. Sinon, essayer le localStorage
       const savedTheme = localStorage.getItem('theme')
-      if (savedTheme) {
+      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
         themePreference.value = savedTheme as 'light' | 'dark'
         isDark.value = savedTheme === 'dark'
       } else {
-        // 3. Sinon, utiliser la préférence système
-        themePreference.value = 'system'
-        isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+        // 3. Par défaut: thème clair
+        themePreference.value = 'light'
+        isDark.value = false
       }
     }
-    
+
     updateTheme()
   }
 
