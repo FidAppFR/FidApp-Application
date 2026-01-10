@@ -574,16 +574,17 @@
 
         <!-- Section Votre Plan -->
         <div v-if="activeSection === 'plan'" class="space-y-6">
-          <PlanSection 
-            :currentPlan="userData.selected_plan || userData.account_type || 'free'" 
+          <PlanSection
+            :currentPlan="userData.selected_plan || userData.account_type || 'free'"
             :selectedPlan="selectedPlan"
-            @planUpdated="handlePlanUpdate" 
+            @planUpdated="handlePlanUpdate"
+            @navigateToBilling="navigateToBilling"
           />
         </div>
 
         <!-- Section Paramètres -->
         <div v-if="activeSection === 'settings'" class="space-y-6">
-          <SettingsSection />
+          <SettingsSection :initialTab="settingsInitialTab" />
         </div>
 
         <!-- Section Support -->
@@ -646,6 +647,7 @@ const activeSection = ref('dashboard')
 const selectedPlan = ref('')
 const showRewardsDropdown = ref(false)
 const showCustomersDropdown = ref(false)
+const settingsInitialTab = ref('loyalty')
 
 // Dark mode setup
 const { isDark, toggleTheme } = useTheme()
@@ -738,6 +740,13 @@ const navigateToSection = (section: string) => {
   activeSection.value = section
   showRewardsDropdown.value = false
   showCustomersDropdown.value = false
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// Naviguer vers la section Paramètres -> Facturation
+const navigateToBilling = () => {
+  settingsInitialTab.value = 'billing'
+  activeSection.value = 'settings'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 

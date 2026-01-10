@@ -314,13 +314,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { Gift, Loader2, CheckCircle, FileText, Download, CreditCard, Calendar, Euro } from 'lucide-vue-next'
 import { supabase } from '@/services/supabase'
 import jsPDF from 'jspdf'
 import { getFidAppLogoBase64 } from '@/utils/pdfLogo'
 
-const activeTab = ref('loyalty')
+const props = defineProps<{
+  initialTab?: string
+}>()
+
+const activeTab = ref(props.initialTab || 'loyalty')
+
+// Watch pour changer d'onglet si la prop change
+watch(() => props.initialTab, (newTab) => {
+  if (newTab) {
+    activeTab.value = newTab
+  }
+})
 const signupPoints = ref(50)
 const originalSignupPoints = ref(50)
 const savingPoints = ref(false)

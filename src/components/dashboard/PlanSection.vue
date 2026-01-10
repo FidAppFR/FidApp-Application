@@ -43,7 +43,10 @@
         
         <!-- Bouton action -->
         <div>
-          <button class="px-4 py-2 bg-white dark:bg-gray-800/20 hover:bg-white dark:bg-gray-800/30 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">
+          <button
+            @click="emit('navigateToBilling')"
+            class="px-4 py-2 bg-white/90 hover:bg-white rounded-lg text-sm font-medium text-violet-600 transition-colors whitespace-nowrap"
+          >
             Gérer la facturation
           </button>
         </div>
@@ -479,6 +482,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'planUpdated': [plan: string]
+  'navigateToBilling': []
 }>()
 
 const showUpgradeModal = ref(false)
